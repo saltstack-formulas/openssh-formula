@@ -6,6 +6,7 @@ openssh:
     {% endif %}
   service.running:
     - enable: True
+    - name: ssh
     - require:
       - pkg: openssh
       - file: sshd_banner
