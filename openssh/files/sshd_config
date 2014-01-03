@@ -102,7 +102,11 @@ PrintMotd no # pam does that
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
+{% if grains['os_family'] == 'RedHat' %}
+UsePrivilegeSeparation yes              # RedHat/Centos 6.4 and earlier currently ship 5.3 (sandbox introduced in OpenSSH 5.9)
+{% else %}
 UsePrivilegeSeparation sandbox		# Default for new installations.
+{% endif %}
 #PermitUserEnvironment no
 #Compression delayed
 #ClientAliveInterval 0
