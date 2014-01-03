@@ -6,7 +6,11 @@ openssh:
     {% endif %}
   service.running:
     - enable: True
+    {% if grains['os_family'] == 'RedHat' %}
+    - name: sshd
+    {% else %}
     - name: ssh
+    {% endif %}
     - require:
       - pkg: openssh
       - file: sshd_banner
