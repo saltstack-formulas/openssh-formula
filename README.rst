@@ -1,7 +1,12 @@
 openssh
 =======
+Install and configure an openssh server.
 
-openssh
--------
-
-Install openssh and set up the daemon, install a useful banner as well
+States
+------
+``openssh``
+    Installs the ``openssh`` package and service.
+``openssh.config``
+    Installs the configuration file included in this formula (under "openssh/files").
+``openssh.banner``
+    Installs a banner that users see when SSH-ing in.
