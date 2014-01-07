@@ -1,25 +1,11 @@
+{% from "openssh/map.jinja" import openssh with context %}
+
 openssh:
-  pkg:
-    - installed
-    {% if grains['os_family'] == 'Debian' %}
-    - name: openssh-server
-    {% endif %}
+  pkg.installed:
+    - name: {{ openssh.server }}
   service.running:
     - enable: True
-    - name: ssh
+    - name: {{ openssh.service }}
     - require:
-      - pkg: openssh
-      - file: sshd_banner
-    - watch:
-      - file: sshd_config
+      - pkg: {{ openssh.server }}
 
-sshd_config:
-  file.managed:
-    - name: /etc/ssh/sshd_config
-    - source: salt://openssh/files/sshd_config
-
-sshd_banner:
-  file.managed:
-    - name: /etc/ssh/banner
-    - source: salt://openssh/files/banner
-    - template: jinja

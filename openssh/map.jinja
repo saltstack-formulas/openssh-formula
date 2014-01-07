@@ -1,0 +1,18 @@
+{% set openssh = salt['grains.filter_by']({
+    'Debian': {
+        'server': 'openssh-server',
+        'service': 'ssh',
+        'sshd_config': '/etc/ssh/sshd_config',
+        'sshd_config_src': 'salt://openssh/files/sshd_config',
+        'banner': '/etc/ssh/banner',
+        'banner_src': 'salt://openssh/files/banner',
+    },
+    'RedHat': {
+        'server': 'openssh-server',
+        'service': 'sshd',
+        'sshd_config': '/etc/ssh/sshd_config',
+        'sshd_config_src': 'salt://openssh/files/sshd_config',
+        'banner': '/etc/ssh/banner',
+        'banner_src': 'salt://openssh/files/banner',
+    },
+}, merge=salt['pillar.get']('openssh:lookup')) %}
