@@ -22,7 +22,9 @@ Installs the ``openssh`` package and service.
 ------------------
 
 Installs the configuration file included in this formula
-(under "openssh/files").
+(under "openssh/files"). This configuration file is populated
+by values from pillar. ``pillar.example`` results in the generation
+of the default ``sshd_config`` file on Debian Wheezy.
 
 ``openssh.banner``
 ------------------
