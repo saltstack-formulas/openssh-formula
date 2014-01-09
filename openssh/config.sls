@@ -8,5 +8,5 @@ sshd_config:
     - name: {{ openssh.sshd_config }}
     - source: {{ openssh.sshd_config_src }}
     - watch_in:
-      - service: {{ openssh.service }}
+      - service: openssh
 
