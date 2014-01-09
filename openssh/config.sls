@@ -7,6 +7,6 @@ sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
     - source: {{ openssh.sshd_config_src }}
-    - watch_in:
+    - watch:
       - service: {{ openssh.service }}
 
