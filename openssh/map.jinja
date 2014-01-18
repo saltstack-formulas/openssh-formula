@@ -1,6 +1,7 @@
 {% set openssh = salt['grains.filter_by']({
     'Debian': {
         'server': 'openssh-server',
+        'client': 'openssh-client',
         'service': 'ssh',
         'sshd_config': '/etc/ssh/sshd_config',
         'sshd_config_src': 'salt://openssh/files/sshd_config',
@@ -9,6 +10,7 @@
     },
     'RedHat': {
         'server': 'openssh-server',
+        'client': 'openssh',
         'service': 'sshd',
         'sshd_config': '/etc/ssh/sshd_config',
         'sshd_config_src': 'salt://openssh/files/sshd_config',
