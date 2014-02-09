@@ -1,5 +1,4 @@
-{% set openssh_pillar = pillar.get('openssh', {}) %}
-{% set sshd_config = openssh_pillar.get('sshd_config', {}) %}
+{% set sshd_config = pillar.get('sshd_config', {}) %}
 
 # This file is managed by salt. Manual changes risk being overwritten.
 # The contents of the original sshd_config are kept on the bottom for
