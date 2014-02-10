@@ -28,3 +28,16 @@ sshd_config:
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: yes
+
+openssh:
+  auth:
+    joe:
+      - name: JOE_VALID_SSH_PUBLIC_KEY
+        present: True
+        enc: ssh-rsa
+        comment: main key
+      - name: JOE_NON_VALID_SSH_PUBLIC_KEY
+        present: False
+        enc: ssh-rsa
+        comment: obsolete key - removed
+
