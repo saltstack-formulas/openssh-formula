@@ -40,4 +40,19 @@ openssh:
         present: False
         enc: ssh-rsa
         comment: obsolete key - removed
-
+  dsa:
+    private_key: |
+      -----BEGIN DSA PRIVATE KEY-----
+      NOT_DEFINED
+      -----END DSA PRIVATE KEY-----
+    public_key: |
+      ssh-dss NOT_DEFINED
+  provide_dsa_keys: False
+  provide_rsa_keys: False
+  rsa:
+    private_key: |
+      -----BEGIN RSA PRIVATE KEY-----
+      NOT_DEFINED
+      -----END RSA PRIVATE KEY-----
+    public_key: |
+      ssh-rsa NOT_DEFINED

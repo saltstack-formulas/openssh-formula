@@ -102,4 +102,42 @@
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-#UsePAM yes
+UsePAM yes
+
+#AllowAgentForwarding yes
+#AllowTcpForwarding yes
+#GatewayPorts no
+X11Forwarding yes
+#X11DisplayOffset 10
+#X11UseLocalhost yes
+PrintMotd no # pam does that
+#PrintLastLog yes
+#TCPKeepAlive yes
+#UseLogin no
+{% if grains['os_family'] == 'RedHat' %}
+UsePrivilegeSeparation yes              # RedHat/Centos 6.4 and earlier currently ship 5.3 (sandbox introduced in OpenSSH 5.9)
+{% else %}
+UsePrivilegeSeparation sandbox		# Default for new installations.
+{% endif %}
+#PermitUserEnvironment no
+#Compression delayed
+#ClientAliveInterval 0
+#ClientAliveCountMax 3
+#UseDNS yes
+#PidFile /run/sshd.pid
+#MaxStartups 10:30:100
+#PermitTunnel no
+#ChrootDirectory none
+#VersionAddendum none
+
+# no default banner path
+Banner /etc/ssh/banner
+
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/ssh/sftp-server
+
+# Example of overriding settings on a per-user basis
+#Match User anoncvs
+#	X11Forwarding no
+#	AllowTcpForwarding no
+#	ForceCommand cvs server
