@@ -11,10 +11,10 @@ openssh:
   iptables.insert:
     - table: filter
     - chain: INPUT
-    - position: 0
+    - position: 1
     - protocol: tcp
     - dport: 22 
-    - jump: ACCEPT
     - match: state
     - connstate: NEW,ESTABLISHED
+    - jump: ACCEPT
     - save: True
