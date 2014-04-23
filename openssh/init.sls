@@ -11,7 +11,7 @@ openssh:
   iptables.insert:
     - table: filter
     - chain: INPUT
-    - position: 0
+    - position: 1
     - match: state
     - connstate: NEW,ESTABLISHED
     - dport: 22
