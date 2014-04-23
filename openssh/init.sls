@@ -12,9 +12,9 @@ openssh:
     - table: filter
     - chain: INPUT
     - position: 1
-    - protocol: tcp
-    - dport: 22 
     - match: state
     - connstate: NEW,ESTABLISHED
+    - dport: 22
+    - proto: tcp
     - jump: ACCEPT
     - save: True
