@@ -11,6 +11,7 @@ openssh:
   iptables.insert:
     - table: filter
     - chain: INPUT
+    - position: 0
     - protocol: tcp
     - dport: 22 
     - jump: ACCEPT
