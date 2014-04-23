@@ -9,12 +9,11 @@ openssh:
     - require:
       - pkg: {{ openssh.server }}
   iptables.insert:
-    - position: 0
-    - protocol: tcp
-    - dport: 22 
     - table: filter
     - chain: INPUT
+    - protocol: tcp
+    - dport: 22 
     - jump: ACCEPT
     - match: state
-    - connstate: NEW, ESTABLISHED
+    - connstate: NEW,ESTABLISHED
     - save: True
