@@ -13,7 +13,7 @@ sshd.iptables.input:
     - chain: INPUT
     - jump: sshd_input
 
-sshd.iptables.input:
+sshd.iptables.listenrule:
   iptables.insert:
     - table: filter
     - chain: sshd_input
