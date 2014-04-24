@@ -10,6 +10,7 @@ sshd.iptables.chain:
 sshd.iptables.input:
   iptables.insert:
     - table: filter
+    - position: 1
     - chain: INPUT
     - jump: sshd_input
 
