@@ -1,5 +1,4 @@
 {% from "openssh/map.jinja" import openssh with context %}
-{% set openssh_pillar = pillar.get('openssh', {}) %}
 {% set listen_port = salt['pillar.get']('openssh:listen_port', '22') %}
 
 sshd.iptables.chain:
