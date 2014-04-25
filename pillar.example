@@ -12,6 +12,7 @@ sshd_config:
   LogLevel: INFO
   LoginGraceTime: 120
   PermitRootLogin: yes
+  PasswordAuthentication: no
   StrictModes: yes
   RSAAuthentication: yes
   PubkeyAuthentication: yes
