@@ -1,83 +1,118 @@
+{%- set sshd_config = pillar.get('sshd_config', {}) -%}
+{#- present in sshd_config and known in actual file options -#}
+{%- set processed_options = [] -%}
+
+{#- macros for render option according to present -#}
+{%- macro option_impl(keyword, default, present) -%}
+  {%- if present -%}
+    {%- do processed_options.append(keyword) -%}
+    {%- set prefix='' -%}
+  {%- else -%}
+    {%- set prefix='#' -%}
+  {%- endif -%}
+  {%- set value = sshd_config.get(keyword, default) -%}
+  {%- if value is sameas true -%}
+{{ prefix }}{{ keyword }} yes
+  {%- elif value is sameas false -%}
+{{ prefix }}{{ keyword }} no
+  {%- elif value is string or value is number -%}
+{{ prefix }}{{ keyword }} {{ value }}
+  {%- else -%}
+{%- for single_value in value -%}
+{{ prefix }}{{ keyword }} {{ single_value }}
+{% endfor -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+{#- macros for render option commented by default -#}
+{%- macro option(keyword, default, present) -%}
+{{ option_impl(keyword, default, keyword in sshd_config) }}
+{%- endmacro -%}
+
+{#- macros for render option uncommented by default -#}
+{%- macro option_default_uncommented(keyword, default, present) -%}
+{{ option_impl(keyword, default, True) }}
+{%- endmacro -%}
+
 # This file is managed by salt. Manual changes risk being overwritten.
 # The contents of the original sshd_config are kept on the bottom for
 # quick reference.
 # See the sshd_config(5) manpage for details
 
 # What ports, IPs and protocols we listen for
-Port {{ salt['pillar.get']('sshd_config:Port','22') }}
+{{ option('Port', 22) }}
 # Use these options to restrict which interfaces/protocols sshd will bind to
-#ListenAddress ::
-ListenAddress {{ salt['pillar.get']('sshd_config:ListenAddress','0.0.0.0') }}
-Protocol {{ salt['pillar.get']('sshd_config:Protocol','2') }}
+{{ option('ListenAddress', ['::', '0.0.0.0']) -}}
+{{ option_default_uncommented('Protocol', 2) }}
 
 # HostKeys for protocol version 2
-{% for host_key in salt['pillar.get']('sshd_config:',['/etc/ssh/ssh_host_rsa_key','/etc/ssh/ssh_host_dsa_key','/etc/ssh/ssh_host_ecdsa_key']) %}
-HostKey {{ host_key }}
-{% endfor %}
+{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key']) -}}
 
 #Privilege Separation is turned on for security
-UsePrivilegeSeparation {{ salt['pillar.get']('sshd_config:UsePrivilegeSeparation','yes') }}
+{{ option_default_uncommented('UsePrivilegeSeparation', 'yes') }}
 
 # Lifetime and size of ephemeral version 1 server key
-KeyRegenerationInterval {{ salt['pillar.get']('sshd_config:KeyRegenerationInterval','3600') }}
-ServerKeyBits {{ salt['pillar.get']('sshd_config:ServerKeyBits','768') }}
+{{ option_default_uncommented('KeyRegenerationInterval', 3600) }}
+{{ option_default_uncommented('ServerKeyBits', 768) }}
 
 # Logging
-SyslogFacility {{ salt['pillar.get']('sshd_config:SyslogFacility','AUTH') }}
-LogLevel {{ salt['pillar.get']('sshd_config:LogLevel','INFO') }}
+{{ option_default_uncommented('SyslogFacility', 'AUTH') }}
+{{ option_default_uncommented('LogLevel', 'INFO') }}
 
 # Authentication:
-LoginGraceTime {{ salt['pillar.get']('sshd_config:LoginGracetime','120') }}
-PermitRootLogin {{ salt['pillar.get']('sshd_config:PermitRootLogin','no') }}
-StrictModes {{ salt['pillar.get']('sshd_config:StrictModes','yes') }}
+{{ option_default_uncommented('LoginGraceTime', 120) }}
+{{ option_default_uncommented('PermitRootLogin', 'no') }}
+{{ option_default_uncommented('StrictModes', 'yes') }}
 
-RSAAuthentication {{ salt['pillar.get']('sshd_config:RSAAuthentication','yes') }}
-PubkeyAuthentication {{ salt['pillar.get']('sshd_config:PubkeyAuthentication','yes') }}
-AuthorizedKeysFile {{ salt['pillar.get']('sshd_config:AuthorizedKeysFile','%h/.ssh/authorized_keys') }}
+{{ option('DSAAuthentication', 'yes') }}
+{{ option_default_uncommented('RSAAuthentication', 'yes') }}
+{{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
+{{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-IgnoreRhosts {{ salt['pillar.get']('sshd_config:IgnoreRhosts','yes') }}
+{{ option_default_uncommented('IgnoreRhosts', 'yes') }}
 # For this to work you will also need host keys in /etc/ssh_known_hosts
-RhostsRSAAuthentication {{ salt['pillar.get']('sshd_config:RhostsRSAAuthentication','no') }}
+{{ option_default_uncommented('RhostsRSAAuthentication', 'no') }}
 # similar for protocol version 2
-HostbasedAuthentication {{ salt['pillar.get']('sshd_config:HostbasedAuthentication','no') }}
+{{ option_default_uncommented('HostbasedAuthentication', 'no') }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-IgnoreUserKnownHosts {{ salt['pillar.get']('sshd_config:IgnoreUserKnownHosts','yes') }}
+{{ option('IgnoreUserKnownHosts', 'yes') }}
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
-PermitEmptyPasswords {{ salt['pillar.get']('sshd_config:PermitEmptyPasswords','no') }}
+{{ option_default_uncommented('PermitEmptyPasswords', 'no') }}
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-ChallengeResponseAuthentication {{ salt['pillar.get']('sshd_config:ChallengeResponseAuthentication','no') }}
+{{ option_default_uncommented('ChallengeResponseAuthentication', 'no') }}
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication {{ salt['pillar.get']('sshd_config:PasswordAuthentication','yes') }}
+{{ option('PasswordAuthentication', 'yes') }}
 
 # Kerberos options
-KerberosAuthentication {{ salt['pillar.get']('sshd_config:KerberosAuthentication','no') }}
-KerberosGetAFSToken {{ salt['pillar.get']('sshd_config:KerberosGetAFSToken','no') }}
-KerberosOrLocalPasswd {{ salt['pillar.get']('sshd_config:KerberosOrLocalPasswd','yes') }}
-KerberosTicketCleanup {{ salt['pillar.get']('sshd_config:KerberosTicketCleanup','yes') }}
+{{ option('KerberosAuthentication', 'no') }}
+{{ option('KerberosGetAFSToken', 'no') }}
+{{ option('KerberosOrLocalPasswd', 'yes') }}
+{{ option('KerberosTicketCleanup', 'yes') }}
 
 # GSSAPI options
-GSSAPIAuthentication {{ salt['pillar.get']('sshd_config:GSSAPIAuthentication','no') }}
-GSSAPICleanupCredentials {{ salt['pillar.get']('sshd_config:GSSAPICleanupCredentials','yes') }}
+{{ option('GSSAPIAuthentication', 'no') }}
+{{ option('GSSAPICleanupCredentials', 'yes') }}
 
-X11Forwarding {{ salt['pillar.get']('sshd_config:X11Forwarding','yes') }}
-X11DisplayOffset {{ salt['pillar.get']('sshd_config:X11DisplayOffset','10') }}
-PrintMotd {{ salt['pillar.get']('sshd_config:PrintMotd','no') }}
-PrintLastLog {{ salt['pillar.get']('sshd_config:PrintLastLog','yes') }}
-TCPKeepAlive {{ salt['pillar.get']('sshd_config:TCPKeepAlive','yes') }}
-UseLogin {{ salt['pillar.get']('sshd_config:UseLogin','no') }}
+{{ option_default_uncommented('X11Forwarding', 'yes') }}
+{{ option('AllowTcpForwarding', 'yes') }}
+{{ option_default_uncommented('X11DisplayOffset', '10') }}
+{{ option_default_uncommented('PrintMotd', 'no') }}
+{{ option_default_uncommented('PrintLastLog', 'yes') }}
+{{ option_default_uncommented('TCPKeepAlive', 'yes') }}
+{{ option('UseLogin', 'no') }}
 
-MaxStartups {{ salt['pillar.get']('sshd_config:MaxStartups','10:30:60') }}
-Banner {{ salt['pillar.get']('sshd_config:Banner','/etc/issue.net') }}
+{{ option('MaxStartups', '10:30:60') }}
+{{ option('Banner', '/etc/issue.net') }}
 
 # Allow client to pass locale environment variables
-AcceptEnv {{ salt['pillar.get']('sshd_config:AcceptEnv','LANG LC_*') }}
+{{ option_default_uncommented('AcceptEnv', 'LANG LC_*') }}
 
-Subsystem {{ salt['pillar.get']('sshd_config:Subsystem','sftp /usr/lib/openssh/sftp-server') }}
+{{ option_default_uncommented('Subsystem', 'sftp /usr/lib/openssh/sftp-server') }}
 
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -88,4 +123,21 @@ Subsystem {{ salt['pillar.get']('sshd_config:Subsystem','sftp /usr/lib/openssh/s
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-UsePAM {{ salt['pillar.get']('sshd_config:UsePAM','yes') }}
+{{ option_default_uncommented('UsePAM', 'yes') }}
+
+{# Handling unknown in salt template options #}
+{%- for keyword, argument in sshd_config.iteritems() %}
+  {%- if not keyword in processed_options -%}
+    {%- if argument is sameas true %}
+{{ keyword }} yes
+    {%- elif argument is sameas false %}
+{{ keyword }} no
+    {%- elif argument is string or argument is number %}
+{{ keyword }} {{ argument }}
+    {%- else %}
+      {%- for item in argument %}
+{{ keyword }} {{ item }}
+      {%- endfor %}
+    {%- endif %}
+  {%- endif -%}
+{%- endfor %}
