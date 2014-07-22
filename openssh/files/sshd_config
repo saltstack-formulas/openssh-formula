@@ -125,6 +125,9 @@
 # and ChallengeResponseAuthentication to 'no'.
 {{ option_default_uncommented('UsePAM', 'yes') }}
 
+# DNS resolve and map remote IP addresses
+{{ option('UseDNS', 'yes') }}
+
 {# Handling unknown in salt template options #}
 {%- for keyword, argument in sshd_config.iteritems() %}
   {%- if not keyword in processed_options -%}
