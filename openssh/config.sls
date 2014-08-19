@@ -9,7 +9,6 @@ sshd_config:
     - source: {{ openssh.sshd_config_src }}
     - template: jinja
     - user: root
-    - group: root
     - mode: 644
     - watch_in:
       - service: openssh
