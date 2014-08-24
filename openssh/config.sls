@@ -14,7 +14,14 @@ sshd_config:
       - service: openssh
 
 {% for keyType in ['ecdsa', 'dsa', 'rsa'] %}
-{% if salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
+{% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
+ssh_generate_host_{{ keyType }}_key:
+  cmd.run:
+    - name: ssh-keygen -t {{ keyType }} -N '' -f /etc/ssh/ssh_host_{{ keyType }}_key
+    - creates: /etc/ssh/ssh_host_{{ keyType }}_key
+    - user: root
+
+{% elif salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
   file.managed:
     - name: /etc/ssh/ssh_host_{{ keyType }}_key

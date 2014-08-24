@@ -59,6 +59,9 @@ openssh:
   provide_dsa_keys: False
   provide_ecdsa_keys: False
   provide_rsa_keys: False
+  generate_dsa_keys: False
+  generate_ecdsa_keys: False
+  generate_rsa_keys: False
   rsa:
     private_key: |
       -----BEGIN RSA PRIVATE KEY-----
