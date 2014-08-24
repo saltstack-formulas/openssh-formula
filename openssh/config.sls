@@ -13,7 +13,7 @@ sshd_config:
     - watch_in:
       - service: openssh
 
-{% for keyType in ['dsa', 'rsa'] %}
+{% for keyType in ['ecdsa', 'dsa', 'rsa'] %}
 {% if salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
   file.managed:
