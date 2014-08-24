@@ -13,42 +13,24 @@ sshd_config:
     - watch_in:
       - service: openssh
 
-{% if salt['pillar.get']('openssh:provide_dsa_keys', False) %}
-ssh_host_dsa_key:
+{% for keyType in ['ecdsa', 'dsa', 'rsa'] %}
+{% if salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
+ssh_host_{{ keyType }}_key:
   file.managed:
-    - name: /etc/ssh/ssh_host_dsa_key
-    - contents_pillar: 'openssh:dsa:private_key'
+    - name: /etc/ssh/ssh_host_{{ keyType }}_key
+    - contents_pillar: 'openssh:{{ keyType }}:private_key'
     - user: root
     - mode: 600
     - require_in:
       - service: {{ openssh.service }}
 
-ssh_host_dsa_key.pub:
+ssh_host_{{ keyType }}_key.pub:
   file.managed:
-    - name: /etc/ssh/ssh_host_dsa_key.pub
-    - contents_pillar: 'openssh:dsa:public_key'
+    - name: /etc/ssh/ssh_host_{{ keyType }}_key.pub
+    - contents_pillar: 'openssh:{{ keyType }}:public_key'
     - user: root
     - mode: 600
     - require_in:
       - service: {{ openssh.service }}
 {% endif %}
-
-{% if salt['pillar.get']('openssh:provide_rsa_keys', False) %}
-ssh_host_rsa_key:
-  file.managed:
-    - name: /etc/ssh/ssh_host_rsa_key
-    - contents_pillar: 'openssh:rsa:private_key'
-    - user: root
-    - mode: 600
-    - require_in:
-      - service: {{ openssh.service }}
-
-ssh_host_rsa_key.pub:
-  file.managed:
-    - name: /etc/ssh/ssh_host_rsa_key.pub
-    - contents_pillar: 'openssh:rsa:public_key'
-    - user: root
-    - mode: 600
-    - require_in:
-      - service: {{ openssh.service }}
-{% endif %}
+{% endfor %}

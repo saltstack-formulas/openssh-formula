@@ -49,7 +49,15 @@ openssh:
       -----END DSA PRIVATE KEY-----
     public_key: |
       ssh-dss NOT_DEFINED
+  ecdsa:
+    private_key: |
+      -----BEGIN EC PRIVATE KEY-----
+      NOT_DEFINED
+      -----END EC PRIVATE KEY-----
+    public_key: |
+      ecdsa-sha2-nistp256 NOT_DEFINED
   provide_dsa_keys: False
+  provide_ecdsa_keys: False
   provide_rsa_keys: False
   rsa:
     private_key: |
