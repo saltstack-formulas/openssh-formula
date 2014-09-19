@@ -30,6 +30,15 @@ sshd_config:
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: 'yes'
   UseDNS: 'yes'
+  matches:
+    sftp_chroot:
+      type:
+        Group: sftpusers
+      options:
+        ChrootDirectory: /sftp-chroot/%u
+        X11Forwarding: no
+        AllowTcpForwarding: no
+        ForceCommand: internal-sftp
 
 openssh:
   auth:
