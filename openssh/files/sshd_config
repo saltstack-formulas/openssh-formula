@@ -150,7 +150,7 @@
   {%- for match in sshd_config['matches'].values() %}
 Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }}
     {%- for keyword in match['options'].keys() %}
-    {{ render_option(keyword, '', config_dict=match['type']) }}
+    {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
   {%- endfor %}
 {%- endif %}
