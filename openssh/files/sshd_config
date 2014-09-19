@@ -2,15 +2,10 @@
 {#- present in sshd_config and known in actual file options -#}
 {%- set processed_options = [] -%}
 
-{#- macros for render option according to present -#}
-{%- macro option_impl(keyword, default, present) -%}
-  {%- if present -%}
-    {%- do processed_options.append(keyword) -%}
-    {%- set prefix='' -%}
-  {%- else -%}
-    {%- set prefix='#' -%}
-  {%- endif -%}
-  {%- set value = sshd_config.get(keyword, default) -%}
+{#- generic renderer used for sshd matches, known options, -#}
+{#- and unknown options -#}
+{%- macro render_option(keyword, default, config_dict=sshd_config) -%}
+  {%- set value = config_dict.get(keyword, default) -%}
   {%- if value is sameas true -%}
 {{ prefix }}{{ keyword }} yes
   {%- elif value is sameas false -%}
@@ -22,6 +17,20 @@
 {{ prefix }}{{ keyword }} {{ single_value }}
 {% endfor -%}
   {%- endif -%}
+{%- endmacro -%}
+
+{#- macros for render option according to present -#}
+{%- macro option_impl(keyword, default, present) -%}
+  {%- if present -%}
+    {%- do processed_options.append(keyword) -%}
+    {%- set prefix='' -%}
+  {%- else -%}
+    {%- set prefix='#' -%}
+  {%- endif -%}
+  {#- add prefix to keyword and/or default -#}
+  {%- set keyword = prefix ~ default -%}
+  {%- set default = prefix ~ default -%}
+{{ render_option(keyword, default) }}
 {%- endmacro -%}
 
 {#- macros for render option commented by default -#}
@@ -129,18 +138,20 @@
 {{ option('UseDNS', 'yes') }}
 
 {# Handling unknown in salt template options #}
-{%- for keyword, argument in sshd_config.iteritems() %}
-  {%- if not keyword in processed_options -%}
-    {%- if argument is sameas true %}
-{{ keyword }} yes
-    {%- elif argument is sameas false %}
-{{ keyword }} no
-    {%- elif argument is string or argument is number %}
-{{ keyword }} {{ argument }}
-    {%- else %}
-      {%- for item in argument %}
-{{ keyword }} {{ item }}
-      {%- endfor %}
-    {%- endif %}
+{%- for keyword in sshd_config.keys() %}
+  {#- Matches have to be at the bottem and should be handled differently -#}
+  {%- if not keyword in processed_options and keyword != 'matches' -%}
+{#- send a blank default as it doesn't matter -#} 
+{{ render_option(keyword, '') }}
   {%- endif -%}
 {%- endfor %}
+
+{# Handle matches last as they need to go at the bottom #}
+{%- if 'matches' in sshd_config %}
+  {%- for match in sshd_config['matches'].values() %}
+Match {{ match['type'].keys()[0] match['type'].values()[0] }}
+    {%- for keyword in match['options'].keys() %}
+    {{ render_option(keyword, '', config_dict=match['type']) }}
+    {%- endfor %}
+  {%- endfor %}
+{%- endif %}
