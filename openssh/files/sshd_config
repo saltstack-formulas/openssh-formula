@@ -7,14 +7,14 @@
 {%- macro render_option(keyword, default, config_dict=sshd_config) -%}
   {%- set value = config_dict.get(keyword, default) -%}
   {%- if value is sameas true -%}
-{{ prefix }}{{ keyword }} yes
+{{ keyword }} yes
   {%- elif value is sameas false -%}
-{{ prefix }}{{ keyword }} no
+{{ keyword }} no
   {%- elif value is string or value is number -%}
-{{ prefix }}{{ keyword }} {{ value }}
+{{ keyword }} {{ value }}
   {%- else -%}
 {%- for single_value in value -%}
-{{ prefix }}{{ keyword }} {{ single_value }}
+{{ keyword }} {{ single_value }}
 {% endfor -%}
   {%- endif -%}
 {%- endmacro -%}
