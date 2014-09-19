@@ -27,7 +27,7 @@
   {%- else -%}
     {%- set prefix='#' -%}
   {%- endif -%}
-  {#- add prefix to keyword and/or default -#}
+  {#- add prefix to keyword -#}
   {%- set keyword = prefix ~ keyword -%}
 {{ render_option(keyword, default) }}
 {%- endmacro -%}
