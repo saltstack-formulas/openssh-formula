@@ -50,7 +50,7 @@
 # What ports, IPs and protocols we listen for
 {{ option('Port', 22) }}
 # Use these options to restrict which interfaces/protocols sshd will bind to
-{{ option('ListenAddress', ['::', '0.0.0.0']) -}}
+{{ option('ListenAddress', ['::', '0.0.0.0']) }}
 {{ option_default_uncommented('Protocol', 2) }}
 
 # HostKeys for protocol version 2
