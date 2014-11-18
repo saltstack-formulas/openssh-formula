@@ -140,7 +140,7 @@
 {%- for keyword in sshd_config.keys() %}
   {#- Matches have to be at the bottem and should be handled differently -#}
   {%- if not keyword in processed_options and keyword != 'matches' -%}
-{#- send a blank default as it doesn't matter -#} 
+{#- send a blank default as it doesn't matter #}
 {{ render_option(keyword, '') }}
   {%- endif -%}
 {%- endfor %}
