@@ -51,6 +51,9 @@ openssh:
         present: False
         enc: ssh-rsa
         comment: obsolete key - removed
+
+  generate_dsa_keys: False
+  provide_dsa_keys: False
   dsa:
     private_key: |
       -----BEGIN DSA PRIVATE KEY-----
@@ -58,6 +61,9 @@ openssh:
       -----END DSA PRIVATE KEY-----
     public_key: |
       ssh-dss NOT_DEFINED
+
+  generate_ecdsa_keys: False
+  provide_ecdsa_keys: False
   ecdsa:
     private_key: |
       -----BEGIN EC PRIVATE KEY-----
@@ -65,12 +71,9 @@ openssh:
       -----END EC PRIVATE KEY-----
     public_key: |
       ecdsa-sha2-nistp256 NOT_DEFINED
-  provide_dsa_keys: False
-  provide_ecdsa_keys: False
-  provide_rsa_keys: False
-  generate_dsa_keys: False
-  generate_ecdsa_keys: False
+
   generate_rsa_keys: False
+  provide_rsa_keys: False
   rsa:
     private_key: |
       -----BEGIN RSA PRIVATE KEY-----
