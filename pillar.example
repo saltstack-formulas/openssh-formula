@@ -78,3 +78,13 @@ openssh:
       -----END RSA PRIVATE KEY-----
     public_key: |
       ssh-rsa NOT_DEFINED
+
+  generate_ed25519_keys: False
+  provide_ed25519_keys: False
+  ed25519:
+    private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      NOT_DEFINED
+      -----END OPENSSH PRIVATE KEY-----
+    public_key: |
+      ssh-ed25519 NOT_DEFINED
