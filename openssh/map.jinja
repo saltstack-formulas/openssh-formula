@@ -32,5 +32,14 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
-    }
+    },
+    'Arch': {
+        'server': 'openssh',
+        'client': 'openssh',
+        'service': 'sshd.socket',
+        'sshd_config': '/etc/ssh/sshd_config',
+        'sshd_config_src': 'salt://openssh/files/sshd_config',
+        'banner': '/etc/ssh/banner',
+        'banner_src': 'salt://openssh/files/banner',
+    }, 
 }, merge=salt['pillar.get']('openssh:lookup')) %}
