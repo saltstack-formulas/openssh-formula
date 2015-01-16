@@ -54,7 +54,7 @@
 {{ option_default_uncommented('Protocol', 2) }}
 
 # HostKeys for protocol version 2
-{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key']) -}}
+{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
 
 #Privilege Separation is turned on for security
 {{ option_default_uncommented('UsePrivilegeSeparation', 'yes') }}
@@ -92,6 +92,7 @@
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
 {{ option_default_uncommented('ChallengeResponseAuthentication', 'no') }}
+{{ option('AuthenticationMethods', 'publickey,keyboard-interactive') }}
 
 # Change to no to disable tunnelled clear text passwords
 {{ option('PasswordAuthentication', 'yes') }}
