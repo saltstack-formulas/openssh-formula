@@ -32,6 +32,8 @@ sshd_config:
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: 'yes'
   UseDNS: 'yes'
+  AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
+  AllowGroups: 'wheel staff'
   matches:
     sftp_chroot:
       type:

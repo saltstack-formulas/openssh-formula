@@ -137,6 +137,25 @@
 # DNS resolve and map remote IP addresses
 {{ option('UseDNS', 'yes') }}
 
+# Restricting Users and Hosts
+# example:
+#  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke 
+#  AllowGroups wheel staff
+#
+# Keep in mind that using AllowUsers or AllowGroups means that anyone
+# not Matching one of the supplied patterns will be denied access by default.
+# Also, in order for sshd to allow access based on full or partial hostnames it
+# needs to to a DNS lookup
+#
+# DenyUsers
+{{ option('DenyUsers', '') }}
+# AllowUsers
+{{ option('AllowUsers', '') }}
+# DenyGroups
+{{ option('DenyGroups', '') }}
+# AllowGroups
+{{ option('AllowGroups', '') }}
+
 {# Handling unknown in salt template options #}
 {%- for keyword in sshd_config.keys() %}
   {#- Matches have to be at the bottem and should be handled differently -#}
