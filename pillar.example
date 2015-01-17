@@ -33,7 +33,10 @@ sshd_config:
   UsePAM: 'yes'
   UseDNS: 'yes'
   AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
-  AllowGroups: 'wheel staff'
+  DenyUsers: 'yoda chewbaca@112.10.21.1'
+  AllowGroups: 'wheel staff imperial'
+  DenyGroups: 'rebel'
+  Deny
   matches:
     sftp_chroot:
       type:
