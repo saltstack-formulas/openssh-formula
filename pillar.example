@@ -49,12 +49,18 @@ sshd_config:
 
 openssh:
   auth:
-    joe:
-      - name: JOE_VALID_SSH_PUBLIC_KEY
+    joe-valid-ssh-key-desktop:
+      - user: joe
         present: True
         enc: ssh-rsa
-        comment: main key
-      - name: JOE_NON_VALID_SSH_PUBLIC_KEY
+        comment: main key - desktop
+    joe-valid-ssh-key-notebook:
+      - user: joe
+        present: True
+        enc: ssh-rsa
+        comment: main key - notebook
+    joe-non-valid-ssh-key:
+      - user: joe
         present: False
         enc: ssh-rsa
         comment: obsolete key - removed
