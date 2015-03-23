@@ -24,6 +24,15 @@
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
     },
+    'Gentoo': {
+        'server': 'net-misc/openssh',
+        'client': 'net-misc/openssh',
+        'service': 'sshd',
+        'sshd_config': '/etc/ssh/sshd_config',
+        'sshd_config_src': 'salt://openssh/files/sshd_config',
+        'banner': '/etc/ssh/banner',
+        'banner_src': 'salt://openssh/files/banner',
+    },
     'RedHat': {
         'server': 'openssh-server',
         'client': 'openssh',
