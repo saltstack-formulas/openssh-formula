@@ -7,6 +7,8 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'dnsutils',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     },
     'Debian': {
         'server': 'openssh-server',
@@ -16,6 +18,8 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'dnsutils',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     },
     'FreeBSD': {
         'service': 'sshd',
@@ -23,6 +27,8 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'bind-tools',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     },
     'Gentoo': {
         'server': 'net-misc/openssh',
@@ -32,6 +38,8 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'net-dns/bind-tools',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     },
     'RedHat': {
         'server': 'openssh-server',
@@ -41,6 +49,8 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'bind-utils',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     },
     'Suse': {
         'server': 'openssh',
@@ -50,5 +60,7 @@
         'sshd_config_src': 'salt://openssh/files/sshd_config',
         'banner': '/etc/ssh/banner',
         'banner_src': 'salt://openssh/files/banner',
+        'dig_pkg': 'bind-utils',
+        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
     }, 
 }, merge=salt['pillar.get']('openssh:lookup')) %}

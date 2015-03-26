@@ -104,3 +104,27 @@ openssh:
       -----END OPENSSH PRIVATE KEY-----
     public_key: |
       ssh-ed25519 NOT_DEFINED
+
+  known_hosts:
+    # The next 2 settings restrict the set of minions that will be added in
+    # the generated ssh_known_hosts files (the default is to match all minions)
+    target: '*'
+    expr_form: 'glob'
+    # Name of mining functions used to gather public keys and hostnames
+    # (the default values are shown here)
+    mine_keys_function: public_ssh_host_keys
+    mine_hostname_function: public_ssh_hostname
+    # List of DNS entries also pointing to our managed machines and that we want
+    # to inject in our generated ssh_known_hosts file
+    aliases:
+      - cname-to-minion.example.org
+      - alias.example.org
+
+# Required for openssh.known_hosts
+mine_functions:
+  public_ssh_host_keys:
+    mine_function: cmd.run
+    cmd: cat /etc/ssh/ssh_host_*_key.pub
+  public_ssh_hostname:
+    mine_function: grains.get
+    key: id
