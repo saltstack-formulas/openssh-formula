@@ -5,41 +5,68 @@ sshd_config:
     - /etc/ssh/ssh_host_rsa_key
     - /etc/ssh/ssh_host_dsa_key
     - /etc/ssh/ssh_host_ecdsa_key
-  UsePrivilegeSeparation: yes
+    - /etc/ssh/ssh_host_ed25519_key
+  UsePrivilegeSeparation: 'yes'
   KeyRegenerationInterval: 3600
   ServerKeyBits: 768
   SyslogFacility: AUTH
   LogLevel: INFO
   LoginGraceTime: 120
-  PermitRootLogin: yes
-  StrictModes: yes
-  RSAAuthentication: yes
-  PubkeyAuthentication: yes
-  IgnoreRhosts: yes
-  RhostsRSAAuthentication: no
-  HostbasedAuthentication: no
-  PermitEmptyPasswords: no
-  ChallengeResponseAuthentication: no
-  X11Forwarding: yes
+  PermitRootLogin: 'yes'
+  PasswordAuthentication: 'no'
+  StrictModes: 'yes'
+  RSAAuthentication: 'yes'
+  PubkeyAuthentication: 'yes'
+  IgnoreRhosts: 'yes'
+  RhostsRSAAuthentication: 'no'
+  HostbasedAuthentication: 'no'
+  PermitEmptyPasswords: 'no'
+  ChallengeResponseAuthentication: 'no'
+  AuthenticationMethods 'publickey,keyboard-interactive'
+  X11Forwarding: 'yes'
   X11DisplayOffset: 10
-  PrintMotd: no
-  PrintLastLog: yes
-  TCPKeepAlive: yes
+  PrintMotd: 'no'
+  PrintLastLog: 'yes'
+  TCPKeepAlive: 'yes'
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
-  UsePAM: yes
+  UsePAM: 'yes'
+  UseDNS: 'yes'
+  AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
+  DenyUsers: 'yoda chewbaca@112.10.21.1'
+  AllowGroups: 'wheel staff imperial'
+  DenyGroups: 'rebel'
+  Deny
+  matches:
+    sftp_chroot:
+      type:
+        Group: sftpusers
+      options:
+        ChrootDirectory: /sftp-chroot/%u
+        X11Forwarding: no
+        AllowTcpForwarding: no
+        ForceCommand: internal-sftp
 
 openssh:
   auth:
-    joe:
-      - name: JOE_VALID_SSH_PUBLIC_KEY
+    joe-valid-ssh-key-desktop:
+      - user: joe
         present: True
         enc: ssh-rsa
-        comment: main key
-      - name: JOE_NON_VALID_SSH_PUBLIC_KEY
+        comment: main key - desktop
+    joe-valid-ssh-key-notebook:
+      - user: joe
+        present: True
+        enc: ssh-rsa
+        comment: main key - notebook
+    joe-non-valid-ssh-key:
+      - user: joe
         present: False
         enc: ssh-rsa
         comment: obsolete key - removed
+
+  generate_dsa_keys: False
+  provide_dsa_keys: False
   dsa:
     private_key: |
       -----BEGIN DSA PRIVATE KEY-----
@@ -47,7 +74,18 @@ openssh:
       -----END DSA PRIVATE KEY-----
     public_key: |
       ssh-dss NOT_DEFINED
-  provide_dsa_keys: False
+
+  generate_ecdsa_keys: False
+  provide_ecdsa_keys: False
+  ecdsa:
+    private_key: |
+      -----BEGIN EC PRIVATE KEY-----
+      NOT_DEFINED
+      -----END EC PRIVATE KEY-----
+    public_key: |
+      ecdsa-sha2-nistp256 NOT_DEFINED
+
+  generate_rsa_keys: False
   provide_rsa_keys: False
   rsa:
     private_key: |
@@ -56,3 +94,37 @@ openssh:
       -----END RSA PRIVATE KEY-----
     public_key: |
       ssh-rsa NOT_DEFINED
+
+  generate_ed25519_keys: False
+  provide_ed25519_keys: False
+  ed25519:
+    private_key: |
+      -----BEGIN OPENSSH PRIVATE KEY-----
+      NOT_DEFINED
+      -----END OPENSSH PRIVATE KEY-----
+    public_key: |
+      ssh-ed25519 NOT_DEFINED
+
+  known_hosts:
+    # The next 2 settings restrict the set of minions that will be added in
+    # the generated ssh_known_hosts files (the default is to match all minions)
+    target: '*'
+    expr_form: 'glob'
+    # Name of mining functions used to gather public keys and hostnames
+    # (the default values are shown here)
+    mine_keys_function: public_ssh_host_keys
+    mine_hostname_function: public_ssh_hostname
+    # List of DNS entries also pointing to our managed machines and that we want
+    # to inject in our generated ssh_known_hosts file
+    aliases:
+      - cname-to-minion.example.org
+      - alias.example.org
+
+# Required for openssh.known_hosts
+mine_functions:
+  public_ssh_host_keys:
+    mine_function: cmd.run
+    cmd: cat /etc/ssh/ssh_host_*_key.pub
+  public_ssh_hostname:
+    mine_function: grains.get
+    key: id

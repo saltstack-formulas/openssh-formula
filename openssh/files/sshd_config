@@ -1,97 +1,127 @@
-{% set sshd_config = pillar.get('sshd_config', {}) %}
+{%- set sshd_config = pillar.get('sshd_config', {}) -%}
+{#- present in sshd_config and known in actual file options -#}
+{%- set processed_options = [] -%}
+
+{#- generic renderer used for sshd matches, known options, -#}
+{#- and unknown options -#}
+{%- macro render_option(keyword, default, config_dict=sshd_config) -%}
+  {%- set value = config_dict.get(keyword, default) -%}
+  {%- if value is sameas true -%}
+{{ keyword }} yes
+  {%- elif value is sameas false -%}
+{{ keyword }} no
+  {%- elif value is string or value is number -%}
+{{ keyword }} {{ value }}
+  {%- else -%}
+{%- for single_value in value -%}
+{{ keyword }} {{ single_value }}
+{% endfor -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+{#- macros for render option according to present -#}
+{%- macro option_impl(keyword, default, present) -%}
+  {%- if present -%}
+    {%- do processed_options.append(keyword) -%}
+    {%- set prefix='' -%}
+  {%- else -%}
+    {%- set prefix='#' -%}
+  {%- endif -%}
+  {#- add prefix to keyword -#}
+  {%- set keyword = prefix ~ keyword -%}
+{{ render_option(keyword, default) }}
+{%- endmacro -%}
+
+{#- macros for render option commented by default -#}
+{%- macro option(keyword, default, present) -%}
+{{ option_impl(keyword, default, keyword in sshd_config) }}
+{%- endmacro -%}
+
+{#- macros for render option uncommented by default -#}
+{%- macro option_default_uncommented(keyword, default, present) -%}
+{{ option_impl(keyword, default, True) }}
+{%- endmacro -%}
 
 # This file is managed by salt. Manual changes risk being overwritten.
 # The contents of the original sshd_config are kept on the bottom for
 # quick reference.
 # See the sshd_config(5) manpage for details
 
-{% for keyword, argument in sshd_config.iteritems() %}
-    {%- if argument is sameas true %}
-{{ keyword }} yes
-    {%- elif argument is sameas false %}
-{{ keyword }} no
-    {%- elif argument is string or argument is number %}
-{{ keyword }} {{ argument }}
-    {%- else %}
-        {%- for item in argument %}
-{{ keyword }} {{ item }}
-        {%- endfor %}
-    {%- endif %}
-{%- endfor %}
-
 # What ports, IPs and protocols we listen for
-#Port 22
+{{ option('Port', 22) }}
 # Use these options to restrict which interfaces/protocols sshd will bind to
-#ListenAddress ::
-#ListenAddress 0.0.0.0
-#Protocol 2
+{{ option('ListenAddress', ['::', '0.0.0.0']) }}
+{{ option_default_uncommented('Protocol', 2) }}
+
 # HostKeys for protocol version 2
-#HostKey /etc/ssh/ssh_host_rsa_key
-#HostKey /etc/ssh/ssh_host_dsa_key
-#HostKey /etc/ssh/ssh_host_ecdsa_key
+{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
+
 #Privilege Separation is turned on for security
-#UsePrivilegeSeparation yes
+{{ option_default_uncommented('UsePrivilegeSeparation', 'yes') }}
 
 # Lifetime and size of ephemeral version 1 server key
-#KeyRegenerationInterval 3600
-#ServerKeyBits 768
+{{ option_default_uncommented('KeyRegenerationInterval', 3600) }}
+{{ option_default_uncommented('ServerKeyBits', 768) }}
 
 # Logging
-#SyslogFacility AUTH
-#LogLevel INFO
+{{ option_default_uncommented('SyslogFacility', 'AUTH') }}
+{{ option_default_uncommented('LogLevel', 'INFO') }}
 
 # Authentication:
-#LoginGraceTime 120
-#PermitRootLogin yes
-#StrictModes yes
+{{ option_default_uncommented('LoginGraceTime', 120) }}
+{{ option_default_uncommented('PermitRootLogin', 'no') }}
+{{ option_default_uncommented('StrictModes', 'yes') }}
 
-#RSAAuthentication yes
-#PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+{{ option('DSAAuthentication', 'yes') }}
+{{ option_default_uncommented('RSAAuthentication', 'yes') }}
+{{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
+{{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-#IgnoreRhosts yes
+{{ option_default_uncommented('IgnoreRhosts', 'yes') }}
 # For this to work you will also need host keys in /etc/ssh_known_hosts
-#RhostsRSAAuthentication no
+{{ option_default_uncommented('RhostsRSAAuthentication', 'no') }}
 # similar for protocol version 2
-#HostbasedAuthentication no
+{{ option_default_uncommented('HostbasedAuthentication', 'no') }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-#IgnoreUserKnownHosts yes
+{{ option('IgnoreUserKnownHosts', 'yes') }}
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
-#PermitEmptyPasswords no
+{{ option_default_uncommented('PermitEmptyPasswords', 'no') }}
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-#ChallengeResponseAuthentication no
+{{ option_default_uncommented('ChallengeResponseAuthentication', 'no') }}
+{{ option('AuthenticationMethods', 'publickey,keyboard-interactive') }}
 
 # Change to no to disable tunnelled clear text passwords
-#PasswordAuthentication yes
+{{ option('PasswordAuthentication', 'yes') }}
 
 # Kerberos options
-#KerberosAuthentication no
-#KerberosGetAFSToken no
-#KerberosOrLocalPasswd yes
-#KerberosTicketCleanup yes
+{{ option('KerberosAuthentication', 'no') }}
+{{ option('KerberosGetAFSToken', 'no') }}
+{{ option('KerberosOrLocalPasswd', 'yes') }}
+{{ option('KerberosTicketCleanup', 'yes') }}
 
 # GSSAPI options
-#GSSAPIAuthentication no
-#GSSAPICleanupCredentials yes
+{{ option('GSSAPIAuthentication', 'no') }}
+{{ option('GSSAPICleanupCredentials', 'yes') }}
 
-#X11Forwarding yes
-#X11DisplayOffset 10
-#PrintMotd no
-#PrintLastLog yes
-#TCPKeepAlive yes
-#UseLogin no
+{{ option_default_uncommented('X11Forwarding', 'yes') }}
+{{ option('AllowTcpForwarding', 'yes') }}
+{{ option_default_uncommented('X11DisplayOffset', '10') }}
+{{ option_default_uncommented('PrintMotd', 'no') }}
+{{ option_default_uncommented('PrintLastLog', 'yes') }}
+{{ option_default_uncommented('TCPKeepAlive', 'yes') }}
+{{ option('UseLogin', 'no') }}
 
-#MaxStartups 10:30:60
-#Banner /etc/issue.net
+{{ option('MaxStartups', '10:30:60') }}
+{{ option('Banner', '/etc/issue.net') }}
 
 # Allow client to pass locale environment variables
-#AcceptEnv LANG LC_*
+{{ option_default_uncommented('AcceptEnv', 'LANG LC_*') }}
 
-#Subsystem sftp /usr/lib/openssh/sftp-server
+{{ option_default_uncommented('Subsystem', 'sftp /usr/lib/openssh/sftp-server') }}
 
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -102,42 +132,45 @@
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-UsePAM yes
+{{ option_default_uncommented('UsePAM', 'yes') }}
 
-#AllowAgentForwarding yes
-#AllowTcpForwarding yes
-#GatewayPorts no
-X11Forwarding yes
-#X11DisplayOffset 10
-#X11UseLocalhost yes
-PrintMotd no # pam does that
-#PrintLastLog yes
-#TCPKeepAlive yes
-#UseLogin no
-{% if grains['os_family'] == 'RedHat' %}
-UsePrivilegeSeparation yes              # RedHat/Centos 6.4 and earlier currently ship 5.3 (sandbox introduced in OpenSSH 5.9)
-{% else %}
-UsePrivilegeSeparation sandbox		# Default for new installations.
-{% endif %}
-#PermitUserEnvironment no
-#Compression delayed
-#ClientAliveInterval 0
-#ClientAliveCountMax 3
-#UseDNS yes
-#PidFile /run/sshd.pid
-#MaxStartups 10:30:100
-#PermitTunnel no
-#ChrootDirectory none
-#VersionAddendum none
+# DNS resolve and map remote IP addresses
+{{ option('UseDNS', 'yes') }}
 
-# no default banner path
-Banner /etc/ssh/banner
+# Restricting Users and Hosts
+# example:
+#  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke 
+#  AllowGroups wheel staff
+#
+# Keep in mind that using AllowUsers or AllowGroups means that anyone
+# not Matching one of the supplied patterns will be denied access by default.
+# Also, in order for sshd to allow access based on full or partial hostnames it
+# needs to to a DNS lookup
+#
+# DenyUsers
+{{ option('DenyUsers', '') }}
+# AllowUsers
+{{ option('AllowUsers', '') }}
+# DenyGroups
+{{ option('DenyGroups', '') }}
+# AllowGroups
+{{ option('AllowGroups', '') }}
 
-# override default of no subsystems
-Subsystem	sftp	/usr/lib/ssh/sftp-server
+{# Handling unknown in salt template options #}
+{%- for keyword in sshd_config.keys() %}
+  {#- Matches have to be at the bottem and should be handled differently -#}
+  {%- if not keyword in processed_options and keyword != 'matches' -%}
+{#- send a blank default as it doesn't matter #}
+{{ render_option(keyword, '') }}
+  {%- endif -%}
+{%- endfor %}
 
-# Example of overriding settings on a per-user basis
-#Match User anoncvs
-#	X11Forwarding no
-#	AllowTcpForwarding no
-#	ForceCommand cvs server
+{# Handle matches last as they need to go at the bottom #}
+{%- if 'matches' in sshd_config %}
+  {%- for match in sshd_config['matches'].values() %}
+Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }}
+    {%- for keyword in match['options'].keys() %}
+    {{ render_option(keyword, '', config_dict=match['options']) }}
+    {%- endfor %}
+  {%- endfor %}
+{%- endif %}
