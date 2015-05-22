@@ -1,8 +1,8 @@
 {%- macro print_name(identifier, key) -%}
 {%- if 'name' in key  %}
-{{ key['name'] }}:
+{{ key['name'] }}
 {%- else %}
-{{ identifier }}:
+{{ identifier }}
 {%- endif %}
 {%- endmacro -%}
 
