@@ -22,7 +22,7 @@ sshd_config:
   HostbasedAuthentication: 'no'
   PermitEmptyPasswords: 'no'
   ChallengeResponseAuthentication: 'no'
-  AuthenticationMethods 'publickey,keyboard-interactive'
+  AuthenticationMethods: 'publickey,keyboard-interactive'
   X11Forwarding: 'yes'
   X11DisplayOffset: 10
   PrintMotd: 'no'
@@ -36,7 +36,6 @@ sshd_config:
   DenyUsers: 'yoda chewbaca@112.10.21.1'
   AllowGroups: 'wheel staff imperial'
   DenyGroups: 'rebel'
-  Deny
   matches:
     sftp_chroot:
       type:
