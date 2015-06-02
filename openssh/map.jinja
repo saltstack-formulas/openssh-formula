@@ -1,66 +1,56 @@
-{% set openssh = salt['grains.filter_by']({
+{## Start with  defaults from defaults.yaml ##}
+{% import_yaml "openssh/defaults.yaml" as default_settings %}
+
+{## 
+Setup variable using grains['os_family'] based logic, only add key:values here
+that differ from whats in defaults.yaml
+##}
+{% set os_family_map = salt['grains.filter_by']({
     'Arch': {
-        'server': 'openssh',
-        'client': 'openssh',
-        'service': 'sshd.socket',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'dnsutils',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
+      'server': 'openssh',
+      'client': 'openssh',
+      'service': 'sshd.socket',
     },
     'Debian': {
-        'server': 'openssh-server',
-        'client': 'openssh-client',
-        'service': 'ssh',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'dnsutils',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
+      'server': 'openssh-server',
+      'client': 'openssh-client',
+      'service': 'ssh',
     },
     'FreeBSD': {
-        'service': 'sshd',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'bind-tools',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
+      'service': 'sshd',
+      'dig_pkg': 'bind-tools',
     },
     'Gentoo': {
-        'server': 'net-misc/openssh',
-        'client': 'net-misc/openssh',
-        'service': 'sshd',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'net-dns/bind-tools',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
+      'server': 'net-misc/openssh',
+      'client': 'net-misc/openssh',
+      'service': 'sshd',
+      'dig_pkg': 'net-dns/bind-tools',
     },
     'RedHat': {
-        'server': 'openssh-server',
-        'client': 'openssh',
-        'service': 'sshd',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'bind-utils',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
+      'server': 'openssh-server',
+      'client': 'openssh',
+      'service': 'sshd',
+      'dig_pkg': 'bind-utils',
     },
     'Suse': {
-        'server': 'openssh',
-        'client': 'openssh',
-        'service': 'sshd',
-        'sshd_config': '/etc/ssh/sshd_config',
-        'sshd_config_src': 'salt://openssh/files/sshd_config',
-        'banner': '/etc/ssh/banner',
-        'banner_src': 'salt://openssh/files/banner',
-        'dig_pkg': 'bind-utils',
-        'ssh_known_hosts': '/etc/ssh/ssh_known_hosts',
-    }, 
-}, merge=salt['pillar.get']('openssh:lookup')) %}
+      'server': 'openssh',
+      'client': 'openssh',
+      'service': 'sshd',
+      'dig_pkg': 'bind-utils',
+    },
+  }
+  , grain="os_family"
+  , merge=salt['pillar.get']('openssh:lookup'))
+%}
+
+{## Merge the flavor_map to the default settings ##}
+{% do default_settings.openssh.update(os_family_map) %}
+
+{## Merge in openssh:lookup pillar ##}
+{% set openssh = salt['pillar.get'](
+    'openssh',
+    default=default_settings.openssh,
+    merge=True
+  )
+%}
+
