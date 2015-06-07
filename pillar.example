@@ -65,6 +65,7 @@ openssh:
         comment: obsolete key - removed
 
   generate_dsa_keys: False
+  absent_dsa_keys: False
   provide_dsa_keys: False
   dsa:
     private_key: |
@@ -75,6 +76,7 @@ openssh:
       ssh-dss NOT_DEFINED
 
   generate_ecdsa_keys: False
+  absent_ecdsa_keys: False
   provide_ecdsa_keys: False
   ecdsa:
     private_key: |
@@ -85,6 +87,7 @@ openssh:
       ecdsa-sha2-nistp256 NOT_DEFINED
 
   generate_rsa_keys: False
+  absent_rsa_keys: False
   provide_rsa_keys: False
   rsa:
     private_key: |
@@ -95,6 +98,7 @@ openssh:
       ssh-rsa NOT_DEFINED
 
   generate_ed25519_keys: False
+  absent_ed25519_keys: False
   provide_ed25519_keys: False
   ed25519:
     private_key: |
