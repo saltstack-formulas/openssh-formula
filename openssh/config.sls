@@ -21,6 +21,15 @@ ssh_generate_host_{{ keyType }}_key:
     - creates: /etc/ssh/ssh_host_{{ keyType }}_key
     - user: root
 
+{% elif salt['pillar.get']('openssh:absent_' ~ keyType ~ '_keys', False) %}
+ssh_host_{{ keyType }}_key:
+  file.absent:
+    - name: /etc/ssh/ssh_host_{{ keyType }}_key
+
+ssh_host_{{ keyType }}_key.pub:
+  file.absent:
+    - name: /etc/ssh/ssh_host_{{ keyType }}_key.pub
+
 {% elif salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
   file.managed:
