@@ -1,3 +1,7 @@
+{#
+# vi:syntax=jinja
+#}
+
 {%- set target = salt['pillar.get']('openssh:known_hosts:target', '*') -%}
 {%- set expr_form = salt['pillar.get']('openssh:known_hosts:expr_form', 'glob') -%}
 {%- set keys_function = salt['pillar.get']('openssh:known_hosts:mine_keys_function', 'public_ssh_host_keys') -%}
