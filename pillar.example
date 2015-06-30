@@ -45,6 +45,10 @@ sshd_config:
         X11Forwarding: no
         AllowTcpForwarding: no
         ForceCommand: internal-sftp
+  # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
+  KexAlgorithms: 'diffie-hellman-group14-sha1,diffie-hellman-group1-sha1'
+  Ciphers: 'aes128-ctr,aes256-ctr'
+  MACs: 'hmac-sha1'
 
 openssh:
   auth:

@@ -139,7 +139,7 @@
 
 # Restricting Users and Hosts
 # example:
-#  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke 
+#  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke
 #  AllowGroups wheel staff
 #
 # Keep in mind that using AllowUsers or AllowGroups means that anyone
@@ -155,6 +155,15 @@
 {{ option('DenyGroups', '') }}
 # AllowGroups
 {{ option('AllowGroups', '') }}
+
+# Specifies the available KEX (Key Exchange) algorithms.
+{{ option('KexAlgorithms', 'ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1') }}
+
+# Specifies the ciphers allowed for protocol version 2.
+{{ option('Ciphers', 'aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc,arcfour,rijndael-cbc@lysator.liu.se') }}
+
+# Specifies the available MAC (message authentication code) algorithms.
+{{ option('MACs', 'hmac-md5,hmac-sha1,umac-64@openssh.com,hmac-sha2-256,hmac-sha2-256-96,hmac-sha2-512,hmac-sha2-512-96,hmac-ripemd160,hmac-ripemd160@openssh.com,hmac-sha1-96,hmac-md5-96') }}
 
 {# Handling unknown in salt template options #}
 {%- for keyword in sshd_config.keys() %}
