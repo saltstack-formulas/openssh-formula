@@ -80,3 +80,8 @@ list in the ``openssh:known_hosts:aliases`` pillar key. Whenever the IPv4 or
 IPv6 behind one of those DNS entries matches an IPv4 or IPv6 behind the
 official hostname of a minion, the alternate DNS name will be associated to the
 minion's public SSH host key.
+
+``openssh.moduli``
+-----------------------
+
+Manages the system wide ``/etc/ssh/moduli`` file.

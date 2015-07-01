@@ -5,3 +5,4 @@ openssh:
   banner_src: salt://openssh/files/banner
   ssh_known_hosts: /etc/ssh/ssh_known_hosts
   dig_pkg: dnsutils
+  ssh_moduli: /etc/ssh/moduli
