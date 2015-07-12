@@ -91,6 +91,7 @@ openssh:
       ecdsa-sha2-nistp256 NOT_DEFINED
 
   generate_rsa_keys: False
+  generate_rsa_size: 4096
   absent_rsa_keys: False
   provide_rsa_keys: False
   rsa:
