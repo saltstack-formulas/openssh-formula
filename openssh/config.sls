@@ -17,7 +17,12 @@ sshd_config:
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
 ssh_generate_host_{{ keyType }}_key:
   cmd.run:
+    {%- if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', False) %}
+    {%- set keySize = salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', 4096) %}
+    - name: ssh-keygen -t {{ keyType }} -b {{ keySize }} -N '' -f /etc/ssh/ssh_host_{{ keyType }}_key
+    {%- else %}
     - name: ssh-keygen -t {{ keyType }} -N '' -f /etc/ssh/ssh_host_{{ keyType }}_key
+    {%- endif %}
     - creates: /etc/ssh/ssh_host_{{ keyType }}_key
     - user: root
 
