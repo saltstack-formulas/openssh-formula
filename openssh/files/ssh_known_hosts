@@ -1,0 +1,38 @@
+{#
+# vi:syntax=jinja
+#}
+
+{%- set target = salt['pillar.get']('openssh:known_hosts:target', '*') -%}
+{%- set expr_form = salt['pillar.get']('openssh:known_hosts:expr_form', 'glob') -%}
+{%- set keys_function = salt['pillar.get']('openssh:known_hosts:mine_keys_function', 'public_ssh_host_keys') -%}
+{%- set hostname_function = salt['pillar.get']('openssh:known_hosts:mine_hostname_function', 'public_ssh_hostname') -%}
+{#- Lookup IP of all aliases so that when we have a matching IP, we inject the alias name
+    in the SSH known_hosts entry -#}
+{%- set aliases = salt['pillar.get']('openssh:known_hosts:aliases', []) -%}
+{%- set aliases_ips = {} -%}
+{%- for alias in aliases -%}
+  {%- for ip in salt['dig.A'](alias) + salt['dig.AAAA'](alias) -%}
+    {%- do aliases_ips.setdefault(ip, []).append(alias) -%}
+  {%- endfor -%}
+{%- endfor -%}
+{#- Loop over targetted minions -#}
+{%- set host_keys = salt['mine.get'](target, keys_function, expr_form=expr_form) -%}
+{%- set host_names = salt['mine.get'](target, hostname_function, expr_form=expr_form) -%}
+{%- for host, keys in host_keys|dictsort -%}
+  {%- set ip4 = salt['dig.A'](host) -%}
+  {%- set ip6 = salt['dig.AAAA'](host) -%}
+  {%- set names = [host_names.get(host, host)] -%}
+  {%- for ip in ip4 + ip6 -%}
+    {%- do names.append(ip) -%}
+    {%- for alias in aliases_ips.get(ip, []) -%}
+      {%- if alias not in names -%}
+        {%- do names.append(alias) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- for line in keys.split('\n') -%}
+  {%- if line -%}
+{{ ','.join(names) }} {{ line }}
+{% endif -%}
+  {%- endfor -%}
+{%- endfor -%}
