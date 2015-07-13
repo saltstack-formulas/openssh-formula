@@ -3,7 +3,7 @@ include:
 {%- from "openssh/map.jinja" import openssh with context -%}
 {%- set openssh_pillar = pillar.get('openssh', {}) -%}
 {%- set auth = openssh_pillar.get('auth', {}) -%}
-{%- for user,keys in auth.items() -%}
+{%- for user,keys in auth.iteritems() -%}
   {%- for key in keys -%}
     {% if 'present' in key and key['present'] %}
 {{ key['name'] }}:
