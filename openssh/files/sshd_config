@@ -61,7 +61,7 @@
 
 # Lifetime and size of ephemeral version 1 server key
 {{ option_default_uncommented('KeyRegenerationInterval', 3600) }}
-{{ option_default_uncommented('ServerKeyBits', 768) }}
+{{ option_default_uncommented('ServerKeyBits', 1024) }}
 
 # Logging
 {{ option_default_uncommented('SyslogFacility', 'AUTH') }}
