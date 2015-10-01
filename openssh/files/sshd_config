@@ -52,7 +52,6 @@
 # Use these options to restrict which interfaces/protocols sshd will bind to
 {{ option('ListenAddress', ['::', '0.0.0.0']) }}
 {{ option_default_uncommented('Protocol', 2) }}
-
 # HostKeys for protocol version 2
 {{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
 
@@ -69,7 +68,7 @@
 
 # Authentication:
 {{ option_default_uncommented('LoginGraceTime', 120) }}
-{{ option_default_uncommented('PermitRootLogin', 'no') }}
+{{ option_default_uncommented('PermitRootLogin', 'yes') }}
 {{ option_default_uncommented('StrictModes', 'yes') }}
 
 {{ option('DSAAuthentication', 'yes') }}
@@ -167,7 +166,7 @@
 
 {# Handling unknown in salt template options #}
 {%- for keyword in sshd_config.keys() %}
-  {#- Matches have to be at the bottem and should be handled differently -#}
+  {#- Matches have to be at the bottom and should be handled differently -#}
   {%- if not keyword in processed_options and keyword != 'matches' -%}
 {#- send a blank default as it doesn't matter #}
 {{ render_option(keyword, '') }}

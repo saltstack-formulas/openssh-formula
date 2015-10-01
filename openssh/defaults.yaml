@@ -1,6 +1,8 @@
 openssh:
   sshd_config: /etc/ssh/sshd_config
   sshd_config_src: salt://openssh/files/sshd_config
+  ssh_config: /etc/ssh/ssh_config
+  ssh_config_src: salt://openssh/files/ssh_config
   banner: /etc/ssh/banner
   banner_src: salt://openssh/files/banner
   ssh_known_hosts: /etc/ssh/ssh_known_hosts
