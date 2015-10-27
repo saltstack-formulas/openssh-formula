@@ -41,6 +41,9 @@ Installs the ssh daemon configuration file included in this formula
 by values from pillar. ``pillar.example`` results in the generation
 of the default ``sshd_config`` file on Debian Wheezy.
 
+It is highly recommended ``PermitRootLogin`` is added to pillar
+so root login will be disabled.
+
 ``openssh.known_hosts``
 -----------------------
 
