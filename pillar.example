@@ -50,6 +50,29 @@ sshd_config:
   Ciphers: 'aes128-ctr,aes256-ctr'
   MACs: 'hmac-sha1'
 
+ssh_config:
+  StrictHostKeyChecking: no
+  ForwardAgent: no
+  ForwardX11: no
+  RhostsRSAAuthentication: no
+  RSAAuthentication: yes
+  PasswordAuthentication: yes
+  HostbasedAuthentication: no
+  GSSAPIAuthentication: no
+  GSSAPIDelegateCredentials: no
+  BatchMode: 'yes'
+  CheckHostIP: 'yes'
+  AddressFamily: 'any'
+  ConnectTimeout: 0
+  IdentityFile: '~/.ssh/id_rsa'
+  Port: 22
+  Protocol: 2
+  Cipher: '3des'
+  Tunnel: 'no'
+  TunnelDevice: 'any:any'
+  PermitLocalCommand: 'no'
+  VisualHostKey: 'no'
+
 openssh:
   auth:
     joe-valid-ssh-key-desktop:
