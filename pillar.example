@@ -23,6 +23,7 @@ sshd_config:
   PermitEmptyPasswords: 'no'
   ChallengeResponseAuthentication: 'no'
   AuthenticationMethods: 'publickey,keyboard-interactive'
+  AuthorizedKeysFile: '%h/.ssh/authorized_keys'
   X11Forwarding: 'yes'
   X11DisplayOffset: 10
   PrintMotd: 'no'
@@ -80,16 +81,19 @@ openssh:
         present: True
         enc: ssh-rsa
         comment: main key - desktop
+        source: salt://ssh_keys/joe.desktop.pub
     joe-valid-ssh-key-notebook:
       - user: joe
         present: True
         enc: ssh-rsa
         comment: main key - notebook
+        source: salt://ssh_keys/joe.netbook.pub
     joe-non-valid-ssh-key:
       - user: joe
         present: False
         enc: ssh-rsa
         comment: obsolete key - removed
+        source: salt://ssh_keys/joe.no-valid.pub
 
   generate_dsa_keys: False
   absent_dsa_keys: False

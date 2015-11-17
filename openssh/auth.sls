@@ -38,12 +38,14 @@ include:
 {{ print_name(identifier, key) }}:
   ssh_auth.present:
     {{ print_ssh_auth(identifier, key) }}
+    - config: {{ pillar['sshd_config']['AuthorizedKeysFile'] }}
     - require:
       - service: {{ openssh.service }}
     {%- else %}
 {{ print_name(identifier, key) }}:
   ssh_auth.absent:
     {{ print_ssh_auth(identifier, key) }}
+    - config: {{ pillar['sshd_config']['AuthorizedKeysFile'] }}
     {%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
