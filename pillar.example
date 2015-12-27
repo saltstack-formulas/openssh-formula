@@ -81,6 +81,8 @@ ssh_config:
   VisualHostKey: 'no'
 
 openssh:
+  # Controls if SSHD should be enabled/started
+  sshd_enable: true
   auth:
     joe-valid-ssh-key-desktop:
       - user: joe
