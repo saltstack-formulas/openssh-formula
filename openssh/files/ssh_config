@@ -68,6 +68,15 @@
 {{ option('   PermitLocalCommand', 'no') }}
 {{ option('   VisualHostKey', 'no') }}
 
+{%- if 'Hosts' in ssh_config %}
+{%- do processed_options.append('Hosts') %}
+{%  for host, conf in ssh_config['Hosts'].items() %}
+Host {{ host }}
+  {%- for key, val in conf.items() %}
+    {{ key }} {{ val }}{%- endfor %}
+{%- endfor %}
+{%- endif %}
+
 {# Handling unknown in salt template options #}
 {%- for keyword in ssh_config.keys() %}
   {#- Matches have to be at the bottom and should be handled differently -#}
