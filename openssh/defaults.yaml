@@ -8,3 +8,27 @@ openssh:
   ssh_known_hosts: /etc/ssh/ssh_known_hosts
   dig_pkg: dnsutils
   ssh_moduli: /etc/ssh/moduli
+ssh_config:
+  Hosts:
+    '*':
+      ForwardAgent: no
+      ForwardX11: no
+      RhostsRSAAuthentication: no
+      RSAAuthentication: yes
+      PasswordAuthentication: yes
+      HostbasedAuthentication: no
+      GSSAPIAuthentication: no
+      GSSAPIDelegateCredentials: no
+      BatchMode: no
+      CheckHostIP: yes
+      AddressFamily: any
+      ConnectTimeout: 0
+      StrictHostKeyChecking: ask
+      IdentityFile: "~/.ssh/id_rsa"
+      Port: 22
+      Protocol: 2
+      Cipher: 3des
+      Tunnel: no
+      TunnelDevice: "any:any"
+      PermitLocalCommand: no
+      VisualHostKey: no
