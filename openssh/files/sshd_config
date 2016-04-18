@@ -1,4 +1,4 @@
-{%- set sshd_config = pillar.get('sshd_config', {}) -%}
+{% from "openssh/map.jinja" import sshd_config with context %}
 {#- present in sshd_config and known in actual file options -#}
 {%- set processed_options = [] -%}
 

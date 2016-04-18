@@ -19,7 +19,7 @@ that differ from whats in defaults.yaml
     'FreeBSD': {
       'service': 'sshd',
       'dig_pkg': 'bind-tools',
-      'Subsystem': 'sftp /usr/libexec/sftp-server',
+      'root_group': 'wheel',
     },
     'Gentoo': {
       'server': 'net-misc/openssh',
@@ -38,7 +38,6 @@ that differ from whats in defaults.yaml
       'client': 'openssh',
       'service': 'sshd',
       'dig_pkg': 'bind-utils',
-      'Subsystem': 'sftp /usr/lib/ssh/sftp-server',
     },
   }
   , grain="os_family"
@@ -56,3 +55,27 @@ that differ from whats in defaults.yaml
   )
 %}
 
+{% set os_family_map = salt['grains.filter_by']({
+    'FreeBSD': {
+        'Subsystem': 'sftp /usr/libexec/sftp-server',
+    },
+    'Suse': {
+        'Subsystem': 'sftp /usr/lib/ssh/sftp-server',
+    },
+    'default': {}
+  }
+  , grain="os_family"
+  , merge=salt['pillar.get']('sshd_config:lookup'))
+%}
+
+
+{## Merge the flavor_map to the default settings ##}
+{% do default_settings.sshd_config.update(os_family_map) %}
+
+{## Merge in sshd_config:lookup pillar ##}
+{% set sshd_config = salt['pillar.get'](
+    'sshd_config',
+    default=default_settings.sshd_config,
+    merge=True
+  )
+%}
