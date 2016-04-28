@@ -75,6 +75,9 @@
 {{ option_default_uncommented('RSAAuthentication', 'yes') }}
 {{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
 {{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
+{%- if salt['pillar.get']('openssh:trusted_ca_keys:public_key') %}
+TrustedUserCAKeys /etc/ssh/trusted_ca_keys
+{%- endif %}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 {{ option_default_uncommented('IgnoreRhosts', 'yes') }}

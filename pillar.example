@@ -91,6 +91,12 @@ openssh:
         enc: ssh-rsa
         comment: obsolete key - removed
 
+  absent_trusted_ca_keys: False
+  provide_trusted_ca_keys: False
+  trusted_ca_keys:
+    public_key: |
+      ssh-rsa NOT_DEFINED
+
   generate_dsa_keys: False
   absent_dsa_keys: False
   provide_dsa_keys: False

@@ -21,6 +21,20 @@ ssh_config:
     - user: root
     - mode: 644
 
+{% if salt['pillar.get']('openssh:absent_trusted_ca_keys', False) %}
+trusted_ca_keys:
+  file.absent:
+    - name: /etc/ssh/trusted_ca_keys
+
+{% elif salt['pillar.get']('openssh:provide_trusted_ca_keys', False) %}
+trusted_ca_keys:
+  file.managed:
+    - name: /etc/ssh/trusted_ca_keys
+    - contents_pillar: 'openssh:trusted_ca_keys:public_key'
+    - user: root
+    - mode: 0600
+{% endif %}
+
 {% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
 ssh_generate_host_{{ keyType }}_key:
