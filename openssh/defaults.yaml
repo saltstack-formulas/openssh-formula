@@ -13,24 +13,7 @@ sshd_config: {}
 ssh_config:
   Hosts:
     '*':
-      ForwardAgent: no
-      ForwardX11: no
-      RhostsRSAAuthentication: no
-      RSAAuthentication: yes
-      PasswordAuthentication: yes
-      HostbasedAuthentication: no
-      GSSAPIAuthentication: no
+      SendEnv: LANG LC_*
+      HashKnownHosts: yes
+      GSSAPIAuthentication: yes
       GSSAPIDelegateCredentials: no
-      BatchMode: no
-      CheckHostIP: yes
-      AddressFamily: any
-      ConnectTimeout: 0
-      StrictHostKeyChecking: ask
-      IdentityFile: "~/.ssh/id_rsa"
-      Port: 22
-      Protocol: 2
-      Cipher: 3des
-      Tunnel: no
-      TunnelDevice: "any:any"
-      PermitLocalCommand: no
-      VisualHostKey: no
