@@ -21,6 +21,10 @@ that differ from whats in defaults.yaml
       'dig_pkg': 'bind-tools',
       'root_group': 'wheel',
     },
+    'OpenBSD': {
+      'service': 'sshd',
+      'root_group': 'wheel',
+    },
     'Gentoo': {
       'server': 'net-misc/openssh',
       'client': 'net-misc/openssh',
@@ -57,6 +61,9 @@ that differ from whats in defaults.yaml
 
 {% set os_family_map = salt['grains.filter_by']({
     'FreeBSD': {
+        'Subsystem': 'sftp /usr/libexec/sftp-server',
+    },
+    'OpenBSD': {
         'Subsystem': 'sftp /usr/libexec/sftp-server',
     },
     'Suse': {
