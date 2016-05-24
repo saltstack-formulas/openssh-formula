@@ -11,6 +11,8 @@ sshd_config:
   ServerKeyBits: 768
   SyslogFacility: AUTH
   LogLevel: INFO
+  ClientAliveInterval: 0
+  ClientAliveCountMax: 3
   LoginGraceTime: 120
   PermitRootLogin: 'yes'
   PasswordAuthentication: 'no'
