@@ -66,6 +66,10 @@
 {{ option_default_uncommented('SyslogFacility', 'AUTH') }}
 {{ option_default_uncommented('LogLevel', 'INFO') }}
 
+# Session idle time out
+{{ option_default_uncommented('ClientAliveInterval', 0) }}
+{{ option_default_uncommented('ClientAliveCountMax', 3) }}
+
 # Authentication:
 {{ option_default_uncommented('LoginGraceTime', 120) }}
 {{ option_default_uncommented('PermitRootLogin', 'yes') }}
