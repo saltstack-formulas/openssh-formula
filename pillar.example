@@ -17,6 +17,8 @@ sshd_config:
   PermitRootLogin: 'yes'
   PasswordAuthentication: 'no'
   StrictModes: 'yes'
+  MaxAuthTries: 6
+  MaxSessions: 10
   RSAAuthentication: 'yes'
   PubkeyAuthentication: 'yes'
   IgnoreRhosts: 'yes'

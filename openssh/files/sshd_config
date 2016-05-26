@@ -74,6 +74,8 @@
 {{ option_default_uncommented('LoginGraceTime', 120) }}
 {{ option_default_uncommented('PermitRootLogin', 'yes') }}
 {{ option_default_uncommented('StrictModes', 'yes') }}
+{{ option_default_uncommented('MaxAuthTries', '6') }}
+{{ option_default_uncommented('MaxSessions', '10') }}
 
 {{ option('DSAAuthentication', 'yes') }}
 {{ option_default_uncommented('RSAAuthentication', 'yes') }}
