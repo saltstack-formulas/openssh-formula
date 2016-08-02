@@ -1,4 +1,4 @@
-{%- set sshd_config = pillar.get('sshd_config', {}) -%}
+{% from "openssh/map.jinja" import sshd_config with context %}
 {#- present in sshd_config and known in actual file options -#}
 {%- set processed_options = [] -%}
 
@@ -66,10 +66,16 @@
 {{ option_default_uncommented('SyslogFacility', 'AUTH') }}
 {{ option_default_uncommented('LogLevel', 'INFO') }}
 
+# Session idle time out
+{{ option_default_uncommented('ClientAliveInterval', 0) }}
+{{ option_default_uncommented('ClientAliveCountMax', 3) }}
+
 # Authentication:
 {{ option_default_uncommented('LoginGraceTime', 120) }}
 {{ option_default_uncommented('PermitRootLogin', 'yes') }}
 {{ option_default_uncommented('StrictModes', 'yes') }}
+{{ option_default_uncommented('MaxAuthTries', '6') }}
+{{ option_default_uncommented('MaxSessions', '10') }}
 
 {{ option('DSAAuthentication', 'yes') }}
 {{ option_default_uncommented('RSAAuthentication', 'yes') }}
