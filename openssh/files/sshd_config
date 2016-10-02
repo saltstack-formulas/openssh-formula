@@ -81,6 +81,8 @@
 {{ option_default_uncommented('RSAAuthentication', 'yes') }}
 {{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
 {{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
+{{ option('AuthorizedKeysCommand', 'none') }}
+{{ option('AuthorizedKeysCommandUser', 'nobody') }}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 {{ option_default_uncommented('IgnoreRhosts', 'yes') }}
