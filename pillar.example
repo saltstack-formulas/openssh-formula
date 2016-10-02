@@ -21,6 +21,8 @@ sshd_config:
   MaxSessions: 10
   RSAAuthentication: 'yes'
   PubkeyAuthentication: 'yes'
+  AuthorizedKeysCommand: '/usr/bin/sss_ssh_authorizedkeys'
+  AuthorizedKeysCommandUser: 'nobody'
   IgnoreRhosts: 'yes'
   RhostsRSAAuthentication: 'no'
   HostbasedAuthentication: 'no'
