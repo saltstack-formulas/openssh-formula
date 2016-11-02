@@ -40,7 +40,7 @@ include:
     {{ print_ssh_auth(identifier, key) }}
     {%- if 'sshd_config' in pillar and 'AuthorizedKeysFile' in pillar['sshd_config'] %}
     - config: '{{ pillar['sshd_config']['AuthorizedKeysFile'] }}'
-    {% endif -%}
+    {% endif %}
     - require:
       - service: {{ openssh.service }}
     {%- else %}
