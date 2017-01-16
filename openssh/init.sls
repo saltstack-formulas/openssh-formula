@@ -5,10 +5,16 @@ openssh:
   pkg.installed:
     - name: {{ openssh.server }}
   {% endif %}
+  {% if openssh.sshd_enable is sameas true %}
   service.running:
-    - enable: True
+    - enable: {{ openssh.sshd_enable }}
     - name: {{ openssh.service }}
   {% if openssh.server is defined %}
     - require:
       - pkg: {{ openssh.server }}
+  {% endif %}
+  {% else %}
+  service.dead:
+    - enable: False
+    - name: {{ openssh.service }}
   {% endif %}
