@@ -1,4 +1,9 @@
 sshd_config:
+  # This keyword is totally optional
+  ConfigBanner: |
+    # Alternative banner for the config file
+    # (Indented) hash signs lose their special meaning here
+    # and the lines will be written as-is.
   Port: 22
   Protocol: 2
   HostKey:
@@ -53,9 +58,14 @@ sshd_config:
         AllowTcpForwarding: no
         ForceCommand: internal-sftp
   # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
-  KexAlgorithms: 'diffie-hellman-group14-sha1,diffie-hellman-group1-sha1'
+  # For these three keywords, the options may be specified as a list...
+  KexAlgorithms:
+    - diffie-hellman-group14-sha1
+    - diffie-hellman-group1-sha1
+  # ... or a single string.
   Ciphers: 'aes128-ctr,aes256-ctr'
   MACs: 'hmac-sha1'
+  # Similar situation for ssh_config
 
 ssh_config:
   StrictHostKeyChecking: no
