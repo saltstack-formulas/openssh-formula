@@ -13,7 +13,7 @@ sshd_config:
     - /etc/ssh/ssh_host_ed25519_key
   UsePrivilegeSeparation: 'yes'
   KeyRegenerationInterval: 3600
-  ServerKeyBits: 768
+  ServerKeyBits: 1024
   SyslogFacility: AUTH
   LogLevel: INFO
   ClientAliveInterval: 0
@@ -35,9 +35,9 @@ sshd_config:
   ChallengeResponseAuthentication: 'no'
   AuthenticationMethods: 'publickey,keyboard-interactive'
   AuthorizedKeysFile: '%h/.ssh/authorized_keys'
-  X11Forwarding: 'yes'
+  X11Forwarding: 'no'
   X11DisplayOffset: 10
-  PrintMotd: 'no'
+  PrintMotd: 'yes'
   PrintLastLog: 'yes'
   TCPKeepAlive: 'yes'
   AcceptEnv: "LANG LC_*"
@@ -58,14 +58,26 @@ sshd_config:
         AllowTcpForwarding: no
         ForceCommand: internal-sftp
   # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
-  # For these three keywords, the options may be specified as a list...
+  # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
+  # The configuration given in the example below is based on:
+  # https://stribika.github.io/2015/01/04/secure-secure-shell.html
+  #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
+  #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+  #MACs: 'hmac-sha1'
   KexAlgorithms:
-    - diffie-hellman-group14-sha1
-    - diffie-hellman-group1-sha1
-  # ... or a single string.
-  Ciphers: 'aes128-ctr,aes256-ctr'
-  MACs: 'hmac-sha1'
-  # Similar situation for ssh_config
+    - 'curve25519-sha256@libssh.org'
+    - 'diffie-hellman-group-exchange-sha256'
+    - 'diffie-hellman-group-exchange-sha1'
+    - 'diffie-hellman-group14-sha1'
+  Ciphers:
+    - 'chacha20-poly1305@openssh.com'
+    - 'aes256-gcm@openssh.com'
+    - 'aes128-gcm@openssh.com'
+    - 'aes256-ctr'
+    - 'aes192-ctr'
+    - 'aes128-ctr'
+  MACs:
+    - 'hmac-sha1'
 
 ssh_config:
   StrictHostKeyChecking: no
