@@ -61,14 +61,12 @@ sshd_config:
   # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
   # The configuration given in the example below is based on:
   # https://stribika.github.io/2015/01/04/secure-secure-shell.html
-  #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
+  #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256'
   #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-  #MACs: 'hmac-sha1'
+  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com'
   KexAlgorithms:
     - 'curve25519-sha256@libssh.org'
     - 'diffie-hellman-group-exchange-sha256'
-    - 'diffie-hellman-group-exchange-sha1'
-    - 'diffie-hellman-group14-sha1'
   Ciphers:
     - 'chacha20-poly1305@openssh.com'
     - 'aes256-gcm@openssh.com'
@@ -77,7 +75,14 @@ sshd_config:
     - 'aes192-ctr'
     - 'aes128-ctr'
   MACs:
-    - 'hmac-sha1'
+    - 'hmac-sha2-512-etm@openssh.com'
+    - 'hmac-sha2-256-etm@openssh.com'
+    - 'hmac-ripemd160-etm@openssh.com'
+    - 'umac-128-etm@openssh.com'
+    - 'hmac-sha2-512'
+    - 'hmac-sha2-256'
+    - 'hmac-ripemd160'
+    - 'umac-128@openssh.com'
 
 ssh_config:
   StrictHostKeyChecking: no
@@ -101,6 +106,35 @@ ssh_config:
   TunnelDevice: 'any:any'
   PermitLocalCommand: 'no'
   VisualHostKey: 'no'
+  # Check `man ssh_config` for supported KexAlgorithms, Ciphers and MACs first.
+  # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
+  # The configuration given in the example below is based on:
+  # https://stribika.github.io/2015/01/04/secure-secure-shell.html
+  #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
+  #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com'
+  KexAlgorithms:
+    - 'curve25519-sha256@libssh.org'
+    - 'diffie-hellman-group-exchange-sha256'
+    - 'diffie-hellman-group-exchange-sha1'
+    - 'diffie-hellman-group14-sha1'
+  Ciphers:
+    - 'chacha20-poly1305@openssh.com'
+    - 'aes256-gcm@openssh.com'
+    - 'aes128-gcm@openssh.com'
+    - 'aes256-ctr'
+    - 'aes192-ctr'
+    - 'aes128-ctr'
+  MACs:
+    - 'hmac-sha2-512-etm@openssh.com'
+    - 'hmac-sha2-256-etm@openssh.com'
+    - 'hmac-ripemd160-etm@openssh.com'
+    - 'umac-128-etm@openssh.com'
+    - 'hmac-sha2-512'
+    - 'hmac-sha2-256'
+    - 'hmac-ripemd160'
+    - 'umac-128@openssh.com'
+
 
 openssh:
   # Controls if SSHD should be enabled/started
