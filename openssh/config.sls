@@ -8,8 +8,9 @@ sshd_config:
     - name: {{ openssh.sshd_config }}
     - source: {{ openssh.sshd_config_src }}
     - template: jinja
-    - user: root
-    - mode: 644
+    - user: {{ openssh.sshd_config_user }}
+    - group: {{ openssh.sshd_config_group }}
+    - mode: {{ openssh.sshd_config_mode }}
     - watch_in:
       - service: openssh
 
@@ -18,8 +19,9 @@ ssh_config:
     - name: {{ openssh.ssh_config }}
     - source: {{ openssh.ssh_config_src }}
     - template: jinja
-    - user: root
-    - mode: 644
+    - user: {{ openssh.ssh_config_user }}
+    - group: {{ openssh.ssh_config_group }}
+    - mode: {{ openssh.ssh_config_mode }}
 
 {% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
