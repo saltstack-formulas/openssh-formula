@@ -22,7 +22,7 @@
   {%- set ip4 = salt['dig.A'](host) -%}
   {%- set ip6 = salt['dig.AAAA'](host) -%}
   {%- set names = [host_names.get(host, host)] -%}
-  {%- for ip in ip4 + ip6 -%}
+  {%- for ip in (ip4 + ip6)|sort -%}
     {%- do names.append(ip) -%}
     {%- for alias in aliases_ips.get(ip, []) -%}
       {%- if alias not in names -%}
