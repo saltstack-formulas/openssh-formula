@@ -23,7 +23,6 @@ provisioner:
     openssl.sls:
       openssh:
         sshd_config_mode: '600'
-        ssh_config_mode: '600'
 
 suites:
   - name: default
