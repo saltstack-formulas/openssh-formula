@@ -9,8 +9,9 @@ sshd_config:
     - name: {{ openssh.sshd_config }}
     - source: {{ openssh.sshd_config_src }}
     - template: jinja
-    - user: root
-    - mode: 644
+    - user: {{ openssh.sshd_config_user }}
+    - group: {{ openssh.sshd_config_group }}
+    - mode: {{ openssh.sshd_config_mode }}
     - watch_in:
       - service: openssh
 {% endif %}
@@ -21,8 +22,9 @@ ssh_config:
     - name: {{ openssh.ssh_config }}
     - source: {{ openssh.ssh_config_src }}
     - template: jinja
-    - user: root
-    - mode: 644
+    - user: {{ openssh.ssh_config_user }}
+    - group: {{ openssh.ssh_config_group }}
+    - mode: {{ openssh.ssh_config_mode }}
 {% endif %}
 
 {% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}

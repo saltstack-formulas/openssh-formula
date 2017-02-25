@@ -21,7 +21,8 @@ provisioner:
         '*':
           - openssl
     openssl.sls:
-      sshd_enable: true
+      openssh:
+        sshd_config_mode: '600'
 
 suites:
   - name: default
