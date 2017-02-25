@@ -3,6 +3,7 @@
 include:
   - openssh
 
+{% if salt['pillar.get']('sshd_config', False) %}
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
@@ -12,7 +13,9 @@ sshd_config:
     - mode: 644
     - watch_in:
       - service: openssh
+{% endif %}
 
+{% if salt['pillar.get']('ssh_config', False) %}
 ssh_config:
   file.managed:
     - name: {{ openssh.ssh_config }}
@@ -20,6 +23,7 @@ ssh_config:
     - template: jinja
     - user: root
     - mode: 644
+{% endif %}
 
 {% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
