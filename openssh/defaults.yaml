@@ -16,11 +16,6 @@ openssh:
   dig_pkg: dnsutils
   ssh_moduli: /etc/ssh/moduli
   root_group: root
+
 sshd_config: {}
-ssh_config:
-  Hosts:
-    '*':
-      SendEnv: LANG LC_*
-      HashKnownHosts: yes
-      GSSAPIAuthentication: yes
-      GSSAPIDelegateCredentials: no
+ssh_config: {}

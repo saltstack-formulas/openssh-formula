@@ -3,6 +3,7 @@
 include:
   - openssh
 
+{% if salt['pillar.get']('sshd_config', False) %}
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
@@ -13,7 +14,9 @@ sshd_config:
     - mode: {{ openssh.sshd_config_mode }}
     - watch_in:
       - service: openssh
+{% endif %}
 
+{% if salt['pillar.get']('ssh_config', False) %}
 ssh_config:
   file.managed:
     - name: {{ openssh.ssh_config }}
@@ -22,6 +25,7 @@ ssh_config:
     - user: {{ openssh.ssh_config_user }}
     - group: {{ openssh.ssh_config_group }}
     - mode: {{ openssh.ssh_config_mode }}
+{% endif %}
 
 {% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
 {% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
