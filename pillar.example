@@ -166,6 +166,19 @@ openssh:
         enc: ssh-rsa
         comment: obsolete key - removed
         source: salt://ssh_keys/joe.no-valid.pub
+  # Maps users to source files
+  # Designed to play nice with ext_pillar
+  # salt.states.ssh_auth: If source is set, comment and enc will be ignored
+  auth_map:
+    personal_keys:  # store name
+      source: salt://ssh_keys
+      users:
+        joe:
+          joe.desktop: {}
+          joe.netbook:
+            options: []  # see salt.states.ssh_auth.present
+          joe.no-valid:
+            present: False
 
   generate_dsa_keys: False
   absent_dsa_keys: False

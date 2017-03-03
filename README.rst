@@ -23,6 +23,13 @@ Installs the ``openssh`` server package and service.
 
 Manages SSH certificates for users.
 
+``openssh.auth_map``
+-----------
+
+Same functionality as openssh.auth but with a simplified Pillar syntax.
+Plays nicely with `Pillarstack
+<https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html>`_.
+
 ``openssh.banner``
 ------------------
 
