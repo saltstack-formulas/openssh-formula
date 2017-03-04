@@ -20,11 +20,13 @@ that differ from whats in defaults.yaml
     'FreeBSD': {
       'service': 'sshd',
       'dig_pkg': 'bind-tools',
-      'root_group': 'wheel',
+      'sshd_config_group': 'wheel',
+      'ssh_config_group': 'wheel',
     },
     'OpenBSD': {
       'service': 'sshd',
-      'root_group': 'wheel',
+      'sshd_config_group': 'wheel',
+      'ssh_config_group': 'wheel',
     },
     'Gentoo': {
       'server': 'net-misc/openssh',
