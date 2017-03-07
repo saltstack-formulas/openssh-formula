@@ -13,7 +13,7 @@ sshd_config:
     - group: {{ openssh.sshd_config_group }}
     - mode: {{ openssh.sshd_config_mode }}
     - watch_in:
-      - service: openssh
+      - service: {{ openssh.service }}
 {% endif %}
 
 {% if salt['pillar.get']('ssh_config', False) %}
@@ -27,45 +27,60 @@ ssh_config:
     - mode: {{ openssh.ssh_config_mode }}
 {% endif %}
 
-{% for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
-{% if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
+{%- for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
+{%-   set keyFile = "/etc/ssh/ssh_host_" ~ keyType ~ "_key" %}
+{%-   set keySize = salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', False) %}
+{%-   if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
+{%-     if keySize and salt['pillar.get']('openssh:enforce_' ~ keyType ~ '_size', False) %}
+ssh_remove_short_{{ keyType }}_key:
+  cmd.run:
+    - name: "rm -f {{ keyFile }} {{ keyFile }}.pub"
+    - onlyif: "test -f {{ keyFile }}.pub && test `ssh-keygen -l -f {{ keyFile }}.pub 2>/dev/null | awk '{print $1}'` -lt {{ keySize }}"
+    - require_in:
+        - cmd: ssh_generate_host_{{ keyType }}_key
+{%-     endif %}
 ssh_generate_host_{{ keyType }}_key:
   cmd.run:
-    {%- if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', False) %}
-    {%- set keySize = salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', 4096) %}
-    - name: ssh-keygen -t {{ keyType }} -b {{ keySize }} -N '' -f /etc/ssh/ssh_host_{{ keyType }}_key
+    {%- if keySize %}
+    - name: ssh-keygen -t {{ keyType }} -b {{ keySize }} -N '' -f {{ keyFile }}
     {%- else %}
-    - name: ssh-keygen -t {{ keyType }} -N '' -f /etc/ssh/ssh_host_{{ keyType }}_key
+    - name: ssh-keygen -t {{ keyType }} -N '' -f {{ keyFile }}
     {%- endif %}
     - creates: /etc/ssh/ssh_host_{{ keyType }}_key
     - user: root
+    - watch_in:
+      - service: {{ openssh.service }}
 
-{% elif salt['pillar.get']('openssh:absent_' ~ keyType ~ '_keys', False) %}
+{%-   elif salt['pillar.get']('openssh:absent_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
   file.absent:
-    - name: /etc/ssh/ssh_host_{{ keyType }}_key
+    - name: {{ keyFile }}
+    - watch_in:
+      - service: {{ openssh.service }}
 
 ssh_host_{{ keyType }}_key.pub:
   file.absent:
-    - name: /etc/ssh/ssh_host_{{ keyType }}_key.pub
+    - name: {{ keyFile }}.pub
+    - watch_in:
+      - service: {{ openssh.service }}
 
-{% elif salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
+{%-   elif salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
   file.managed:
-    - name: /etc/ssh/ssh_host_{{ keyType }}_key
+    - name: {{ keyFile }}
     - contents_pillar: 'openssh:{{ keyType }}:private_key'
     - user: root
     - mode: 600
-    - require_in:
+    - watch_in:
       - service: {{ openssh.service }}
 
 ssh_host_{{ keyType }}_key.pub:
   file.managed:
-    - name: /etc/ssh/ssh_host_{{ keyType }}_key.pub
+    - name: {{ keyFile }}.pub
     - contents_pillar: 'openssh:{{ keyType }}:public_key'
     - user: root
     - mode: 600
-    - require_in:
+    - watch_in:
       - service: {{ openssh.service }}
-{% endif %}
-{% endfor %}
+{%-   endif %}
+{%- endfor %}

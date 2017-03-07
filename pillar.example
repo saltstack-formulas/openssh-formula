@@ -204,6 +204,8 @@ openssh:
 
   generate_rsa_keys: False
   generate_rsa_size: 4096
+  # Will remove the old key if it is to short and generate a new one.
+  enforce_rsa_size: False
   absent_rsa_keys: False
   provide_rsa_keys: False
   rsa:
