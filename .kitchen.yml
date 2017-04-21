@@ -19,8 +19,8 @@ provisioner:
     top.sls:
       base:
         '*':
-          - openssl
-    openssl.sls:
+          - openssh
+    openssh.sls:
       openssh:
         sshd_config_mode: '600'
 
