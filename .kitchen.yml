@@ -21,6 +21,10 @@ provisioner:
         '*':
           - openssh
     openssh.sls:
+      sshd_config:
+        Port: 22
+      ssh_config:
+        Port: 22
       openssh:
         sshd_config_mode: '600'
 
