@@ -8,6 +8,12 @@ platforms:
   - name: ubuntu-14.04
   - name: ubuntu-16.04
   - name: debian-8.5
+  - name: freebsd-10.3
+    driver:
+      cache_directory: false
+  - name: freebsd-11.0
+    driver:
+      cache_directory: false
 
 provisioner:
   name: salt_solo
@@ -19,8 +25,12 @@ provisioner:
     top.sls:
       base:
         '*':
-          - openssl
-    openssl.sls:
+          - openssh
+    openssh.sls:
+      sshd_config:
+        Port: 22
+      ssh_config:
+        Port: 22
       openssh:
         sshd_config_mode: '600'
 
