@@ -1,5 +1,6 @@
 openssh:
   sshd_enable: True
+  sshd_binary: /usr/sbin/sshd
   sshd_config: /etc/ssh/sshd_config
   sshd_config_src: salt://openssh/files/sshd_config
   sshd_config_user: root
