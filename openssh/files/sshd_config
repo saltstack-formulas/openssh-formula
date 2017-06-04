@@ -146,7 +146,7 @@
 {{ option_default_uncommented('X11DisplayOffset', '10') }}
 {{ option_default_uncommented('PrintMotd', 'no') }}
 {# Bug in FreeBSD 10.3 (?) See https://lists.freebsd.org/pipermail/freebsd-stable/2016-April/084501.html #}
-{% if not (salt['grains.get']('os') == 'FreeBSD' and salt['grains.get']('osrelease') == '10.3') -%}
+{% if not (salt['grains.get']('os') == 'FreeBSD' and salt['grains.get']('osrelease')|float >= 10.3) -%}
 {{ option_default_uncommented('PrintLastLog', 'yes') }}
 {% endif -%}
 {{ option_default_uncommented('TCPKeepAlive', 'yes') }}
