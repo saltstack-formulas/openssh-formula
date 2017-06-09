@@ -61,6 +61,18 @@
 {%- endif -%}
 {%- endmacro -%}
 
+{#- macro for conditionally joining a string, list or dict(keys) to just a string -#}
+{%- macro join_to_string(src, keyword, sep=',') -%}
+{%- set srcval = src.get(keyword, '') -%}
+{%- if srcval is string -%}
+  {{ srcval }}
+{%- elif srcval is mapping  -%}
+  {{ srcval.keys()|sort|join(sep) }}
+{%- else -%}
+  {{ srcval|join(sep) }}
+{%- endif -%}
+{%- endmacro -%}
+
 {%- if sshd_config.get('ConfigBanner', False) -%}
 {{ sshd_config['ConfigBanner'] }}
 {%- else -%}
@@ -77,7 +89,7 @@
 # What ports, IPs and protocols we listen for
 {{ option('Port', 22) }}
 # Use these options to restrict which interfaces/protocols sshd will bind to
-{{ option('ListenAddress', ['::', '0.0.0.0']) }}
+{{ option('ListenAddress', ['::', '1.0.0.0']) }}
 {{ option_default_uncommented('Protocol', 2) }}
 # HostKeys for protocol version 2
 {{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
@@ -216,7 +228,12 @@
 {# Handle matches last as they need to go at the bottom #}
 {%- if 'matches' in sshd_config %}
   {%- for match in sshd_config['matches'].values() %}
-Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }}
+Match
+    {#- Set up the match criteria -#}
+    {%- for criteria in match['type'].keys()|sort() -%}
+     {{- ' ' }}{{criteria }} {{ join_to_string(match['type'], criteria) -}}
+    {%- endfor -%}
+    {#- Set up the applied options -#}
     {%- for keyword in match['options'].keys() %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
