@@ -227,12 +227,12 @@
 
 {# Handle matches last as they need to go at the bottom #}
 {%- if 'matches' in sshd_config %}
-  {%- for match in sshd_config['matches'].values() %}
+  {%- for name, match in sshd_config['matches']|dictsort %}
 Match
     {#- Set up the match criteria -#}
     {%- for criteria in match['type'].keys()|sort() -%}
      {{- ' ' }}{{criteria }} {{ join_to_string(match['type'], criteria) -}}
-    {%- endfor -%}
+    {%- endfor %} #{{ name }}
     {#- Set up the applied options -#}
     {%- for keyword in match['options'].keys() %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
