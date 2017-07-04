@@ -61,6 +61,18 @@
 {%- endif -%}
 {%- endmacro -%}
 
+{#- macro for conditionally joining a string, list or dict(keys) to just a string -#}
+{%- macro join_to_string(src, keyword, sep=',') -%}
+{%- set srcval = src.get(keyword, '') -%}
+{%- if srcval is string -%}
+  {{ srcval }}
+{%- elif srcval is mapping  -%}
+  {{ srcval.keys()|sort|join(sep) }}
+{%- else -%}
+  {{ srcval|join(sep) }}
+{%- endif -%}
+{%- endmacro -%}
+
 {%- if sshd_config.get('ConfigBanner', False) -%}
 {{ sshd_config['ConfigBanner'] }}
 {%- else -%}
@@ -224,7 +236,12 @@
 {# Handle matches last as they need to go at the bottom #}
 {%- if 'matches' in sshd_config %}
   {%- for name, match in sshd_config['matches']|dictsort(true) %}
-Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }} # {{ name }}
+Match
+    {#- Set up the match criteria -#}
+    {%- for criteria in match['type'].keys()|sort() -%}
+     {{- ' ' }}{{criteria }} {{ join_to_string(match['type'], criteria) -}}
+    {%- endfor %} #{{ name }}
+    {#- Set up the applied options -#}
     {%- for keyword in match['options'].keys() %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
