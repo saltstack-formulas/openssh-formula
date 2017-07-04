@@ -47,7 +47,7 @@ ssh_generate_host_{{ keyType }}_key:
     {%- else %}
     - name: ssh-keygen -t {{ keyType }} -N '' -f {{ keyFile }}
     {%- endif %}
-    - creates: /etc/ssh/ssh_host_{{ keyType }}_key
+    - creates: {{ keyFile }}
     - user: root
     - watch_in:
       - service: {{ openssh.service }}
