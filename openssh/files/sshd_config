@@ -242,7 +242,7 @@ Match
      {{- ' ' }}{{criteria }} {{ join_to_string(match['type'], criteria) -}}
     {%- endfor %} #{{ name }}
     {#- Set up the applied options -#}
-    {%- for keyword in match['options'].keys() %}
+    {%- for keyword in match['options'].keys()|sort() %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
   {%- endfor %}
