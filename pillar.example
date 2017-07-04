@@ -57,6 +57,38 @@ sshd_config:
         X11Forwarding: no
         AllowTcpForwarding: no
         ForceCommand: internal-sftp
+    # Supports complex compound matches in Match criteria. For example, be able
+    # to match against multiple Users for a given Match, or be able to match
+    # against address ranges. Or Groups. Or any combination thereof.
+    #
+    # Support for matching users can take one of several different appearances
+    # in pillar data:
+    match_1:
+      type:
+        User: one_user
+      options:
+        ChrootDirectory: /ex/%u
+    match_2:
+      type:
+        User:
+          - jim
+          - bob
+          - sally
+      options:
+        ChrootDirectory: /ex/%u
+    # Note the syntax of match_3. By using empty dicts for each user, we can
+    # leverage Salt's pillar mergine. If we use simple lists, we cannot do
+    # this; Salt can't merge simple lists, because it doesn't know what order
+    # they ought to be in.
+    match_3:
+      type:
+        User:
+          jim: ~
+          bob: ~
+          sally: ~
+      options:
+        ChrootDirectory: /ex/%u
+
   # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
   # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
   # The configuration given in the example below is based on:
