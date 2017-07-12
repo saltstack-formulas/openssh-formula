@@ -128,8 +128,14 @@
 {{ option_default_uncommented('RSAAuthentication', 'yes') }}
 {{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
 {{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
-{{ option('AuthorizedKeysCommand', 'none') }}
-{{ option('AuthorizedKeysCommandUser', 'nobody') }}
+{%- if server.authorized_keys_command is defined %}
+AuthorizedKeysCommand {{ server.authorized_keys_command.command }}
+{% if grains['os_family'] == 'RedHat' %}
+{% if grains['osmajorrelease'] != '6' %}
+AuthorizedKeysCommandUser {{ server.authorized_keys_command.get('user', 'nobody') }}
+{%- endif %}
+{%- endif %}
+{%- endif %}
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 {{ option_default_uncommented('IgnoreRhosts', 'yes') }}
