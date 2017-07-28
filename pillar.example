@@ -177,6 +177,10 @@ ssh_config:
 
 
 openssh:
+  # Instead of adding a custom banner file you can set it in pillar
+  banner_string: |
+    Welcome to {{ grains['id'] }}!
+
   # Controls if SSHD should be enabled/started
   sshd_enable: true
   auth:
