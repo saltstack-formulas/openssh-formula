@@ -85,3 +85,12 @@ ssh_host_{{ keyType }}_key.pub:
       - service: {{ openssh.service }}
 {%-   endif %}
 {%- endfor %}
+
+{%- if salt['pillar.get']('sshd_config:UsePrivilegeSeparation', '')|lower == 'yes' %}
+/var/run/sshd:
+  file.directory:
+    - user: root
+    - mode: 755
+    - watch_in:
+      - service: {{ openssh.service }}
+{% endif %}
