@@ -103,7 +103,7 @@
 {{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
 
 #Privilege Separation is turned on for security
-{{ option_default_uncommented('UsePrivilegeSeparation', 'yes') }}
+{{ option_default_uncommented('UsePrivilegeSeparation', 'sandbox') }}
 
 # Lifetime and size of ephemeral version 1 server key
 {{ option_default_uncommented('KeyRegenerationInterval', 3600) }}
