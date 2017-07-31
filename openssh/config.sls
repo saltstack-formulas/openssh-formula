@@ -42,15 +42,24 @@ ssh_remove_short_{{ keyType }}_key:
 {%-     endif %}
 ssh_generate_host_{{ keyType }}_key:
   cmd.run:
-    {%- if keySize %}
-    - name: ssh-keygen -t {{ keyType }} -b {{ keySize }} -N '' -f {{ keyFile }}
-    {%- else %}
-    - name: ssh-keygen -t {{ keyType }} -N '' -f {{ keyFile }}
-    {%- endif %}
-    - creates: {{ keyFile }}
+    {%- set keySizePart = "-b {}".format(keySize) if keySize else "" %}
+    - name: "rm {{ keyFile }}*; ssh-keygen -t {{ keyType }} {{ keySizePart }} -N '' -f {{ keyFile }}"
+    - unless: "test -s {{ keyFile }}"
     - user: root
+    - require_in:
+      - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
+
+ssh_host_{{ keyType }}_key:  # set permissions
+  file.managed:
+    - name: {{ keyFile }}
+    - replace: false
+    - mode: 0600
+    - require:
+      - cmd: ssh_generate_host_{{ keyType }}_key
+    - require_in:
+      - file: sshd_config
 
 {%-   elif salt['pillar.get']('openssh:absent_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
@@ -72,6 +81,8 @@ ssh_host_{{ keyType }}_key:
     - contents_pillar: 'openssh:{{ keyType }}:private_key'
     - user: root
     - mode: 600
+    - require_in:
+      - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
 
@@ -81,6 +92,8 @@ ssh_host_{{ keyType }}_key.pub:
     - contents_pillar: 'openssh:{{ keyType }}:public_key'
     - user: root
     - mode: 600
+    - require_in:
+      - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
 {%-   endif %}
@@ -91,6 +104,8 @@ ssh_host_{{ keyType }}_key.pub:
   file.directory:
     - user: root
     - mode: 755
+    - require_in:
+      - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
 {% endif %}
