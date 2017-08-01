@@ -84,9 +84,20 @@ that differ from whats in defaults.yaml
   , merge=salt['pillar.get']('sshd_config:lookup'))
 %}
 
+{% set os_finger_map = salt['grains.filter_by']({
+    'CentOS-6': {
+        'UsePrivilegeSeparation': 'yes',
+    },
+    'default': {}
+  }
+  , grain="osfinger"
+  , merge=salt['pillar.get']('sshd_config:lookup'))
+%}
+
 
 {## Merge the flavor_map to the default settings ##}
 {% do default_settings.sshd_config.update(os_family_map) %}
+{% do default_settings.sshd_config.update(os_finger_map) %}
 
 {## Merge in sshd_config:lookup pillar ##}
 {% set sshd_config = salt['pillar.get'](
