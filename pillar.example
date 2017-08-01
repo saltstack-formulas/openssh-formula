@@ -11,7 +11,7 @@ sshd_config:
     - /etc/ssh/ssh_host_dsa_key
     - /etc/ssh/ssh_host_ecdsa_key
     - /etc/ssh/ssh_host_ed25519_key
-  UsePrivilegeSeparation: 'yes'
+  UsePrivilegeSeparation: 'sandbox'
   KeyRegenerationInterval: 3600
   ServerKeyBits: 1024
   SyslogFacility: AUTH
