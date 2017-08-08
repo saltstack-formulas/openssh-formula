@@ -13,6 +13,18 @@
 {#-   If there are none, the host is used directly. #}
 {%-   set names = [host_names.get(host, host)] -%}
 
+{#-   Extract the hostname from the FQDN and add it to the names. #}
+{%-   if use_hostnames is iterable -%}
+{%-     for name in names | sort -%}
+{%-       if salt["match.{}".format(hostnames_expr_form)](hostnames_target, minion_id=name) -%}
+{%-         set hostname = name.split('.')|first -%}
+{%-         if hostname not in names -%}
+{%-           do names.append(hostname) -%}
+{%-         endif -%}
+{%-       endif -%}
+{%-     endfor -%}
+{%-   endif -%}
+
 {#-   Append IP addresses and aliases (if they are not already present) #}
 {%-   for ip in (ip4 + ip6)|sort -%}
 {%-     do names.append(ip) -%}
@@ -36,6 +48,10 @@
 {%- set expr_form = salt['pillar.get']('openssh:known_hosts:expr_form', 'glob') -%}
 {%- set keys_function = salt['pillar.get']('openssh:known_hosts:mine_keys_function', 'public_ssh_host_keys') -%}
 {%- set hostname_function = salt['pillar.get']('openssh:known_hosts:mine_hostname_function', 'public_ssh_hostname') -%}
+{%- set use_hostnames = salt['pillar.get']('openssh:known_hosts:hostnames', False) -%}
+{%- set hostnames_target_default = '*' if grains['domain'] == '' else "*.{}".format(grains['domain']) -%}
+{%- set hostnames_target = salt['pillar.get']('openssh:known_hosts:hostnames:target', hostnames_target_default) -%}
+{%- set hostnames_expr_form = salt['pillar.get']('openssh:known_hosts:hostnames:expr_form', 'glob') -%}
 
 {#- Lookup IP of all aliases so that when we have a matching IP, we inject the alias name
     in the SSH known_hosts entry -#}

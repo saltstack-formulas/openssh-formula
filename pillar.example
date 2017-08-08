@@ -277,6 +277,17 @@ openssh:
     aliases:
       - cname-to-minion.example.org
       - alias.example.org
+    # Includes short hostnames derived from the FQDN
+    # (host.example.test -> host)
+    # (Deactivated by default, because there can be collisions!)
+    hostnames: False
+    #hostnames:
+    # Restrict wich hosts you want to use via their hostname
+    # (i.e. ssh user@host instead of ssh user@host.example.com)
+    #  target: '*'  # Defaults to "*.{}".format(grains['domain']) with a fallback to '*'
+    #  expr_form: 'glob'
+    # To activate the defaults you can just set an empty dict.
+    #hostnames: {}
 
   # specify DH parameters (see /etc/ssh/moduli)
   moduli: |
