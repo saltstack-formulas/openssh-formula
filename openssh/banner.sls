@@ -7,8 +7,7 @@ sshd_banner:
   file.managed:
     - name: {{ openssh.banner }}
     {% if openssh.banner_string is defined %}
-    - contents: |
-        {{ openssh.banner_string }}
+    - contents: {{ openssh.banner_string | yaml }}
     {% else %}
     - source: {{ openssh.banner_src }}
     - template: jinja
