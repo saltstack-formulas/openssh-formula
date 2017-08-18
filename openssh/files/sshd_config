@@ -74,9 +74,10 @@
 {%- endmacro -%}
 
 {%- if sshd_config.get('ConfigBanner', False) -%}
-{{ sshd_config['ConfigBanner'] }}
+  {%- do processed_options.append('ConfigBanner') -%}
+  {{ sshd_config['ConfigBanner'] }}
 {%- else -%}
-# This file is managed by salt. Manual changes risk being overwritten.
+  # This file is managed by salt. Manual changes risk being overwritten.
 {%- endif %}
 {%- set global_src_url = salt ['pillar.get']('__formulas:print_template_url', None) %}
 {%- set local_src_url = salt ['pillar.get']('openssh-formula:print_template_url', None) %}
