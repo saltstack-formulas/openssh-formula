@@ -208,13 +208,14 @@
 # needs to to a DNS lookup
 #
 # DenyUsers
-{{ option('DenyUsers', '') }}
+{{ option_string_or_list('DenyUsers', '', True , sep=' ')}}
 # AllowUsers
-{{ option('AllowUsers', '') }}
+{{ option_string_or_list('AllowUsers', '', True , sep=' ')}}
 # DenyGroups
-{{ option('DenyGroups', '') }}
+{{ option_string_or_list('DenyGroups', '', True , sep=' ')}}
 # AllowGroups
-{{ option('AllowGroups', '') }}
+{{ option_string_or_list('AllowGroups', '', True , sep=' ')}}
+
 
 # Specifies the available KEX (Key Exchange) algorithms.
 {{ option_string_or_list('KexAlgorithms', 'ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1', True) }}
