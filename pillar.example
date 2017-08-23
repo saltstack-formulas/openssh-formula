@@ -44,10 +44,33 @@ sshd_config:
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: 'yes'
   UseDNS: 'yes'
+  # set as string
   AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
+  # or set as list
+  AllowUsers: 
+    - vader@10.0.0.1 
+    - maul@evil.com 
+    - sidious 
+    - luke
+  # set as string 
   DenyUsers: 'yoda chewbaca@112.10.21.1'
+  # or set as list
+  DenyUsers:
+    - yoda
+    - chewbaca@112.10.21.1
+  # set as string
   AllowGroups: 'wheel staff imperial'
+  # or set as list
+  AllowGroups:
+    - wheel
+    - staff
+    - imperial
+  # set as string
   DenyGroups: 'rebel'
+  # or set as list
+  DenyGroups:
+    - rebel
+    - badcompany
   matches:
     sftp_chroot:
       type:
