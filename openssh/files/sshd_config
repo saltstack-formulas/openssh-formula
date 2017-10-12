@@ -209,10 +209,10 @@
 
 {# Handling unknown in salt template options #}
 {%- for keyword in sshd_config.keys() %}
-  {#- Matches have to be at the bottom and should be handled differently -#}
-  {%- if not keyword in processed_options and keyword != 'matches' -%}
+{#-   Matches have to be at the bottom and should be handled differently -#}
+{%-   if not keyword in processed_options and keyword != 'matches' -%}
 {{ render_option(keyword) }}
-  {%- endif -%}
+{%    endif -%}
 {%- endfor %}
 
 {# Handle matches last as they need to go at the bottom #}
