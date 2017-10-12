@@ -86,7 +86,6 @@ that differ from whats in defaults.yaml
 
 {% set os_finger_map = salt['grains.filter_by']({
     'CentOS-6': {
-        'UsePrivilegeSeparation': 'yes',
     },
     'default': {}
   }
