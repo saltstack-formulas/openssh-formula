@@ -5,60 +5,60 @@
 {#- generic renderer used for sshd matches, known options, -#}
 {#- and unknown options -#}
 {%- macro render_option(keyword, config_dict=sshd_config) -%}
-  {%- set value = config_dict.get(keyword) -%}
-  {%- if value is sameas true -%}
-{{ keyword }} yes
-  {%- elif value is sameas false -%}
-{{ keyword }} no
-  {%- elif value is string or value is number -%}
-{{ keyword }} {{ value }}
-  {%- else -%}
-{%- for single_value in value -%}
+{%-   set value = config_dict.get(keyword) -%}
+{%-   if value is sameas true -%}
+        {{ keyword }} yes
+{%    elif value is sameas false -%}
+        {{ keyword }} no
+{%    elif value is string or value is number -%}
+        {{ keyword }} {{ value }}
+{%    else -%}
+{%-     for single_value in value -%}
 {{ keyword }} {{ single_value }}
-{% endfor -%}
-  {%- endif -%}
+{%      endfor -%}
+{%-   endif -%}
 {%- endmacro -%}
 
 {#- macros for render option if present -#}
 {%- macro option(keyword, present) -%}
-  {%- if keyword in sshd_config -%}
-    {%- do processed_options.append(keyword) -%}
-    {{ render_option(keyword) }}
-  {%- endif -%}
+{%-   if keyword in sshd_config -%}
+{%-     do processed_options.append(keyword) -%}
+        {{ render_option(keyword) }}
+{%-   endif -%}
 {%- endmacro -%}
 
 {#- macro for collapsing a list into a string -#}
 {%- macro option_collapselist(keyword, sep) -%}
-{%- do processed_options.append(keyword) -%}
-{{keyword}} {{sshd_config.get(keyword)|join(sep)}}
+{%-   do processed_options.append(keyword) -%}
+      {{ keyword }} {{ sshd_config.get(keyword) | join(sep) }}
 {%- endmacro -%}
 
 {#- macro for handling an option that can be specified as a list or a string -#}
 {%- macro option_string_or_list(keyword, sep=',') -%}
-{%- if sshd_config.get(keyword, '') is string -%}
-{{ option(keyword) }}
-{%- else -%}
-{{ option_collapselist(keyword, sep) }}
-{%- endif -%}
+{%-   if sshd_config.get(keyword, '') is string -%}
+        {{ option(keyword) }}
+{%-   else -%}
+        {{ option_collapselist(keyword, sep) }}
+{%-   endif -%}
 {%- endmacro -%}
 
 {#- macro for conditionally joining a string, list or dict(keys) to just a string -#}
 {%- macro join_to_string(src, keyword, sep=',') -%}
-{%- set srcval = src.get(keyword, '') -%}
-{%- if srcval is string -%}
-  {{ srcval }}
-{%- elif srcval is mapping  -%}
-  {{ srcval.keys()|sort|join(sep) }}
-{%- else -%}
-  {{ srcval|join(sep) }}
-{%- endif -%}
+{%-   set srcval = src.get(keyword, '') -%}
+{%-   if srcval is string -%}
+        {{ srcval }}
+{%-   elif srcval is mapping  -%}
+        {{ srcval.keys() | sort | join(sep) }}
+{%-   else -%}
+        {{ srcval | join(sep) }}
+{%-   endif -%}
 {%- endmacro -%}
 
 {%- if sshd_config.get('ConfigBanner', False) -%}
-  {%- do processed_options.append('ConfigBanner') -%}
-  {{ sshd_config['ConfigBanner'] }}
+{%-   do processed_options.append('ConfigBanner') -%}
+      {{ sshd_config['ConfigBanner'] }}
 {%- else -%}
-  # This file is managed by salt. Manual changes risk being overwritten.
+# This file is managed by salt. Manual changes risk being overwritten.
 {%- endif %}
 {%- set global_src_url = salt ['pillar.get']('__formulas:print_template_url', None) %}
 {%- set local_src_url = salt ['pillar.get']('openssh-formula:print_template_url', None) %}
@@ -72,162 +72,162 @@
 # quick reference.
 # See the sshd_config(5) manpage for details
 
-{#- Specifies which address family should be used by sshd(8). #}
-{#- Valid arguments are any, inet (use IPv4 only), or inet6 (use IPv6 only) #}
-{{ option('AddressFamily') }}
+{#- Specifies which address family should be used by sshd(8). -#}
+{#- Valid arguments are any, inet (use IPv4 only), or inet6 (use IPv6 only) -#}
+{{- option('AddressFamily') -}}
 
-{#- What ports, IPs and protocols we listen for #}
-{{ option('Port') }}
-{#- Use these options to restrict which interfaces/protocols sshd will bind to #}
-{{ option('ListenAddress') }}
-{{ option('Protocol') }}
-{#- HostKeys for protocol version 2 #}
-{{ option('HostKey') -}}
+{#- What ports, IPs and protocols we listen for -#}
+{{- option('Port') -}}
+{#- Use these options to restrict which interfaces/protocols sshd will bind to -#}
+{{- option('ListenAddress') -}}
+{{- option('Protocol') -}}
+{#- HostKeys for protocol version 2 -#}
+{{- option('HostKey') -}}
 
-#Privilege Separation is turned on for security
-{{ option('UsePrivilegeSeparation') }}
+{#- Privilege Separation is turned on for security -#}
+{{- option('UsePrivilegeSeparation') -}}
 
-{#- Lifetime and size of ephemeral version 1 server key #}
-{{ option('KeyRegenerationInterval') }}
-{{ option('ServerKeyBits') }}
+{#- Lifetime and size of ephemeral version 1 server key -#}
+{{- option('KeyRegenerationInterval') -}}
+{{- option('ServerKeyBits') -}}
 
-{#- Logging #}
-{{ option('SyslogFacility') }}
-{{ option('LogLevel') }}
+{#- Logging -#}
+{{- option('SyslogFacility') -}}
+{{- option('LogLevel') -}}
 
-{#- Session idle time out #}
-{{ option('ClientAliveInterval') }}
-{{ option('ClientAliveCountMax') }}
+{#- Session idle time out -#}
+{{- option('ClientAliveInterval') -}}
+{{- option('ClientAliveCountMax') -}}
 
-{#- Authentication: #}
-{{ option('LoginGraceTime') }}
-{{ option('PermitRootLogin') }}
-{{ option('StrictModes') }}
-{{ option('MaxAuthTries') }}
-{{ option('MaxSessions') }}
+{#- Authentication: -#}
+{{- option('LoginGraceTime') -}}
+{{- option('PermitRootLogin') -}}
+{{- option('StrictModes') -}}
+{{- option('MaxAuthTries') -}}
+{{- option('MaxSessions') -}}
 
-{{ option('DSAAuthentication') }}
-{{ option('RSAAuthentication') }}
-{{ option('PubkeyAuthentication') }}
-{{ option('AuthorizedKeysFile') }}
-{{ option('AuthorizedKeysCommand') }}
-{{ option('AuthorizedKeysCommandUser') }}
+{{- option('DSAAuthentication') -}}
+{{- option('RSAAuthentication') -}}
+{{- option('PubkeyAuthentication') -}}
+{{- option('AuthorizedKeysFile') -}}
+{{- option('AuthorizedKeysCommand') -}}
+{{- option('AuthorizedKeysCommandUser') -}}
 
-{#- Don't read the user's ~/.rhosts and ~/.shosts files #}
-{{ option('IgnoreRhosts') }}
-{#- For this to work you will also need host keys in /etc/ssh_known_hosts #}
-{{ option('RhostsRSAAuthentication') }}
-{#- similar for protocol version 2 #}
-{{ option('HostbasedAuthentication') }}
-{#- Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication #}
-{{ option('IgnoreUserKnownHosts') }}
+{#- Don't read the user's ~/.rhosts and ~/.shosts files -#}
+{{- option('IgnoreRhosts') -}}
+{#- For this to work you will also need host keys in /etc/ssh_known_hosts -#}
+{{- option('RhostsRSAAuthentication') -}}
+{#- similar for protocol version 2 -#}
+{{- option('HostbasedAuthentication') -}}
+{#- Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication -#}
+{{- option('IgnoreUserKnownHosts') -}}
 
-{#- To enable empty passwords, change to yes (NOT RECOMMENDED) #}
-{{ option('PermitEmptyPasswords') }}
+{#- To enable empty passwords, change to yes (NOT RECOMMENDED) -#}
+{{- option('PermitEmptyPasswords') -}}
 
-{#- Change to yes to enable challenge-response passwords (beware issues with #}
-{#- some PAM modules and threads) #}
-{{ option('ChallengeResponseAuthentication') }}
-{{ option('AuthenticationMethods') }}
+{#- Change to yes to enable challenge-response passwords (beware issues with -#}
+{#- some PAM modules and threads) -#}
+{{- option('ChallengeResponseAuthentication') -}}
+{{- option('AuthenticationMethods') -}}
 
-{#- Change to no to disable tunnelled clear text passwords #}
-{{ option('PasswordAuthentication') }}
+{#- Change to no to disable tunnelled clear text passwords -#}
+{{- option('PasswordAuthentication') -}}
 
-{#- Kerberos options #}
-{{ option('KerberosAuthentication') }}
-{{ option('KerberosGetAFSToken') }}
-{{ option('KerberosOrLocalPasswd') }}
-{{ option('KerberosTicketCleanup') }}
+{#- Kerberos options -#}
+{{- option('KerberosAuthentication') -}}
+{{- option('KerberosGetAFSToken') -}}
+{{- option('KerberosOrLocalPasswd') -}}
+{{- option('KerberosTicketCleanup') -}}
 
-{#- GSSAPI options #}
-{{ option('GSSAPIAuthentication') }}
-{{ option('GSSAPICleanupCredentials') }}
+{#- GSSAPI options -#}
+{{- option('GSSAPIAuthentication') -}}
+{{- option('GSSAPICleanupCredentials') -}}
 
-{{ option('X11Forwarding') }}
-{{ option('AllowTcpForwarding') }}
-{{ option('X11DisplayOffset') }}
-{{ option('PrintMotd') }}
-{# Bug in FreeBSD 10.3 (?) See https://lists.freebsd.org/pipermail/freebsd-stable/2016-April/084501.html #}
+{{- option('X11Forwarding') -}}
+{{- option('AllowTcpForwarding') -}}
+{{- option('X11DisplayOffset') -}}
+{{- option('PrintMotd') -}}
+{#- Bug in FreeBSD 10.3 (?) See https://lists.freebsd.org/pipermail/freebsd-stable/2016-April/084501.html -#}
 {% if not (salt['grains.get']('os') == 'FreeBSD' and salt['grains.get']('osrelease')|float >= 10.3) -%}
-{{ option('PrintLastLog') }}
+{{- option('PrintLastLog') -}}
 {% endif -%}
-{{ option('TCPKeepAlive') }}
-{{ option('UseLogin') }}
+{{- option('TCPKeepAlive') -}}
+{{- option('UseLogin') -}}
 
-{{ option('MaxStartups') }}
-{{ option('Banner') }}
+{{- option('MaxStartups') -}}
+{{- option('Banner') -}}
 
-{#- Allow client to pass locale environment variables #}
-{{ option('AcceptEnv') }}
+{#- Allow client to pass locale environment variables -#}
+{{- option('AcceptEnv') -}}
 
-{{ option('Subsystem') }}
+{{- option('Subsystem') -}}
 
 {% if not salt['grains.get']('os') == 'OpenBSD' -%}
-{#- Set this to 'yes' to enable PAM authentication, account processing, #}
-{#- and session processing. If this is enabled, PAM authentication will #}
-{#- be allowed through the ChallengeResponseAuthentication and #}
-{#- PasswordAuthentication.  Depending on your PAM configuration, #}
-{#- PAM authentication via ChallengeResponseAuthentication may bypass #}
-{#- the setting of "PermitRootLogin without-password". #}
-{#- If you just want the PAM account and session checks to run without #}
-{#- PAM authentication, then enable this but set PasswordAuthentication #}
-{#- and ChallengeResponseAuthentication to 'no'. #}
-{{ option('UsePAM') }}
+{#- Set this to 'yes' to enable PAM authentication, account processing, -#}
+{#- and session processing. If this is enabled, PAM authentication will -#}
+{#- be allowed through the ChallengeResponseAuthentication and -#}
+{#- PasswordAuthentication.  Depending on your PAM configuration, -#}
+{#- PAM authentication via ChallengeResponseAuthentication may bypass -#}
+{#- the setting of "PermitRootLogin without-password". -#}
+{#- If you just want the PAM account and session checks to run without -#}
+{#- PAM authentication, then enable this but set PasswordAuthentication -#}
+{#- and ChallengeResponseAuthentication to 'no'. -#}
+{{- option('UsePAM') -}}
 {%- endif %}
 
-{#- DNS resolve and map remote IP addresses #}
-{{ option('UseDNS') }}
+{#- DNS resolve and map remote IP addresses -#}
+{{- option('UseDNS') -}}
 
-{#- Restricting Users and Hosts #}
-{#- example: #}
-{#-  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke #}
-{#-  AllowGroups wheel staff #}
-#
-{#- Keep in mind that using AllowUsers or AllowGroups means that anyone #}
-{#- not Matching one of the supplied patterns will be denied access by default. #}
-{#- Also, in order for sshd to allow access based on full or partial hostnames it #}
-{#- needs to to a DNS lookup #}
-#
-{#- DenyUsers #}
-{{ option_string_or_list('DenyUsers', sep=' ')}}
-{#- AllowUsers #}
-{{ option_string_or_list('AllowUsers', sep=' ')}}
-{#- DenyGroups #}
-{{ option_string_or_list('DenyGroups', sep=' ')}}
-{#- AllowGroups #}
-{{ option_string_or_list('AllowGroups', sep=' ')}}
+{#- Restricting Users and Hosts -#}
+{#- example: -#}
+{#-  AllowUsers vader@10.0.0.1 maul@sproing.evil.com luke -#}
+{#-  AllowGroups wheel staff -#}
+
+{#- Keep in mind that using AllowUsers or AllowGroups means that anyone -#}
+{#- not Matching one of the supplied patterns will be denied access by default. -#}
+{#- Also, in order for sshd to allow access based on full or partial hostnames it -#}
+{#- needs to to a DNS lookup -#}
+
+{#- DenyUsers -#}
+{{- option_string_or_list('DenyUsers', sep=' ') -}}
+{#- AllowUsers -#}
+{{- option_string_or_list('AllowUsers', sep=' ') -}}
+{#- DenyGroups -#}
+{{- option_string_or_list('DenyGroups', sep=' ') -}}
+{#- AllowGroups -#}
+{{- option_string_or_list('AllowGroups', sep=' ') -}}
 
 
-{#- Specifies the available KEX (Key Exchange) algorithms. #}
-{{ option_string_or_list('KexAlgorithms') }}
+{#- Specifies the available KEX (Key Exchange) algorithms. -#}
+{{- option_string_or_list('KexAlgorithms') -}}
 
-{#- Specifies the ciphers allowed for protocol version 2. #}
-{{ option_string_or_list('Ciphers') }}
+{#- Specifies the ciphers allowed for protocol version 2. -#}
+{{- option_string_or_list('Ciphers') -}}
 
-{#- Specifies the available MAC (message authentication code) algorithms. #}
-{{ option_string_or_list('MACs') }}
+{#- Specifies the available MAC (message authentication code) algorithms. -#}
+{{- option_string_or_list('MACs') -}}
 
-{# Handling unknown in salt template options #}
+{#- Handling unknown in salt template options -#}
 {%- for keyword in sshd_config.keys() %}
 {#-   Matches have to be at the bottom and should be handled differently -#}
 {%-   if not keyword in processed_options and keyword != 'matches' -%}
-{{ render_option(keyword) }}
+{{- render_option(keyword) -}}
 {%    endif -%}
 {%- endfor %}
 
-{# Handle matches last as they need to go at the bottom #}
+{#- Handle matches last as they need to go at the bottom -#}
 {%- if 'matches' in sshd_config %}
   {%- for name, match in sshd_config['matches']|dictsort(true) %}
 Match
     {#- Set up the match criteria -#}
     {%- for criteria in match['type'].keys()|sort() -%}
-     {{- ' ' }}{{criteria }} {{ join_to_string(match['type'], criteria) -}}
-    {%- endfor %} #{{ name }}
+     {{- ' ' -}}{{criteria -}} {{- join_to_string(match['type'], criteria) -}}
+    {%- endfor %} #{{- name -}}
     {#- Set up the applied options -#}
     {%- for keyword in match['options'].keys()|sort() %}
-    {{ render_option(keyword, config_dict=match['options']) }}
+    {{- render_option(keyword, config_dict=match['options']) -}}
     {%- endfor %}
   {%- endfor %}
 {%- endif %}
 
-{#- vim: set ft=jinja : #}
+{#- vim: set ft=jinja : -#}
