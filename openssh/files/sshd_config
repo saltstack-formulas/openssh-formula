@@ -28,9 +28,12 @@
 {%- endmacro -%}
 
 {#- macro for collapsing a list into a string -#}
-{%- macro option_collapselist(keyword, sep) -%}
-{%-   do processed_options.append(keyword) -%}
-      {{ keyword }} {{ sshd_config.get(keyword) | join(sep) }}
+{%- macro option_collapselist(keyword, sep, config_dict=None) -%}
+{%-   if config_dict is sameas None -%}
+{%-     do processed_options.append(keyword) -%}
+{%-     set config_dict = sshd_config -%}
+{%-   endif -%}
+      {{ keyword }} {{ config_dict.get(keyword) | join(sep) }}
 {%- endmacro -%}
 
 {#- macro for handling an option that can be specified as a list or a string -#}
@@ -225,8 +228,12 @@ Match
     {%- endfor %} #{{- name }}
 {#  Set up the applied options -#}
     {%- for keyword in match['options'].keys()|sort() -%}
-          {{ render_option(keyword, config_dict=match['options']) | indent(4, true) }}
-{%      endfor %}
+      {%- if keyword in ['AllowUsers', 'DenyUsers', 'AllowGroups', 'DenyGroups'] -%}
+            {{ option_collapselist(keyword, ' ', config_dict=match['options']) | indent(4, true) }}
+{%        else -%}
+            {{ render_option(keyword, config_dict=match['options']) | indent(4, true) }}
+{%        endif -%}
+{%-     endfor %}
   {%- endfor %}
 {%- endif %}
 
