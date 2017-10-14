@@ -72,7 +72,7 @@
 # quick reference.
 # See the sshd_config(5) manpage for details
 
-{#- Specifies which address family should be used by sshd(8). -#}
+{#  Specifies which address family should be used by sshd(8). -#}
 {#- Valid arguments are any, inet (use IPv4 only), or inet6 (use IPv6 only) -#}
 {{- option('AddressFamily') -}}
 
@@ -188,14 +188,14 @@
 {#- Also, in order for sshd to allow access based on full or partial hostnames it -#}
 {#- needs to to a DNS lookup -#}
 
-{#- DenyUsers -#}
-{{- option_string_or_list('DenyUsers', sep=' ') -}}
-{#- AllowUsers -#}
-{{- option_string_or_list('AllowUsers', sep=' ') -}}
-{#- DenyGroups -#}
-{{- option_string_or_list('DenyGroups', sep=' ') -}}
-{#- AllowGroups -#}
-{{- option_string_or_list('AllowGroups', sep=' ') -}}
+{# DenyUsers -#}
+{{- option_string_or_list('DenyUsers', sep=' ') }}
+{# AllowUsers -#}
+{{- option_string_or_list('AllowUsers', sep=' ') }}
+{# DenyGroups -#}
+{{- option_string_or_list('DenyGroups', sep=' ') }}
+{# AllowGroups -#}
+{{- option_string_or_list('AllowGroups', sep=' ') }}{{ "\n" -}}
 
 
 {#- Specifies the available KEX (Key Exchange) algorithms. -#}
@@ -221,12 +221,12 @@
 Match
     {#- Set up the match criteria -#}
     {%- for criteria in match['type'].keys()|sort() -%}
-     {{- ' ' -}}{{criteria -}} {{- join_to_string(match['type'], criteria) -}}
-    {%- endfor %} #{{- name -}}
-    {#- Set up the applied options -#}
-    {%- for keyword in match['options'].keys()|sort() %}
-    {{- render_option(keyword, config_dict=match['options']) -}}
-    {%- endfor %}
+      {{ ' ' -}}{{criteria }} {{ join_to_string(match['type'], criteria) }}
+    {%- endfor %} #{{- name }}
+{#  Set up the applied options -#}
+    {%- for keyword in match['options'].keys()|sort() -%}
+          {{ render_option(keyword, config_dict=match['options']) | indent(4, true) }}
+{%      endfor %}
   {%- endfor %}
 {%- endif %}
 
