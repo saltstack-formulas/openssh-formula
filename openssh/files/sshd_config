@@ -34,7 +34,7 @@
 {%-     set config_dict = sshd_config -%}
 {%-   endif -%}
       {{ keyword }} {{ config_dict.get(keyword) | join(sep) }}
-{%- endmacro -%}
+{% endmacro -%}
 
 {#- macro for handling an option that can be specified as a list or a string -#}
 {%- macro option_string_or_list(keyword, sep=',') -%}
