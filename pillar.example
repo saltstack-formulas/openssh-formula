@@ -8,12 +8,9 @@ sshd_config:
   Protocol: 2
   HostKey:
     - /etc/ssh/ssh_host_rsa_key
-    - /etc/ssh/ssh_host_dsa_key
     - /etc/ssh/ssh_host_ecdsa_key
     - /etc/ssh/ssh_host_ed25519_key
   UsePrivilegeSeparation: 'sandbox'
-  KeyRegenerationInterval: 3600
-  ServerKeyBits: 1024
   SyslogFacility: AUTH
   LogLevel: INFO
   ClientAliveInterval: 0
@@ -148,8 +145,6 @@ ssh_config:
   StrictHostKeyChecking: no
   ForwardAgent: no
   ForwardX11: no
-  RhostsRSAAuthentication: no
-  RSAAuthentication: yes
   PasswordAuthentication: yes
   HostbasedAuthentication: no
   GSSAPIAuthentication: no

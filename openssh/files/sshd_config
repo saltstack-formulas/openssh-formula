@@ -101,14 +101,10 @@
 {{ option('ListenAddress', ['::', '0.0.0.0']) }}
 {{ option_default_uncommented('Protocol', 2) }}
 # HostKeys for protocol version 2
-{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_dsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
+{{ option_default_uncommented('HostKey', ['/etc/ssh/ssh_host_rsa_key', '/etc/ssh/ssh_host_ecdsa_key', '/etc/ssh/ssh_host_ed25519_key']) -}}
 
 #Privilege Separation is turned on for security
 {{ option_default_uncommented('UsePrivilegeSeparation', 'sandbox') }}
-
-# Lifetime and size of ephemeral version 1 server key
-{{ option_default_uncommented('KeyRegenerationInterval', 3600) }}
-{{ option_default_uncommented('ServerKeyBits', 1024) }}
 
 # Logging
 {{ option_default_uncommented('SyslogFacility', 'AUTH') }}
@@ -126,7 +122,6 @@
 {{ option_default_uncommented('MaxSessions', '10') }}
 
 {{ option('DSAAuthentication', 'yes') }}
-{{ option_default_uncommented('RSAAuthentication', 'yes') }}
 {{ option_default_uncommented('PubkeyAuthentication', 'yes') }}
 {{ option('AuthorizedKeysFile', '%h/.ssh/authorized_keys') }}
 {{ option('AuthorizedKeysCommand', 'none') }}
@@ -134,8 +129,6 @@
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 {{ option_default_uncommented('IgnoreRhosts', 'yes') }}
-# For this to work you will also need host keys in /etc/ssh_known_hosts
-{{ option_default_uncommented('RhostsRSAAuthentication', 'no') }}
 # similar for protocol version 2
 {{ option_default_uncommented('HostbasedAuthentication', 'no') }}
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
