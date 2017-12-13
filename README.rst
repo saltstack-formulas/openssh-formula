@@ -57,7 +57,7 @@ so root login will be disabled.
 Manages the site-wide ssh_known_hosts file and fills it with the
 public SSH host keys of all minions. You can restrict the set of minions
 whose keys are listed by using the pillar data ``openssh:known_hosts:target``
-and ``openssh:known_hosts:expr_form`` (those fields map directly to the
+and ``openssh:known_hosts:tgt_type`` (those fields map directly to the
 corresponding attributes of the ``mine.get`` function).
 
 The Salt mine is used to share the public SSH host keys, you must thus

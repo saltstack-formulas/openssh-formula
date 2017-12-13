@@ -47,12 +47,12 @@ sshd_config:
   # set as string
   AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
   # or set as list
-  AllowUsers: 
-    - vader@10.0.0.1 
-    - maul@evil.com 
-    - sidious 
+  AllowUsers:
+    - vader@10.0.0.1
+    - maul@evil.com
+    - sidious
     - luke
-  # set as string 
+  # set as string
   DenyUsers: 'yoda chewbaca@112.10.21.1'
   # or set as list
   DenyUsers:
@@ -286,7 +286,7 @@ openssh:
     # The next 2 settings restrict the set of minions that will be added in
     # the generated ssh_known_hosts files (the default is to match all minions)
     target: '*'
-    expr_form: 'glob'
+    tgt_type: 'glob'
     # Name of mining functions used to gather public keys and hostnames
     # (the default values are shown here)
     mine_keys_function: public_ssh_host_keys
@@ -304,7 +304,7 @@ openssh:
     # Restrict wich hosts you want to use via their hostname
     # (i.e. ssh user@host instead of ssh user@host.example.com)
     #  target: '*'  # Defaults to "*.{}".format(grains['domain']) with a fallback to '*'
-    #  expr_form: 'glob'
+    #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
 
