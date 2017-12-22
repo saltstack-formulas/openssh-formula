@@ -16,7 +16,7 @@
 {#-   Extract the hostname from the FQDN and add it to the names. #}
 {%-   if use_hostnames is iterable -%}
 {%-     for name in names | sort -%}
-{%-       if salt["match.{}".format(hostnames_expr_form)](hostnames_target, minion_id=name) -%}
+{%-       if salt["match.{}".format(hostnames_tgt_type)](hostnames_target, minion_id=name) -%}
 {%-         set hostname = name.split('.')|first -%}
 {%-         if hostname not in names -%}
 {%-           do names.append(hostname) -%}
@@ -45,13 +45,13 @@
 
 {#- Pre-fetch pillar data #}
 {%- set target = salt['pillar.get']('openssh:known_hosts:target', '*') -%}
-{%- set expr_form = salt['pillar.get']('openssh:known_hosts:expr_form', 'glob') -%}
+{%- set tgt_type = salt['pillar.get']('openssh:known_hosts:tgt_type', 'glob') -%}
 {%- set keys_function = salt['pillar.get']('openssh:known_hosts:mine_keys_function', 'public_ssh_host_keys') -%}
 {%- set hostname_function = salt['pillar.get']('openssh:known_hosts:mine_hostname_function', 'public_ssh_hostname') -%}
 {%- set use_hostnames = salt['pillar.get']('openssh:known_hosts:hostnames', False) -%}
 {%- set hostnames_target_default = '*' if grains['domain'] == '' else "*.{}".format(grains['domain']) -%}
 {%- set hostnames_target = salt['pillar.get']('openssh:known_hosts:hostnames:target', hostnames_target_default) -%}
-{%- set hostnames_expr_form = salt['pillar.get']('openssh:known_hosts:hostnames:expr_form', 'glob') -%}
+{%- set hostnames_tgt_type = salt['pillar.get']('openssh:known_hosts:hostnames:tgt_type', 'glob') -%}
 
 {#- Lookup IP of all aliases so that when we have a matching IP, we inject the alias name
     in the SSH known_hosts entry -#}
@@ -64,8 +64,8 @@
 {%- endfor -%}
 
 {#- Loop over targetted minions -#}
-{%- set host_keys = salt['mine.get'](target, keys_function, expr_form=expr_form) -%}
-{%- set host_names = salt['mine.get'](target, hostname_function, expr_form=expr_form) -%}
+{%- set host_keys = salt['mine.get'](target, keys_function, tgt_type=tgt_type) -%}
+{%- set host_names = salt['mine.get'](target, hostname_function, tgt_type=tgt_type) -%}
 {%- for host, keys in host_keys|dictsort -%}
 {{ known_host_entry(host, host_names, keys) }}
 {%- endfor -%}
