@@ -31,7 +31,29 @@ ssh_config:
 {%- for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
 {%-   set keyFile = "/etc/ssh/ssh_host_" ~ keyType ~ "_key" %}
 {%-   set keySize = salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', False) %}
-{%-   if salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
+{%-   if salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
+ssh_host_{{ keyType }}_key:
+  file.managed:
+    - name: {{ keyFile }}
+    - contents_pillar: 'openssh:{{ keyType }}:private_key'
+    - user: root
+    - mode: 600
+    - require_in:
+      - file: sshd_config
+    - watch_in:
+      - service: {{ openssh.service }}
+
+ssh_host_{{ keyType }}_key.pub:
+  file.managed:
+    - name: {{ keyFile }}.pub
+    - contents_pillar: 'openssh:{{ keyType }}:public_key'
+    - user: root
+    - mode: 600
+    - require_in:
+      - file: sshd_config
+    - watch_in:
+      - service: {{ openssh.service }}
+{%-   elif salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
 {%-     if keySize and salt['pillar.get']('openssh:enforce_' ~ keyType ~ '_size', False) %}
 ssh_remove_short_{{ keyType }}_key:
   cmd.run:
@@ -71,29 +93,6 @@ ssh_host_{{ keyType }}_key:
 ssh_host_{{ keyType }}_key.pub:
   file.absent:
     - name: {{ keyFile }}.pub
-    - watch_in:
-      - service: {{ openssh.service }}
-
-{%-   elif salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}
-ssh_host_{{ keyType }}_key:
-  file.managed:
-    - name: {{ keyFile }}
-    - contents_pillar: 'openssh:{{ keyType }}:private_key'
-    - user: root
-    - mode: 600
-    - require_in:
-      - file: sshd_config
-    - watch_in:
-      - service: {{ openssh.service }}
-
-ssh_host_{{ keyType }}_key.pub:
-  file.managed:
-    - name: {{ keyFile }}.pub
-    - contents_pillar: 'openssh:{{ keyType }}:public_key'
-    - user: root
-    - mode: 600
-    - require_in:
-      - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
 {%-   endif %}
