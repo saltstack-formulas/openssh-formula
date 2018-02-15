@@ -51,6 +51,16 @@ of the default ``sshd_config`` file on Debian Wheezy.
 It is highly recommended ``PermitRootLogin`` is added to pillar
 so root login will be disabled.
 
+``openssh.config_ini``
+----------------------
+
+Version of managing ``sshd_config`` that uses the 
+`ini_managed.option_present <https://docs.saltstack.com/en/latest/ref/states/all/salt.states.ini_manage.html>`_
+state module, so it enables to override only one or 
+multiple values and keeping the defaults shipped by your 
+distribution. 
+
+
 ``openssh.known_hosts``
 -----------------------
 
