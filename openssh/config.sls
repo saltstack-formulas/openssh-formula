@@ -67,7 +67,7 @@ ssh_generate_host_{{ keyType }}_key:
     {%- set keySizePart = "-b {}".format(keySize) if keySize else "" %}
     - name: "rm {{ keyFile }}*; ssh-keygen -t {{ keyType }} {{ keySizePart }} -N '' -f {{ keyFile }}"
     - unless: "test -s {{ keyFile }}"
-    - user: root
+    - runas: root
     - require_in:
       - file: sshd_config
     - watch_in:
