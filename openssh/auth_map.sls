@@ -5,11 +5,11 @@ include:
 {%- set openssh_pillar = salt["pillar.get"]("openssh", {}) -%}
 {%- set authorized_keys_file = salt["pillar.get"]("sshd_config:AuthorizedKeysFile", None) %}
 
-{%- for store, config in salt["pillar.get"]("openssh:auth_map", {}).iteritems() %}
+{%- for store, config in salt["pillar.get"]("openssh:auth_map", {}).items() %}
 {%- set store_base = config["source"] %}
 # SSH store openssh:auth_map:{{ store }}
-{%-   for user, keys in config.get("users", {}).iteritems() %}
-{%-     for key, key_cfg in keys.iteritems() %}
+{%-   for user, keys in config.get("users", {}).items() %}
+{%-     for key, key_cfg in keys.items() %}
 "ssh_auth--{{ store }}--{{ user }}--{{ key }}":
 {%-       set present = key_cfg.get("present", True) %}
 {%-       set options = key_cfg.get("options", []) %}

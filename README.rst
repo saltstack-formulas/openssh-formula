@@ -51,13 +51,23 @@ of the default ``sshd_config`` file on Debian Wheezy.
 It is highly recommended ``PermitRootLogin`` is added to pillar
 so root login will be disabled.
 
+``openssh.config_ini``
+----------------------
+
+Version of managing ``sshd_config`` that uses the 
+`ini_managed.option_present <https://docs.saltstack.com/en/latest/ref/states/all/salt.states.ini_manage.html>`_
+state module, so it enables to override only one or 
+multiple values and keeping the defaults shipped by your 
+distribution. 
+
+
 ``openssh.known_hosts``
 -----------------------
 
 Manages the site-wide ssh_known_hosts file and fills it with the
 public SSH host keys of all minions. You can restrict the set of minions
 whose keys are listed by using the pillar data ``openssh:known_hosts:target``
-and ``openssh:known_hosts:expr_form`` (those fields map directly to the
+and ``openssh:known_hosts:tgt_type`` (those fields map directly to the
 corresponding attributes of the ``mine.get`` function).
 
 The Salt mine is used to share the public SSH host keys, you must thus

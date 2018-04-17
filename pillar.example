@@ -47,12 +47,12 @@ sshd_config:
   # set as string
   AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
   # or set as list
-  AllowUsers: 
-    - vader@10.0.0.1 
-    - maul@evil.com 
-    - sidious 
+  AllowUsers:
+    - vader@10.0.0.1
+    - maul@evil.com
+    - sidious
     - luke
-  # set as string 
+  # set as string
   DenyUsers: 'yoda chewbaca@112.10.21.1'
   # or set as list
   DenyUsers:
@@ -118,7 +118,7 @@ sshd_config:
   # https://stribika.github.io/2015/01/04/secure-secure-shell.html
   #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256'
   #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com'
+  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
   KexAlgorithms:
     - 'curve25519-sha256@libssh.org'
     - 'diffie-hellman-group-exchange-sha256'
@@ -132,11 +132,9 @@ sshd_config:
   MACs:
     - 'hmac-sha2-512-etm@openssh.com'
     - 'hmac-sha2-256-etm@openssh.com'
-    - 'hmac-ripemd160-etm@openssh.com'
     - 'umac-128-etm@openssh.com'
     - 'hmac-sha2-512'
     - 'hmac-sha2-256'
-    - 'hmac-ripemd160'
     - 'umac-128@openssh.com'
 
 # Warning! You should generally NOT NEED to set ssh_config. Setting ssh_config
@@ -175,7 +173,7 @@ ssh_config:
   # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
   #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
   #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com'
+  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
   KexAlgorithms:
     - 'curve25519-sha256@libssh.org'
     - 'diffie-hellman-group-exchange-sha256'
@@ -191,11 +189,9 @@ ssh_config:
   MACs:
     - 'hmac-sha2-512-etm@openssh.com'
     - 'hmac-sha2-256-etm@openssh.com'
-    - 'hmac-ripemd160-etm@openssh.com'
     - 'umac-128-etm@openssh.com'
     - 'hmac-sha2-512'
     - 'hmac-sha2-256'
-    - 'hmac-ripemd160'
     - 'umac-128@openssh.com'
 
 
@@ -290,7 +286,7 @@ openssh:
     # The next 2 settings restrict the set of minions that will be added in
     # the generated ssh_known_hosts files (the default is to match all minions)
     target: '*'
-    expr_form: 'glob'
+    tgt_type: 'glob'
     # Name of mining functions used to gather public keys and hostnames
     # (the default values are shown here)
     mine_keys_function: public_ssh_host_keys
@@ -308,7 +304,7 @@ openssh:
     # Restrict wich hosts you want to use via their hostname
     # (i.e. ssh user@host instead of ssh user@host.example.com)
     #  target: '*'  # Defaults to "*.{}".format(grains['domain']) with a fallback to '*'
-    #  expr_form: 'glob'
+    #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
 
