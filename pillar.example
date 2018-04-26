@@ -307,6 +307,10 @@ openssh:
     #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
+    # Here you can list keys for hosts which are not among your minions:
+    static:
+      github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
+      gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
 
   # specify DH parameters (see /etc/ssh/moduli)
   moduli: |
