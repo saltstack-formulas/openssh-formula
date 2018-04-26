@@ -66,6 +66,8 @@
 {#- Loop over targetted minions -#}
 {%- set host_keys = salt['mine.get'](target, keys_function, tgt_type=tgt_type) -%}
 {%- set host_names = salt['mine.get'](target, hostname_function, tgt_type=tgt_type) -%}
-{%- for host, keys in host_keys|dictsort -%}
+{%- do host_keys.update(salt['pillar.get']('openssh:known_hosts:static',
+    {}).items()) -%}
+{%- for host, keys in host_keys| dictsort -%}
 {{ known_host_entry(host, host_names, keys) }}
 {%- endfor -%}
