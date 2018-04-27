@@ -64,8 +64,9 @@ distribution.
 ``openssh.known_hosts``
 -----------------------
 
-Manages the site-wide ssh_known_hosts file and fills it with the
-public SSH host keys of all minions. You can restrict the set of minions
+Manages the side-wide ssh_known_hosts file and fills it with the
+public SSH host keys of your minions (collected via the Salt mine)
+and of hosts listed in you pillar data. You can restrict the set of minions
 whose keys are listed by using the pillar data ``openssh:known_hosts:target``
 and ``openssh:known_hosts:tgt_type`` (those fields map directly to the
 corresponding attributes of the ``mine.get`` function).
@@ -101,6 +102,16 @@ list in the ``openssh:known_hosts:aliases`` pillar key. Whenever the IPv4 or
 IPv6 behind one of those DNS entries matches an IPv4 or IPv6 behind the
 official hostname of a minion, the alternate DNS name will be associated to the
 minion's public SSH host key.
+
+To add public keys of hosts not among your minions list them under the
+pillar key ``openssh:known_hosts:static``::
+
+    openssh:
+      known_hosts:
+        static:
+          github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq[...]'
+          gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABA[...]'
+
 
 ``openssh.moduli``
 -----------------------
