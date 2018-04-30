@@ -44,7 +44,7 @@
 {%- endmacro -%}
 
 {#- Pre-fetch pillar data #}
-{%- set target = salt['pillar.get']('openssh:known_hosts:target', '*') -%}
+{%- set target = salt['pillar.get']('openssh:known_hosts:target', "*.{}".format(grains['domain'])) -%}
 {%- set tgt_type = salt['pillar.get']('openssh:known_hosts:tgt_type', 'glob') -%}
 {%- set keys_function = salt['pillar.get']('openssh:known_hosts:mine_keys_function', 'public_ssh_host_keys') -%}
 {%- set hostname_function = salt['pillar.get']('openssh:known_hosts:mine_hostname_function', 'public_ssh_hostname') -%}
@@ -63,11 +63,33 @@
   {%- endfor -%}
 {%- endfor -%}
 
-{#- Loop over targetted minions -#}
+{#- Salt Mine #}
 {%- set host_keys = salt['mine.get'](target, keys_function, tgt_type=tgt_type) -%}
 {%- set host_names = salt['mine.get'](target, hostname_function, tgt_type=tgt_type) -%}
+
+{#- Salt SSH (if any) #}
+{%- for minion_id, minion_host_keys in salt['pillar.get'](
+  'openssh:known_hosts:salt_ssh:public_ssh_host_keys',
+  {}
+).items() -%}
+{%-   if salt["match.{}".format(tgt_type)](target, minion_id=minion_id) -%}
+{%      do host_keys.update({minion_id: minion_host_keys}) %}
+{%-   endif -%}
+{%- endfor -%}
+{%- for minion_id, minion_host_name in salt['pillar.get'](
+  'openssh:known_hosts:salt_ssh:public_ssh_host_names',
+  {}
+).items() -%}
+{%-   if salt["match.{}".format(tgt_type)](target, minion_id=minion_id) -%}
+{%      do host_names.update({minion_id: minion_host_name}) %}
+{%-   endif -%}
+{%- endfor %}
+
+{#- Static Pillar data #}
 {%- do host_keys.update(salt['pillar.get']('openssh:known_hosts:static',
     {}).items()) -%}
+
+{#- Loop over targetted minions -#}
 {%- for host, keys in host_keys| dictsort -%}
 {{ known_host_entry(host, host_names, keys) }}
 {%- endfor -%}

@@ -303,7 +303,7 @@ openssh:
     #hostnames:
     # Restrict wich hosts you want to use via their hostname
     # (i.e. ssh user@host instead of ssh user@host.example.com)
-    #  target: '*'  # Defaults to "*.{}".format(grains['domain']) with a fallback to '*'
+    #  target: '*'  # Defaults to "*.{{ grains['domain']}}"
     #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
