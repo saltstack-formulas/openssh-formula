@@ -307,6 +307,20 @@ openssh:
     #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
+    # Host keys fetched via salt-ssh
+    salt_ssh:
+      # The salt-ssh user
+      user: salt-master
+      # specify public host names of a minion
+      public_ssh_host_names:
+        minion.id:
+          - minion.id
+          - alias.of.minion.id
+      # specify public host keys of a minion
+      public_ssh_host_keys:
+        minion.id: |
+          ssh-rsa [...]
+          ssh-ed25519 [...]
     # Here you can list keys for hosts which are not among your minions:
     static:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
