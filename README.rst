@@ -87,7 +87,7 @@ setup those functions through pillar::
         mine_function: cmd.run
         cmd: cat /etc/ssh/ssh_host_*_key.pub
         python_shell: True
-      public_ssh_hostname:
+      public_ssh_host_names:
         mine_function: grains.get
         key: id
 
@@ -131,6 +131,16 @@ The state tries to fetch the SSH host keys via ``salt-ssh``. It calls the comman
       known_hosts:
         salt_ssh:
           user: salt-master
+
+It's possible to define aliases for certain hosts::
+
+    openssh:
+      known_hosts:
+        salt_ssh:
+          public_ssh_host_names:
+            minion.id:
+              - minion.id
+              - alias.of.minion.id
 
 You can use a cronjob to populate a host key cache::
 

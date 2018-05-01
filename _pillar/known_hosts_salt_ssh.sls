@@ -1,12 +1,13 @@
 #!py
 
-import logging as log
+import logging
 import os.path
 import re
 import subprocess
 
 cache = {}
 ssh_key_pattern = re.compile("^[^ ]+ (ssh-.+)$")
+log = logging.getLogger(__name__)
 
 def config_dir():
     if '__master_opts__' in __opts__:
@@ -103,11 +104,11 @@ def host_keys(minion_id):
 def run():
     config = {
         'public_ssh_host_keys': {},
-        'public_ssh_hostname': {}
+        'public_ssh_host_names': {}
     }
     for minion in minions().keys():
-        config['public_ssh_hostname'][minion] = minion
         config['public_ssh_host_keys'][minion] = host_keys(minion)
+        config['public_ssh_host_names'][minion] = minion
     return {'openssh': {'known_hosts': {'salt_ssh': config}}}
 
 # vim: ts=4:sw=4:syntax=python

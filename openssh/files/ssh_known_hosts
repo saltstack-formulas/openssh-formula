@@ -11,7 +11,8 @@
 
 {#-   The host names to use are to be found within the dict 'host_names'. #}
 {#-   If there are none, the host is used directly. #}
-{%-   set names = [host_names.get(host, host)] -%}
+{%-   set names = host_names.get(host, host) -%}
+{%-   set names = [names] if names is string else names %}
 
 {#-   Extract the hostname from the FQDN and add it to the names. #}
 {%-   if use_hostnames is iterable -%}
@@ -76,12 +77,13 @@
 {%      do host_keys.update({minion_id: minion_host_keys}) %}
 {%-   endif -%}
 {%- endfor -%}
-{%- for minion_id, minion_host_name in salt['pillar.get'](
+{%- for minion_id, minion_host_names in salt['pillar.get'](
   'openssh:known_hosts:salt_ssh:public_ssh_host_names',
   {}
 ).items() -%}
+{{ minion_host_names }}
 {%-   if salt["match.{}".format(tgt_type)](target, minion_id=minion_id) -%}
-{%      do host_names.update({minion_id: minion_host_name}) %}
+{%      do host_names.update({minion_id: minion_host_names}) %}
 {%-   endif -%}
 {%- endfor %}
 
