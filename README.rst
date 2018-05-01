@@ -174,6 +174,12 @@ pillar key ``openssh:known_hosts:static``::
 
 Pillar ``openssh:known_hosts:static`` overrides ``openssh:known_hosts:salt_ssh``.
 
+To **include localhost** and local IP addresses (``127.0.0.1`` and ``::1``) use this Pillar::
+
+    openssh:
+      known_hosts:
+        include_localhost: True
+
 ``openssh.moduli``
 -----------------------
 

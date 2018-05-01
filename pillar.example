@@ -307,6 +307,8 @@ openssh:
     #  tgt_type: 'glob'
     # To activate the defaults you can just set an empty dict.
     #hostnames: {}
+    # Include localhost, 127.0.0.1 and ::1 (default: False)
+    include_localhost: False
     # Host keys fetched via salt-ssh
     salt_ssh:
       # The salt-ssh user
