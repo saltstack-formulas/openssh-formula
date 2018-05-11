@@ -102,6 +102,7 @@ def host_keys(minion_id):
         return ''
 
 def run():
+    cache = {}  # clear the cache
     config = {
         'public_ssh_host_keys': {},
         'public_ssh_host_names': {}
