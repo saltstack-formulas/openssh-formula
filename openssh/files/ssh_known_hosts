@@ -87,7 +87,6 @@
   'openssh:known_hosts:salt_ssh:public_ssh_host_names',
   {}
 ).items() -%}
-{{ minion_host_names }}
 {%-   if salt["match.{}".format(tgt_type)](target, minion_id=minion_id) -%}
 {%      do host_names.update({minion_id: minion_host_names}) %}
 {%-   endif -%}
