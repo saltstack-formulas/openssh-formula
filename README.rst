@@ -66,12 +66,15 @@ distribution.
 
 Manages the side-wide ssh_known_hosts file and fills it with the
 public SSH host keys of your minions (collected via the Salt mine)
-and of hosts listed in you pillar data. You can restrict the set of minions
+and of hosts listed in you pillar data. It's possible to include
+minions managed via ``salt-ssh`` by using the ``known_hosts_salt_ssh`` renderer.
+
+You can restrict the set of minions
 whose keys are listed by using the pillar data ``openssh:known_hosts:target``
 and ``openssh:known_hosts:tgt_type`` (those fields map directly to the
 corresponding attributes of the ``mine.get`` function).
 
-The Salt mine is used to share the public SSH host keys, you must thus
+The **Salt mine** is used to share the public SSH host keys, you must thus
 configure it accordingly on all hosts that must export their keys. Two
 mine functions are required, one that exports the keys (one key per line,
 as they are stored in ``/etc/ssh/ssh_host_*_key.pub``) and one that defines
@@ -84,7 +87,7 @@ setup those functions through pillar::
         mine_function: cmd.run
         cmd: cat /etc/ssh/ssh_host_*_key.pub
         python_shell: True
-      public_ssh_hostname:
+      public_ssh_host_names:
         mine_function: grains.get
         key: id
 
@@ -103,7 +106,64 @@ IPv6 behind one of those DNS entries matches an IPv4 or IPv6 behind the
 official hostname of a minion, the alternate DNS name will be associated to the
 minion's public SSH host key.
 
-To add public keys of hosts not among your minions list them under the
+To **include minions managed via salt-ssh** install the ``known_hosts_salt_ssh`` renderer::
+
+    # in pillar.top:
+    '*':
+      - openssh.known_hosts_salt_ssh
+
+    # In your salt/ directory:
+    # Link the pillar file:
+    mkdir pillar/openssh
+    ln -s ../../formulas/openssh-formula/_pillar/known_hosts_salt_ssh.sls pillar/openssh/known_hosts_salt_ssh.sls
+
+Pillar ``openssh:known_hosts:salt_ssh`` overrides the Salt Mine.
+
+The pillar is fed by a host key cache. Populate it by applying ``openssh.gather_host_keys``
+to the salt master::
+
+    salt 'salt-master.example.test' state.apply openssh.gather_host_keys
+
+The state tries to fetch the SSH host keys via ``salt-ssh``. It calls the command as user
+``salt-master`` by default. The username can be changed via Pillar::
+
+    openssh:
+      known_hosts:
+        salt_ssh:
+          user: salt-master
+
+It's possible to define aliases for certain hosts::
+
+    openssh:
+      known_hosts:
+        salt_ssh:
+          public_ssh_host_names:
+            minion.id:
+              - minion.id
+              - alias.of.minion.id
+
+You can use a cronjob to populate a host key cache::
+
+    # crontab -e -u salt-master
+    0 1 * * * salt 'salt-master.example.test' state.apply openssh.gather_host_keys
+
+Or just add it to your salt master::
+
+    # states/top.sls:
+    base:
+      salt:
+        - openssh.known_hosts_salt_ssh
+
+You can also use a "golden" known hosts file. It overrides the keys fetched by the cronjob.
+This lets you re-use the trust estabished in the salt-ssh user's known_hosts file::
+
+    # In your salt/ directory: (Pillar expects the file here.)
+    ln -s /home/salt-master/.ssh/known_hosts ./known_hosts
+
+    # Test it:
+    salt-ssh 'minion' pillar.get 'openssh:known_hosts:salt_ssh'
+
+To add **public keys of hosts not among your minions** list them under the
 pillar key ``openssh:known_hosts:static``::
 
     openssh:
@@ -112,6 +172,13 @@ pillar key ``openssh:known_hosts:static``::
           github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq[...]'
           gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABA[...]'
 
+Pillar ``openssh:known_hosts:static`` overrides ``openssh:known_hosts:salt_ssh``.
+
+To **include localhost** and local IP addresses (``127.0.0.1`` and ``::1``) use this Pillar::
+
+    openssh:
+      known_hosts:
+        include_localhost: True
 
 ``openssh.moduli``
 -----------------------
