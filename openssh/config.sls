@@ -1,9 +1,11 @@
 {% from "openssh/map.jinja" import openssh with context %}
 
+{%- set manage_sshd_config = salt['pillar.get']('sshd_config', False) %}
+
 include:
   - openssh
 
-{% if salt['pillar.get']('sshd_config', False) %}
+{% if manage_sshd_config %}
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
@@ -38,8 +40,10 @@ ssh_host_{{ keyType }}_key:
     - contents_pillar: 'openssh:{{ keyType }}:private_key'
     - user: root
     - mode: 600
+    {%- if manage_sshd_config %}
     - require_in:
       - file: sshd_config
+    {%- endif %}
     - watch_in:
       - service: {{ openssh.service }}
 
@@ -49,8 +53,10 @@ ssh_host_{{ keyType }}_key.pub:
     - contents_pillar: 'openssh:{{ keyType }}:public_key'
     - user: root
     - mode: 600
+    {%- if manage_sshd_config %}
     - require_in:
       - file: sshd_config
+    {%- endif %}
     - watch_in:
       - service: {{ openssh.service }}
 {%-   elif salt['pillar.get']('openssh:generate_' ~ keyType ~ '_keys', False) %}
@@ -68,8 +74,10 @@ ssh_generate_host_{{ keyType }}_key:
     - name: "rm {{ keyFile }}*; ssh-keygen -t {{ keyType }} {{ keySizePart }} -N '' -f {{ keyFile }}"
     - unless: "test -s {{ keyFile }}"
     - runas: root
+    {%- if manage_sshd_config %}
     - require_in:
       - file: sshd_config
+    {%- endif %}
     - watch_in:
       - service: {{ openssh.service }}
 
@@ -80,8 +88,10 @@ ssh_host_{{ keyType }}_key:  # set permissions
     - mode: 0600
     - require:
       - cmd: ssh_generate_host_{{ keyType }}_key
+    {%- if manage_sshd_config %}
     - require_in:
       - file: sshd_config
+    {%- endif %}
 
 {%-   elif salt['pillar.get']('openssh:absent_' ~ keyType ~ '_keys', False) %}
 ssh_host_{{ keyType }}_key:
