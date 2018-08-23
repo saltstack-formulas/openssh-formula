@@ -6,6 +6,16 @@ include:
   - openssh
 
 {% if manage_sshd_config %}
+{% if 'Debian' == salt['grains.get']('os_family') %}
+/run/sshd:
+  file.directory:
+    - user: 0
+    - group: 0
+    - mode: 0755
+    - require_in:
+        - file: sshd_config
+{% endif %}
+
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
