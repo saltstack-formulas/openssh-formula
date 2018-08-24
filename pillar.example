@@ -143,56 +143,58 @@ sshd_config:
 # machine. This can break SSH connections with servers using older versions of
 # openssh. Please make sure you understand the implication of different settings
 ssh_config:
-  StrictHostKeyChecking: no
-  ForwardAgent: no
-  ForwardX11: no
-  RhostsRSAAuthentication: no
-  RSAAuthentication: yes
-  PasswordAuthentication: yes
-  HostbasedAuthentication: no
-  GSSAPIAuthentication: no
-  GSSAPIDelegateCredentials: no
-  BatchMode: 'yes'
-  CheckHostIP: 'yes'
-  AddressFamily: 'any'
-  ConnectTimeout: 0
-  IdentityFile: '~/.ssh/id_rsa'
-  Port: 22
-  Protocol: 2
-  Cipher: '3des'
-  Tunnel: 'no'
-  TunnelDevice: 'any:any'
-  PermitLocalCommand: 'no'
-  VisualHostKey: 'no'
-  # Check `man ssh_config` for supported KexAlgorithms, Ciphers and MACs first.
-  # WARNING! Please make sure you understand the implications of the below
-  # settings. The examples provided below might break your connection to older /
-  # legacy openssh servers.
-  # The configuration given in the example below is based on:
-  # https://stribika.github.io/2015/01/04/secure-secure-shell.html
-  # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
-  #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
-  #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-  #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
-  KexAlgorithms:
-    - 'curve25519-sha256@libssh.org'
-    - 'diffie-hellman-group-exchange-sha256'
-    - 'diffie-hellman-group-exchange-sha1'
-    - 'diffie-hellman-group14-sha1'
-  Ciphers:
-    - 'chacha20-poly1305@openssh.com'
-    - 'aes256-gcm@openssh.com'
-    - 'aes128-gcm@openssh.com'
-    - 'aes256-ctr'
-    - 'aes192-ctr'
-    - 'aes128-ctr'
-  MACs:
-    - 'hmac-sha2-512-etm@openssh.com'
-    - 'hmac-sha2-256-etm@openssh.com'
-    - 'umac-128-etm@openssh.com'
-    - 'hmac-sha2-512'
-    - 'hmac-sha2-256'
-    - 'umac-128@openssh.com'
+  Hosts:
+    '*':
+      StrictHostKeyChecking: no
+      ForwardAgent: no
+      ForwardX11: no
+      RhostsRSAAuthentication: no
+      RSAAuthentication: yes
+      PasswordAuthentication: yes
+      HostbasedAuthentication: no
+      GSSAPIAuthentication: no
+      GSSAPIDelegateCredentials: no
+      BatchMode: 'yes'
+      CheckHostIP: 'yes'
+      AddressFamily: 'any'
+      ConnectTimeout: 0
+      IdentityFile: '~/.ssh/id_rsa'
+      Port: 22
+      Protocol: 2
+      Cipher: '3des'
+      Tunnel: 'no'
+      TunnelDevice: 'any:any'
+      PermitLocalCommand: 'no'
+      VisualHostKey: 'no'
+      # Check `man ssh_config` for supported KexAlgorithms, Ciphers and MACs first.
+      # WARNING! Please make sure you understand the implications of the below
+      # settings. The examples provided below might break your connection to older /
+      # legacy openssh servers.
+      # The configuration given in the example below is based on:
+      # https://stribika.github.io/2015/01/04/secure-secure-shell.html
+      # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
+      #KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
+      #Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
+      #MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
+      KexAlgorithms:
+        - 'curve25519-sha256@libssh.org'
+        - 'diffie-hellman-group-exchange-sha256'
+        - 'diffie-hellman-group-exchange-sha1'
+        - 'diffie-hellman-group14-sha1'
+      Ciphers:
+        - 'chacha20-poly1305@openssh.com'
+        - 'aes256-gcm@openssh.com'
+        - 'aes128-gcm@openssh.com'
+        - 'aes256-ctr'
+        - 'aes192-ctr'
+        - 'aes128-ctr'
+      MACs:
+        - 'hmac-sha2-512-etm@openssh.com'
+        - 'hmac-sha2-256-etm@openssh.com'
+        - 'umac-128-etm@openssh.com'
+        - 'hmac-sha2-512'
+        - 'hmac-sha2-256'
+        - 'umac-128@openssh.com'
 
 
 openssh:
