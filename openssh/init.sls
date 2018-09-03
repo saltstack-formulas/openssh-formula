@@ -4,6 +4,9 @@ openssh:
   {% if openssh.server is defined %}
   pkg.installed:
     - name: {{ openssh.server }}
+  {% if openssh.server_version is defined %}
+    - version: {{ openssh.server_version }}
+  {% endif %}
   {% endif %}
   {% if openssh.sshd_enable is sameas true %}
   service.running:

@@ -202,6 +202,10 @@ openssh:
   banner_string: |
     Welcome to {{ grains['id'] }}!
 
+  # Set installed package version
+  server_version: latest
+  client_version: latest
+
   # Controls if SSHD should be enabled/started
   sshd_enable: true
   auth:
