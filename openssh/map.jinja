@@ -46,6 +46,13 @@ that differ from whats in defaults.yaml
       'service': 'sshd',
       'dig_pkg': 'bind-utils',
     },
+    'Solaris': {
+      'service': 'network/ssh',
+      'sshd_config_group': 'root',
+      'ssh_config_group': 'root',
+      'dig_pkg': 'bind',
+      'sshd_binary': '/usr/lib/ssh/sshd',
+    },
   }
   , grain="os_family"
   , merge=salt['pillar.get']('openssh:lookup'))
@@ -80,6 +87,9 @@ that differ from whats in defaults.yaml
     },
     'RedHat': {
         'Subsystem': 'sftp /usr/libexec/openssh/sftp-server',
+    },
+    'Solaris': {
+        'Subsystem': 'sftp internal-sftp',
     },
     'default': {}
   }
