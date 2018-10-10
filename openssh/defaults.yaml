@@ -6,11 +6,13 @@ openssh:
   sshd_config_user: root
   sshd_config_group: root
   sshd_config_mode: '644'
+  sshd_config_backup: True
   ssh_config: /etc/ssh/ssh_config
   ssh_config_src: salt://openssh/files/ssh_config
   ssh_config_user: root
   ssh_config_group: root
   ssh_config_mode: '644'
+  ssh_config_backup: True
   banner: /etc/ssh/banner
   banner_src: salt://openssh/files/banner
   ssh_known_hosts: /etc/ssh/ssh_known_hosts
