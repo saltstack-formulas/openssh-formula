@@ -15,6 +15,9 @@ sshd_config:
     - group: {{ openssh.sshd_config_group }}
     - mode: {{ openssh.sshd_config_mode }}
     - check_cmd: {{ openssh.sshd_binary }} -t -f
+    {%- if openssh.sshd_config_backup  %}
+    - backup: minion
+    {%- endif %}
     - watch_in:
       - service: {{ openssh.service }}
 {% endif %}
@@ -28,6 +31,9 @@ ssh_config:
     - user: {{ openssh.ssh_config_user }}
     - group: {{ openssh.ssh_config_group }}
     - mode: {{ openssh.ssh_config_mode }}
+    {%- if openssh.ssh_config_backup  %}
+    - backup: minion
+    {%- endif %}
 {% endif %}
 
 {%- for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
