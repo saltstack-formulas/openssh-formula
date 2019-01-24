@@ -1,0 +1,81 @@
+# -*- coding: utf-8 -*-
+# vim: ft=ruby
+
+# Global source defined as https://rubygems.org
+source 'https://rubygems.org'
+
+# Attempt to fingerprint OS from /etc/os-release where available
+if File.file?("/etc/os-release")
+
+  os_family = ''
+  os_version = ''
+  os_version_full = ''
+
+  # Strip necessary granularity from os-release
+  File.open("/etc/os-release").grep(/(^ID=(.*)$|^VERSION="(.*)"$|^VERSION_ID="(.*)")/) do |line|
+
+      # OS family (Debian/CentOS/Ubuntu)
+      if ( line =~ /^ID=\S/ )
+        os_family = line.split('=')[1]
+        puts "IDENTIFIED os_family = " + os_family
+      end
+
+      # Major revision
+      if ( line =~ /^VERSION_ID="(.*)"$/ )
+        os_version = line.split('=')[1].tr('"','')
+        puts "IDENTIFIED os_version = " + os_version
+      end
+
+      # Vanity name
+      if ( line =~ /^VERSION="(.*)"$/ )
+        os_version_full = line.split('=')[1]
+        puts "IDENTIFIED os_version_full = " + os_version_full
+      end
+
+  end
+
+  # Pinning is broken into os_family and then os_version
+  # to try and avoid conflict.
+  case os_family
+
+    when /debian/
+      # os_family: Debian os_version dependent pins
+      case os_version
+        when /7/
+          puts "busser-serverspec is no longer natively supported on: " + os_version_full
+        when /8/
+          gem 'net-ssh', '~> 4.2.0'
+        else
+          puts "Your distribution is either too old, or supported without pins: " + os_version_full
+      end
+
+    when /centos/
+      # os_family: centos os_version dependent pins
+      print "Switching on " + os_version
+      case os_version
+        when /6/
+          puts "busser-serverspec has no native supported on: " + os_version_full
+        when /7/
+          gem 'net-ssh', '~> 4.2.0'
+        else
+          puts "Your distribution is either too old, or supported without pins: " + os_version_full
+      end
+
+    when /ubuntu/
+      # os_family: ubuntu os_version dependent pins
+      case os_version
+        when /14.04/
+          puts "busser-serverspec is no longer natively supported on: " + os_version_full
+        when /16.04/
+          puts "busser-serverspec is currently supported natively on: " + os_version_full
+        else
+          puts "Your distribution is either too old, or supported without pins: " + os_version_full
+      end
+
+    # No helper support provided
+    else
+      puts "No Gemfile helper support exists for os_family: " + os_family
+  end
+else
+  puts "No Gemfile helper support provided for this suite."
+end
