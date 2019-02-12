@@ -1,0 +1,68 @@
+Arch:
+  openssh:
+    server: openssh
+    client: openssh
+    service: sshd
+    dig_pkg: bind-tools
+  sshd_config:
+    Subsystem: sftp /usr/lib/ssh/sftp-server
+
+Debian:
+  openssh:
+    server: openssh-server
+    client: openssh-client
+    service: ssh
+  sshd_config:
+    Subsystem: sftp /usr/lib/openssh/sftp-server
+
+FreeBSD:
+  openssh:
+    service: sshd
+    dig_pkg: bind-tools
+    sshd_config_group: wheel
+    ssh_config_group: wheel
+  sshd_config:
+    Subsystem: sftp /usr/libexec/sftp-server
+
+Gentoo:
+  openssh:
+    server: net-misc/openssh
+    client: net-misc/openssh
+    service: sshd
+    dig_pkg: net-dns/bind-tools
+
+OpenBSD:
+  openssh:
+    service: sshd
+    sshd_config_group: wheel
+    ssh_config_group: wheel
+  sshd_config:
+    Subsystem: sftp /usr/libexec/sftp-server
+
+RedHat:
+  openssh:
+    server: openssh-server
+    client: openssh-clients
+    service: sshd
+    dig_pkg: bind-utils
+  sshd_config:
+    Subsystem: sftp /usr/libexec/openssh/sftp-server
+
+Solaris:
+  openssh:
+    service: network/ssh
+    sshd_config_group: root
+    ssh_config_group: root
+    dig_pkg: bind
+    sshd_binary: /usr/lib/ssh/sshd
+  sshd_config:
+    Subsystem: sftp internal-sftp
+
+Suse:
+  openssh:
+    server: openssh
+    client: openssh
+    service: sshd
+    dig_pkg: bind-utils
+  sshd_config:
+    Subsystem: sftp /usr/lib/ssh/sftp-server

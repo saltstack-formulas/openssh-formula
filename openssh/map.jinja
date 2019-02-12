@@ -1,120 +1,29 @@
-{## Start with  defaults from defaults.yaml ##}
-{% import_yaml "openssh/defaults.yaml" as default_settings %}
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
 
-{##
-Setup variable using grains['os_family'] based logic, only add key:values here
-that differ from whats in defaults.yaml
-##}
-{% set os_family_map = salt['grains.filter_by']({
-    'Arch': {
-      'server': 'openssh',
-      'client': 'openssh',
-      'service': 'sshd',
-      'dig_pkg': 'bind-tools',
-    },
-    'Debian': {
-      'server': 'openssh-server',
-      'client': 'openssh-client',
-      'service': 'ssh',
-    },
-    'FreeBSD': {
-      'service': 'sshd',
-      'dig_pkg': 'bind-tools',
-      'sshd_config_group': 'wheel',
-      'ssh_config_group': 'wheel',
-    },
-    'OpenBSD': {
-      'service': 'sshd',
-      'sshd_config_group': 'wheel',
-      'ssh_config_group': 'wheel',
-    },
-    'Gentoo': {
-      'server': 'net-misc/openssh',
-      'client': 'net-misc/openssh',
-      'service': 'sshd',
-      'dig_pkg': 'net-dns/bind-tools',
-    },
-    'RedHat': {
-      'server': 'openssh-server',
-      'client': 'openssh-clients',
-      'service': 'sshd',
-      'dig_pkg': 'bind-utils',
-    },
-    'Suse': {
-      'server': 'openssh',
-      'client': 'openssh',
-      'service': 'sshd',
-      'dig_pkg': 'bind-utils',
-    },
-    'Solaris': {
-      'service': 'network/ssh',
-      'sshd_config_group': 'root',
-      'ssh_config_group': 'root',
-      'dig_pkg': 'bind',
-      'sshd_binary': '/usr/lib/ssh/sshd',
-    },
-  }
-  , grain="os_family"
-  , merge=salt['pillar.get']('openssh:lookup'))
-%}
+{## Start imports as  ##}
+{% import_yaml 'openssh/defaults.yaml' as defaults %}
+{% import_yaml 'openssh/osfamilymap.yaml' as osfamilymap %}
+{% import_yaml 'openssh/osmap.yaml' as osmap %}
+{% import_yaml 'openssh/osfingermap.yaml' as osfingermap %}
 
-{## Merge the flavor_map to the default settings ##}
-{% do default_settings.openssh.update(os_family_map) %}
+{## merge the osfamilymap ##}
+{% set osfamily = salt['grains.filter_by'](osfamilymap, grain='os_family') or {} %}
+{% do salt['defaults.merge'](defaults, osfamily) %}
 
-{## Merge in openssh:lookup pillar ##}
-{% set openssh = salt['pillar.get'](
-    'openssh',
-    default=default_settings.openssh,
-    merge=True
-  )
-%}
+{## merge the osmap ##}
+{% set os = salt['grains.filter_by'](osmap, grain='os') or {} %}
+{% do salt['defaults.merge'](defaults, os) %}
 
-{% set os_family_map = salt['grains.filter_by']({
-    'FreeBSD': {
-        'Subsystem': 'sftp /usr/libexec/sftp-server',
-    },
-    'OpenBSD': {
-        'Subsystem': 'sftp /usr/libexec/sftp-server',
-    },
-    'Suse': {
-        'Subsystem': 'sftp /usr/lib/ssh/sftp-server',
-    },
-    'Arch': {
-        'Subsystem': 'sftp /usr/lib/ssh/sftp-server',
-    },
-    'Debian': {
-        'Subsystem': 'sftp /usr/lib/openssh/sftp-server',
-    },
-    'RedHat': {
-        'Subsystem': 'sftp /usr/libexec/openssh/sftp-server',
-    },
-    'Solaris': {
-        'Subsystem': 'sftp internal-sftp',
-    },
-    'default': {}
-  }
-  , grain="os_family"
-  , merge=salt['pillar.get']('sshd_config:lookup'))
-%}
+{## merge the osfingermap ##}
+{% set osfinger = salt['grains.filter_by'](osfingermap, grain='osfinger') or {} %}
+{% do salt['defaults.merge'](defaults, osfinger) %}
 
-{% set os_finger_map = salt['grains.filter_by']({
-    'CentOS-6': {
-    },
-    'default': {}
-  }
-  , grain="osfinger"
-  , merge=salt['pillar.get']('sshd_config:lookup'))
-%}
+{## merge the lookup ##}
+{% set lookup = salt['pillar.get']('openssh:lookup', default={}, merge=True) %}
+{% do salt['defaults.merge'](defaults['openssh'], lookup) %}
 
-
-{## Merge the flavor_map to the default settings ##}
-{% do default_settings.sshd_config.update(os_family_map) %}
-{% do default_settings.sshd_config.update(os_finger_map) %}
-
-{## Merge in sshd_config:lookup pillar ##}
-{% set sshd_config = salt['pillar.get'](
-    'sshd_config',
-    default=default_settings.sshd_config,
-    merge=True
-  )
-%}
+{## merge the openssh pillar ##}
+{% set openssh = salt['pillar.get']('openssh', default=defaults['openssh'], merge=True) %}
+{% set ssh_config = salt['pillar.get']('ssh_config', default=defaults['ssh_config'], merge=True) %}
+{% set sshd_config = salt['pillar.get']('sshd_config', default=defaults['sshd_config'], merge=True) %}
