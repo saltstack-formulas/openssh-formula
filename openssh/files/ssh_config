@@ -18,6 +18,24 @@
   {%- endif -%}
 {%- endmacro -%}
 
+{%- macro render_host_option(keyword, value) -%}
+{%- if value is sameas true %}
+    {{ keyword }} yes
+  {%- elif value is sameas false %}
+    {{ keyword }} no
+  {%- elif value is string or value is number %}
+    {{ keyword }} {{ value }}
+  {%- else -%}
+    {%- if keyword in string_or_list_options %}
+    {{ keyword }} {{ value|join(',') }}
+    {%- else %}
+    {%- for single_value in value -%}
+    {{ keyword }} {{ single_value }}
+    {%- endfor -%}
+    {%- endif -%}
+{%- endif -%}
+{%- endmacro -%}
+
 {#- generic renderer used for ssh matches, known options, -#}
 {#- and unknown options -#}
 {%- macro render_option(keyword, default, config_dict=ssh_config) -%}
@@ -85,14 +103,14 @@
 {%- do processed_options.append('Hosts') %}
 {%  for host, conf in ssh_config['Hosts'].items() %}
 Host {{ host }}
-  {%- for key, val in conf.items() %}
-    {{ render_raw_option(key, val) }}
+  {%- for key, val in conf.items() -%}
+    {{ render_host_option(key, val) }}
   {%- endfor %}
 {%- endfor %}
 {%- endif %}
 
 {# Handling unknown in salt template options #}
-{%- for keyword in ssh_config.keys() %}
+{% for keyword in ssh_config.keys() -%}
   {#- Matches have to be at the bottom and should be handled differently -#}
   {%- if not keyword in processed_options and keyword != 'matches' -%}
     {%- if not keyword in string_or_list_options -%}
@@ -103,17 +121,16 @@ Host {{ host }}
 {{ option_string_or_list(keyword, '', True) }}
     {%- endif -%}
   {%- endif -%}
-{%- endfor %}
+{%- endfor -%}
 
 {# Handle matches last as they need to go at the bottom #}
-{%- if 'matches' in ssh_config %}
+{% if 'matches' in ssh_config -%}
   {%- for match in ssh_config['matches'].values() %}
 Match {{ match['type'].keys()[0] }} {{ match['type'].values()[0] }}
     {%- for keyword in match['options'].keys() %}
     {{ render_option(keyword, '', config_dict=match['options']) }}
     {%- endfor %}
   {%- endfor %}
-{%- endif %}
+{%- endif -%}
 
 {#- vim: set ft=jinja : #}
-
