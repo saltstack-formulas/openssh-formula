@@ -90,10 +90,6 @@
 {#- Privilege Separation is turned on for security -#}
 {{- option('UsePrivilegeSeparation') -}}
 
-{#- Lifetime and size of ephemeral version 1 server key -#}
-{{- option('KeyRegenerationInterval') -}}
-{{- option('ServerKeyBits') -}}
-
 {#- Logging -#}
 {{- option('SyslogFacility') -}}
 {{- option('LogLevel') -}}
@@ -109,8 +105,6 @@
 {{- option('MaxAuthTries') -}}
 {{- option('MaxSessions') -}}
 
-{{- option('DSAAuthentication') -}}
-{{- option('RSAAuthentication') -}}
 {{- option('PubkeyAuthentication') -}}
 {{- option('AuthorizedKeysFile') -}}
 {{- option('AuthorizedKeysCommand') -}}
@@ -118,8 +112,6 @@
 
 {#- Don't read the user's ~/.rhosts and ~/.shosts files -#}
 {{- option('IgnoreRhosts') -}}
-{#- For this to work you will also need host keys in /etc/ssh_known_hosts -#}
-{{- option('RhostsRSAAuthentication') -}}
 {#- similar for protocol version 2 -#}
 {{- option('HostbasedAuthentication') -}}
 {#- Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication -#}
