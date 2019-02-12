@@ -2,22 +2,19 @@
 # vim: ft=jinja
 
 {## Start imports as  ##}
-{% import_yaml 'openssh/defaults.yaml' as defaults %}
+{% import_yaml 'openssh/defaults.yaml' as default_settings %}
 {% import_yaml 'openssh/osfamilymap.yaml' as osfamilymap %}
 {% import_yaml 'openssh/osmap.yaml' as osmap %}
 {% import_yaml 'openssh/osfingermap.yaml' as osfingermap %}
 
-{## merge the osfamilymap ##}
-{% set osfamily = salt['grains.filter_by'](osfamilymap, grain='os_family') or {} %}
-{% do salt['defaults.merge'](defaults, osfamily) %}
-
-{## merge the osmap ##}
-{% set os = salt['grains.filter_by'](osmap, grain='os') or {} %}
-{% do salt['defaults.merge'](defaults, os) %}
-
-{## merge the osfingermap ##}
-{% set osfinger = salt['grains.filter_by'](osfingermap, grain='osfinger') or {} %}
-{% do salt['defaults.merge'](defaults, osfinger) %}
+{% set defaults = salt['grains.filter_by'](default_settings,
+    default='default',
+    merge=salt['grains.filter_by'](osfamilymap, grain='os_family',
+      merge=salt['grains.filter_by'](osmap, grain='os',
+        merge=salt['grains.filter_by'](osfingermap, grain='osfinger')
+      )
+    )
+) %}
 
 {## merge the openssh pillar ##}
 {% set openssh = salt['pillar.get']('openssh', default=defaults['openssh'], merge=True) %}

@@ -1,28 +1,29 @@
-openssh:
-  sshd_enable: True
-  sshd_binary: /usr/sbin/sshd
-  sshd_config: /etc/ssh/sshd_config
-  sshd_config_src: salt://openssh/files/sshd_config
-  sshd_config_user: root
-  sshd_config_group: root
-  sshd_config_mode: '644'
-  sshd_config_backup: True
-  ssh_config: /etc/ssh/ssh_config
-  ssh_config_src: salt://openssh/files/ssh_config
-  ssh_config_user: root
-  ssh_config_group: root
-  ssh_config_mode: '644'
-  ssh_config_backup: True
-  banner: /etc/ssh/banner
-  banner_src: salt://openssh/files/banner
-  ssh_known_hosts: /etc/ssh/ssh_known_hosts
-  dig_pkg: dnsutils
-  ssh_moduli: /etc/ssh/moduli
-  root_group: root
-  # Prevent merge of array; always override values
-  host_key_algos: ecdsa,ed25519,rsa
-  # To manage/remove DSA:
-  #host_key_algos: dsa,ecdsa,ed25519,rsa
+default:
+  openssh:
+    sshd_enable: True
+    sshd_binary: /usr/sbin/sshd
+    sshd_config: /etc/ssh/sshd_config
+    sshd_config_src: salt://openssh/files/sshd_config
+    sshd_config_user: root
+    sshd_config_group: root
+    sshd_config_mode: '644'
+    sshd_config_backup: True
+    ssh_config: /etc/ssh/ssh_config
+    ssh_config_src: salt://openssh/files/ssh_config
+    ssh_config_user: root
+    ssh_config_group: root
+    ssh_config_mode: '644'
+    ssh_config_backup: True
+    banner: /etc/ssh/banner
+    banner_src: salt://openssh/files/banner
+    ssh_known_hosts: /etc/ssh/ssh_known_hosts
+    dig_pkg: dnsutils
+    ssh_moduli: /etc/ssh/moduli
+    root_group: root
+    # Prevent merge of array; always override values
+    host_key_algos: ecdsa,ed25519,rsa
+    # To manage/remove DSA:
+    #host_key_algos: dsa,ecdsa,ed25519,rsa
 
-sshd_config: {}
-ssh_config: {}
+  sshd_config: {}
+  ssh_config: {}
