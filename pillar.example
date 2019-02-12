@@ -12,8 +12,6 @@ sshd_config:
     - /etc/ssh/ssh_host_ecdsa_key
     - /etc/ssh/ssh_host_ed25519_key
   UsePrivilegeSeparation: 'sandbox'
-  KeyRegenerationInterval: 3600
-  ServerKeyBits: 1024
   SyslogFacility: AUTH
   LogLevel: INFO
   ClientAliveInterval: 0
@@ -24,12 +22,10 @@ sshd_config:
   StrictModes: 'yes'
   MaxAuthTries: 6
   MaxSessions: 10
-  RSAAuthentication: 'yes'
   PubkeyAuthentication: 'yes'
   AuthorizedKeysCommand: '/usr/bin/sss_ssh_authorizedkeys'
   AuthorizedKeysCommandUser: 'nobody'
   IgnoreRhosts: 'yes'
-  RhostsRSAAuthentication: 'no'
   HostbasedAuthentication: 'no'
   PermitEmptyPasswords: 'no'
   ChallengeResponseAuthentication: 'no'
