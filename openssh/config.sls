@@ -36,7 +36,7 @@ ssh_config:
     {%- endif %}
 {% endif %}
 
-{%- for keyType in ['ecdsa', 'dsa', 'rsa', 'ed25519'] %}
+{%- for keyType in openssh['host_key_algos'].split(',') %}
 {%-   set keyFile = "/etc/ssh/ssh_host_" ~ keyType ~ "_key" %}
 {%-   set keySize = salt['pillar.get']('openssh:generate_' ~ keyType ~ '_size', False) %}
 {%-   if salt['pillar.get']('openssh:provide_' ~ keyType ~ '_keys', False) %}

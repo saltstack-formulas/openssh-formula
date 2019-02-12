@@ -19,6 +19,10 @@ openssh:
   dig_pkg: dnsutils
   ssh_moduli: /etc/ssh/moduli
   root_group: root
+  # Prevent merge of array; always override values
+  host_key_algos: ecdsa,ed25519,rsa
+  # To manage/remove DSA:
+  #host_key_algos: dsa,ecdsa,ed25519,rsa
 
 sshd_config: {}
 ssh_config: {}
