@@ -18,6 +18,24 @@
   {%- endif -%}
 {%- endmacro -%}
 
+{%- macro render_host_option(keyword, value) -%}
+{%- if value is sameas true %}
+    {{ keyword }} yes
+  {%- elif value is sameas false %}
+    {{ keyword }} no
+  {%- elif value is string or value is number %}
+    {{ keyword }} {{ value }}
+  {%- else -%}
+    {%- if keyword in string_or_list_options %}
+    {{ keyword }} {{ value|join(',') }}
+    {%- else %}
+    {%- for single_value in value -%}
+    {{ keyword }} {{ single_value }}
+    {%- endfor -%}
+    {%- endif -%}
+{%- endif -%}
+{%- endmacro -%}
+
 {#- generic renderer used for ssh matches, known options, -#}
 {#- and unknown options -#}
 {%- macro render_option(keyword, default, config_dict=ssh_config) -%}
@@ -85,8 +103,8 @@
 {%- do processed_options.append('Hosts') %}
 {%  for host, conf in ssh_config['Hosts'].items() %}
 Host {{ host }}
-  {%- for key, val in conf.items() %}
-    {{ render_raw_option(key, val) }}
+  {%- for key, val in conf.items() -%}
+    {{ render_host_option(key, val) }}
   {%- endfor %}
 {%- endfor %}
 {%- endif %}
