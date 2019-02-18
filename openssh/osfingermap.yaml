@@ -1,0 +1,4 @@
+Ubuntu-18.04: {}
+CentOS-6:
+  openssh:
+    host_key_algos: ecdsa,rsa
