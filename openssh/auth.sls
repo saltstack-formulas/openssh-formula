@@ -12,7 +12,7 @@
       {%- else %}
     - user: {{ identifier }}
       {%- endif %}
-      {%- if 'present' in key and key['present'] and 'source' in key %}
+      {%- if 'source' in key %}
     - source: {{ key['source'] }}
       {%- else %}
         {%- if 'enc' in key %}
