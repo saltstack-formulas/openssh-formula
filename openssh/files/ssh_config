@@ -1,5 +1,5 @@
 {%- import_yaml "openssh/defaults.yaml" as default_settings -%}
-{%- set ssh_config = salt['pillar.get']('ssh_config', default=default_settings.ssh_config, merge=True) -%}
+{%- set ssh_config = salt['pillar.get']('ssh_config', default=default_settings.default.ssh_config, merge=True) -%}
 {#- present in ssh_config and known in actual file options -#}
 {%- set processed_options = [] -%}
 {%- set string_or_list_options = ['KexAlgorithms', 'Ciphers', 'MACs'] -%}
