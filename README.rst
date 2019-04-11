@@ -64,7 +64,7 @@ distribution.
 ``openssh.known_hosts``
 -----------------------
 
-Manages the side-wide ssh_known_hosts file and fills it with the
+Manages ``/etc/ssh/ssh_known_hosts`` and fills it with the
 public SSH host keys of your minions (collected via the Salt mine)
 and of hosts listed in you pillar data. It's possible to include
 minions managed via ``salt-ssh`` by using the ``known_hosts_salt_ssh`` renderer.
@@ -99,8 +99,8 @@ use other names, then you should indicate the names to use in pillar keys
 ``openssh:known_hosts:mine_keys_function`` and
 ``openssh:known_hosts:mine_hostname_function``.
 
-You can also integrate alternate DNS names of the various hosts in the
-ssh_known_hosts files. You just have to list all the alternate DNS names as a
+You can also integrate alternate DNS names of the various hosts in
+``/etc/ssh/ssh_known_hosts``. You just have to specify all the alternate DNS names as a
 list in the ``openssh:known_hosts:aliases`` pillar key. Whenever the IPv4 or
 IPv6 behind one of those DNS entries matches an IPv4 or IPv6 behind the
 official hostname of a minion, the alternate DNS name will be associated to the
@@ -117,9 +117,19 @@ To **include minions managed via salt-ssh** install the ``known_hosts_salt_ssh``
     mkdir pillar/openssh
     ln -s ../../formulas/openssh-formula/_pillar/known_hosts_salt_ssh.sls pillar/openssh/known_hosts_salt_ssh.sls
 
-Pillar ``openssh:known_hosts:salt_ssh`` overrides the Salt Mine.
+You'll find the cached pubkeys in Pillar ``openssh:known_hosts:salt_ssh``.
 
-The pillar is fed by a host key cache. Populate it by applying ``openssh.gather_host_keys``
+It's possible to define aliases for certain hosts::
+
+    openssh:
+      known_hosts:
+        cache:
+          public_ssh_host_names:
+            minion.id:
+              - minion.id
+              - alias.of.minion.id
+
+The cache is populated by applying ``openssh.gather_host_keys``
 to the salt master::
 
     salt 'salt-master.example.test' state.apply openssh.gather_host_keys
@@ -129,30 +139,21 @@ The state tries to fetch the SSH host keys via ``salt-ssh``. It calls the comman
 
     openssh:
       known_hosts:
-        salt_ssh:
+        cache:
           user: salt-master
 
-It's possible to define aliases for certain hosts::
-
-    openssh:
-      known_hosts:
-        salt_ssh:
-          public_ssh_host_names:
-            minion.id:
-              - minion.id
-              - alias.of.minion.id
-
-You can use a cronjob to populate a host key cache::
+Use a cronjob to populate a host key cache::
 
     # crontab -e -u salt-master
     0 1 * * * salt 'salt-master.example.test' state.apply openssh.gather_host_keys
 
-Or just add it to your salt master::
+If you must have the latest pubkeys, run the state before all others::
 
     # states/top.sls:
     base:
       salt:
-        - openssh.known_hosts_salt_ssh
+        # slooooow!
+        - openssh.gather_host_keys
 
 You can also use a "golden" known hosts file. It overrides the keys fetched by the cronjob.
 This lets you re-use the trust estabished in the salt-ssh user's known_hosts file::
