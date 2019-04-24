@@ -91,7 +91,6 @@ def host_keys(minion_id):
     trusted_keys = host_keys_from_known_hosts(minion_id,
         config_dir()+'/known_hosts')
     if trusted_keys:
-        print "trusted_keys"
         return trusted_keys
     # Get keys from host key cache
     cache_file = "{}/known_hosts_salt_ssh/{}.pub".format(cache_dir(), minion_id)
