@@ -1,9 +1,9 @@
-{% from "openssh/map.jinja" import openssh with context %}
+{% from "openssh/map.jinja" import openssh, sshd_config with context %}
 
 include:
   - openssh
 
-{% if salt['pillar.get']('sshd_config', False) %}
+{% if sshd_config %}
 sshd_config-with-ini:
   ini.options_present:
     - name: {{ openssh.sshd_config }}
@@ -11,7 +11,7 @@ sshd_config-with-ini:
     - watch_in:
       - service: {{ openssh.service }}
     - sections:
-        {%- for k,v in salt['pillar.get']('sshd_config',{}).items() %}
+        {%- for k,v in sshd_config.items() %}
         {{ k }}: '{{ v }}'
         {%- endfor %}
 {% endif %}
