@@ -1,11 +1,10 @@
 include:
   - openssh
 
-{%  from "openssh/map.jinja" import openssh with context -%}
-{%- set openssh_pillar = salt["pillar.get"]("openssh", {}) -%}
-{%- set authorized_keys_file = salt["pillar.get"]("sshd_config:AuthorizedKeysFile", None) %}
+{%  from "openssh/map.jinja" import openssh, sshd_config with context -%}
+{%- set authorized_keys_file = sshd_config.get("AuthorizedKeysFile", None) %}
 
-{%- for store, config in salt["pillar.get"]("openssh:auth_map", {}).items() %}
+{%- for store, config in openssh.get("auth_map", {}).items() %}
 {%- set store_base = config["source"] %}
 # SSH store openssh:auth_map:{{ store }}
 {%-   for user, keys in config.get("users", {}).items() %}
