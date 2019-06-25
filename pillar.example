@@ -194,6 +194,10 @@ ssh_config:
 
 
 openssh:
+  # Banner file can be retrieved either by TOFS or by url
+  banner_src: banner_fire
+  # banner_src: salt://ssh/files/banner_src  # <- old style
+
   # Instead of adding a custom banner file you can set it in pillar
   banner_string: |
     Welcome to {{ grains['id'] }}!
@@ -329,6 +333,7 @@ openssh:
     static:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
       gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
+    # The template of ssh_know_host file can be overriden thanks to TOFS
 
   # specify DH parameters (see /etc/ssh/moduli)
   moduli: |
@@ -355,3 +360,32 @@ mine_functions:
   public_ssh_hostname:
     mine_function: grains.get
     key: id
+
+  tofs:
+    # The files_switch key serves as a selector for alternative
+    # directories under the formula files directory. See TOFS pattern
+    # doc for more info.
+    # Note: Any value not evaluated by `config.get` will be used literally.
+    # This can be used to set custom paths, as many levels deep as required.
+    # files_switch:
+    #   - any/path/can/be/used/here
+    #   - id
+    #   - role
+    #   - osfinger
+    #   - os
+    #   - os_family
+    # All aspects of path/file resolution are customisable using the options below.
+    # This is unnecessary in most cases; there are sensible defaults.
+    # path_prefix: template_alt
+    # dirs:
+    #   files: files_alt
+    #   default: default_alt
+    source_files:
+      ssh_known_hosts_file_managed:
+        - alt_known_hosts
+      sshd_config_file_managed:
+        - alt_sshd_config
+      ssh_config_file_managed:
+        - alt_ssh_config
+      sshd_banner_file_managed:
+        - alt_banner_src

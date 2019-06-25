@@ -1,4 +1,7 @@
-{% from "openssh/map.jinja" import openssh, ssh_config, sshd_config with context %}
+{% set tplroot = tpldir.split('/')[0] %}
+{% from tplroot ~ "/map.jinja" import openssh, ssh_config, sshd_config with context %}
+{% from tplroot ~ "/libtofs.jinja" import files_switch %}
+
 
 include:
   - openssh
@@ -7,7 +10,12 @@ include:
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
-    - source: {{ openssh.sshd_config_src }}
+                  # Preserve backward compatibility
+    - source: {{ openssh.sshd_config_src
+                 if '://' in openssh.sshd_config_src
+                 else files_switch( [openssh.sshd_config_src],
+                                    'sshd_config_file_managed'
+              ) }}
     - template: jinja
     - user: {{ openssh.sshd_config_user }}
     - group: {{ openssh.sshd_config_group }}
@@ -24,7 +32,12 @@ sshd_config:
 ssh_config:
   file.managed:
     - name: {{ openssh.ssh_config }}
-    - source: {{ openssh.ssh_config_src }}
+              # Preserve backward compatibility
+    - source: {{ openssh.ssh_config_src
+                 if '://' in openssh.ssh_config_src
+                 else files_switch( [openssh.ssh_config_src],
+                                    'ssh_config_file_managed'
+              ) }}
     - template: jinja
     - user: {{ openssh.ssh_config_user }}
     - group: {{ openssh.ssh_config_group }}
