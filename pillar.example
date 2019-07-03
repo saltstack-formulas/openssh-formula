@@ -194,10 +194,6 @@ ssh_config:
 
 
 openssh:
-  # Banner file can be retrieved either by TOFS or by url
-  banner_src: banner_fire
-  # banner_src: salt://ssh/files/banner_src  # <- old style
-
   # Instead of adding a custom banner file you can set it in pillar
   banner_string: |
     Welcome to {{ grains['id'] }}!
@@ -333,7 +329,6 @@ openssh:
     static:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
       gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
-    # The template of ssh_know_host file can be overriden thanks to TOFS
 
   # specify DH parameters (see /etc/ssh/moduli)
   moduli: |
@@ -381,11 +376,11 @@ mine_functions:
     #   files: files_alt
     #   default: default_alt
     source_files:
-      ssh_known_hosts_file_managed:
-        - alt_known_hosts
-      sshd_config_file_managed:
+      manage ssh_known_hosts file:
+        - alt_ssh_known_hosts
+      sshd_config:
         - alt_sshd_config
-      ssh_config_file_managed:
+      ssh_config:
         - alt_ssh_config
-      sshd_banner_file_managed:
-        - alt_banner_src
+      sshd_banner:
+        - fire_banner
