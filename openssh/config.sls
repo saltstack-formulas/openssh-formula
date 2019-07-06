@@ -1,13 +1,20 @@
-{% from "openssh/map.jinja" import openssh, ssh_config, sshd_config with context %}
+{%- set tplroot = tpldir.split('/')[0] %}
+{%- from tplroot ~ "/map.jinja" import openssh, ssh_config, sshd_config with context %}
+{%- from tplroot ~ "/libtofs.jinja" import files_switch %}
+
 
 include:
   - openssh
 
-{% if sshd_config %}
+{%- if sshd_config %}
 sshd_config:
   file.managed:
     - name: {{ openssh.sshd_config }}
-    - source: {{ openssh.sshd_config_src }}
+    {#- Preserve backward compatibility using the `if` below #}
+    - source: {{ openssh.sshd_config_src if '://' in openssh.sshd_config_src
+                 else files_switch( [openssh.sshd_config_src],
+                                    'sshd_config'
+              ) }}
     - template: jinja
     - user: {{ openssh.sshd_config_user }}
     - group: {{ openssh.sshd_config_group }}
@@ -18,13 +25,17 @@ sshd_config:
     {%- endif %}
     - watch_in:
       - service: {{ openssh.service }}
-{% endif %}
+{%- endif %}
 
-{% if ssh_config %}
+{%- if ssh_config %}
 ssh_config:
   file.managed:
     - name: {{ openssh.ssh_config }}
-    - source: {{ openssh.ssh_config_src }}
+    {#- Preserve backward compatibility using the `if` below #}
+    - source: {{ openssh.ssh_config_src if '://' in openssh.ssh_config_src
+                 else files_switch( [openssh.ssh_config_src],
+                                    'ssh_config'
+              ) }}
     - template: jinja
     - user: {{ openssh.ssh_config_user }}
     - group: {{ openssh.ssh_config_group }}
@@ -32,7 +43,7 @@ ssh_config:
     {%- if openssh.ssh_config_backup  %}
     - backup: minion
     {%- endif %}
-{% endif %}
+{%- endif %}
 
 {%- for keyType in openssh['host_key_algos'].split(',') %}
 {%-   set keyFile = "/etc/ssh/ssh_host_" ~ keyType ~ "_key" %}
@@ -121,4 +132,4 @@ ssh_host_{{ keyType }}_key.pub:
       - file: sshd_config
     - watch_in:
       - service: {{ openssh.service }}
-{% endif %}
+{%- endif %}

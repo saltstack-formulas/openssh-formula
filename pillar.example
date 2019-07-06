@@ -355,3 +355,32 @@ mine_functions:
   public_ssh_hostname:
     mine_function: grains.get
     key: id
+
+  tofs:
+    # The files_switch key serves as a selector for alternative
+    # directories under the formula files directory. See TOFS pattern
+    # doc for more info.
+    # Note: Any value not evaluated by `config.get` will be used literally.
+    # This can be used to set custom paths, as many levels deep as required.
+    # files_switch:
+    #   - any/path/can/be/used/here
+    #   - id
+    #   - role
+    #   - osfinger
+    #   - os
+    #   - os_family
+    # All aspects of path/file resolution are customisable using the options below.
+    # This is unnecessary in most cases; there are sensible defaults.
+    # path_prefix: template_alt
+    # dirs:
+    #   files: files_alt
+    #   default: default_alt
+    source_files:
+      manage ssh_known_hosts file:
+        - alt_ssh_known_hosts
+      sshd_config:
+        - alt_sshd_config
+      ssh_config:
+        - alt_ssh_config
+      sshd_banner:
+        - fire_banner
