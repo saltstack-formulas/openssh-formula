@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
 ---
 driver:
   name: vagrant

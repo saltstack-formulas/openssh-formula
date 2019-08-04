@@ -1,47 +1,78 @@
+.. _readme:
+
 openssh
 =======
+|img_travis| |img_sr|
+
+.. |img_travis| image:: https://travis-ci.com/saltstack-formulas/openssh-formula.svg?branch=master
+   :alt: Travis CI Build Status
+   :scale: 100%
+   :target: https://travis-ci.com/saltstack-formulas/openssh-formula
+.. |img_sr| image:: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+   :alt: Semantic Release
+   :scale: 100%
+   :target: https://github.com/semantic-release/semantic-release
+
 Install and configure an openssh server.
 
-.. note::
+.. contents:: **Table of Contents**
 
-    See the full `Salt Formulas installation and usage instructions
-    <http://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+General notes
+-------------
+
+See the full `SaltStack Formulas installation and usage instructions
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+
+If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_.
+
+If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``,
+which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.
+
+See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
+
+Contributing to this repo
+-------------------------
+
+**Commit message formatting is significant!!**
+
+Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
 
 Available states
-================
+----------------
 
 .. contents::
-    :local:
+   :local:
 
 ``openssh``
------------
+^^^^^^^^^^^
 
 Installs the ``openssh`` server package and service.
 
 ``openssh.auth``
------------
+^^^^^^^^^^^^^^^^
 
 Manages SSH certificates for users.
 
 ``openssh.auth_map``
------------
+^^^^^^^^^^^^^^^^^^^^
 
 Same functionality as openssh.auth but with a simplified Pillar syntax.
 Plays nicely with `Pillarstack
 <https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.stack.html>`_.
 
 ``openssh.banner``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Installs a banner that users see when SSH-ing in.
 
 ``openssh.client``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Installs the openssh client package.
 
 ``openssh.config``
-------------------
+^^^^^^^^^^^^^^^^^^
 
 Installs the ssh daemon configuration file included in this formula
 (under "openssh/files"). This configuration file is populated
@@ -52,7 +83,7 @@ It is highly recommended ``PermitRootLogin`` is added to pillar
 so root login will be disabled.
 
 ``openssh.config_ini``
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Version of managing ``sshd_config`` that uses the 
 `ini_managed.option_present <https://docs.saltstack.com/en/latest/ref/states/all/salt.states.ini_manage.html>`_
@@ -62,7 +93,7 @@ distribution.
 
 
 ``openssh.known_hosts``
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 Manages ``/etc/ssh/ssh_known_hosts`` and fills it with the
 public SSH host keys of your minions (collected via the Salt mine)
@@ -182,6 +213,52 @@ To **include localhost** and local IP addresses (``127.0.0.1`` and ``::1``) use 
         include_localhost: True
 
 ``openssh.moduli``
------------------------
+^^^^^^^^^^^^^^^^^^
 
 Manages the system wide ``/etc/ssh/moduli`` file.
+
+Testing
+-------
+
+Linux testing is done with ``kitchen-salt``.
+
+Requirements
+^^^^^^^^^^^^
+
+* Ruby
+* Docker
+
+.. code-block:: bash
+
+   $ gem install bundler
+   $ bundle install
+   $ bin/kitchen test [platform]
+
+Where ``[platform]`` is the platform name defined in ``kitchen.yml``,
+e.g. ``debian-9-2019-2-py3``.
+
+``bin/kitchen converge``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates the docker instance and runs the ``template`` main state, ready for testing.
+
+``bin/kitchen verify``
+^^^^^^^^^^^^^^^^^^^^^^
+
+Runs the ``inspec`` tests on the actual instance.
+
+``bin/kitchen destroy``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Removes the docker instance.
+
+``bin/kitchen test``
+^^^^^^^^^^^^^^^^^^^^
+
+Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``verify`` + ``destroy``.
+
+``bin/kitchen login``
+^^^^^^^^^^^^^^^^^^^^^
+
+Gives you SSH access to the instance for manual testing.
+
