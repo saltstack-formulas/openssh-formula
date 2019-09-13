@@ -44,20 +44,20 @@ sshd_config:
   UsePAM: 'yes'
   UseDNS: 'yes'
   # set as string
-  # AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
-  # or set as list
-  AllowUsers:
-    - vader@10.0.0.1
-    - maul@evil.com
-    - sidious
-    - luke
-  # set as string
+  AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
+  # # or set as list
+  # AllowUsers:
+  #   - vader@10.0.0.1
+  #   - maul@evil.com
+  #   - sidious
+  #   - luke
+  # # set as string
   # DenyUsers: 'yoda chewbaca@112.10.21.1'
   # or set as list
   DenyUsers:
     - yoda
     - chewbaca@112.10.21.1
-  # set as string
+  # # set as string
   # AllowGroups: 'wheel staff imperial'
   # or set as list
   AllowGroups:
@@ -65,11 +65,11 @@ sshd_config:
     - staff
     - imperial
   # set as string
-  # DenyGroups: 'rebel'
-  # or set as list
-  DenyGroups:
-    - rebel
-    - badcompany
+  DenyGroups: 'rebel'
+  # # or set as list
+  # DenyGroups:
+  #   - rebel
+  #   - badcompany
   matches:
     sftp_chroot:
       type:
@@ -111,12 +111,12 @@ sshd_config:
       options:
         ChrootDirectory: /ex/%u
 
-  # yamllint disable rule:line-length
   # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
   # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
   # The configuration given in the example below is based on:
   # https://stribika.github.io/2015/01/04/secure-secure-shell.html
   # KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256'
+  # yamllint disable rule:line-length
   # Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
   # MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
   # yamllint enable rule:line-length
@@ -167,7 +167,6 @@ ssh_config:
       TunnelDevice: 'any:any'
       PermitLocalCommand: 'no'
       VisualHostKey: 'no'
-      # yamllint disable rule:line-length
       # Check `man ssh_config` for supported KexAlgorithms, Ciphers and MACs first.
       # WARNING! Please make sure you understand the implications of the below
       # settings. The examples provided below might break your connection to older /
@@ -175,6 +174,7 @@ ssh_config:
       # The configuration given in the example below is based on:
       # https://stribika.github.io/2015/01/04/secure-secure-shell.html
       # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
+      # yamllint disable rule:line-length
       # KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
       # Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
       # MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
@@ -337,8 +337,8 @@ openssh:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
       gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
 
-  # yamllint disable rule:line-length
   # specify DH parameters (see /etc/ssh/moduli)
+  # yamllint disable rule:line-length
   moduli: |
     # Time Type Tests Tries Size Generator Modulus
     20120821045639 2 6 100 2047 2 DD2047CBDBB6F8E919BC63DE885B34D0FD6E3DB2887D8B46FE249886ACED6B46DFCD5553168185FD376122171CD8927E60120FA8D01F01D03E58281FEA9A1ABE97631C828E41815F34FDCDF787419FE13A3137649AA93D2584230DF5F24B5C00C88B7D7DE4367693428C730376F218A53E853B0851BAB7C53C15DA7839CBE1285DB63F6FA45C1BB59FE1C5BB918F0F8459D7EF60ACFF5C0FA0F3FCAD1C5F4CE4416D4F4B36B05CDCEBE4FB879E95847EFBC6449CD190248843BC7EDB145FBFC4EDBB1A3C959298F08F3BA2CFBE231BBE204BE6F906209D28BD4820AB3E7BE96C26AE8A809ADD8D1A5A0B008E9570FA4C4697E116B8119892C604293680B09D63
