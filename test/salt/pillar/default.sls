@@ -14,7 +14,6 @@ sshd_config:
     - /etc/ssh/ssh_host_dsa_key
     - /etc/ssh/ssh_host_ecdsa_key
     - /etc/ssh/ssh_host_ed25519_key
-  UsePrivilegeSeparation: 'sandbox'
   SyslogFacility: AUTH
   LogLevel: INFO
   ClientAliveInterval: 0
@@ -32,7 +31,7 @@ sshd_config:
   HostbasedAuthentication: 'no'
   PermitEmptyPasswords: 'no'
   ChallengeResponseAuthentication: 'no'
-  AuthenticationMethods: 'publickey,keyboard-interactive'
+  AuthenticationMethods: 'publickey'
   AuthorizedKeysFile: '%h/.ssh/authorized_keys'
   X11Forwarding: 'no'
   X11DisplayOffset: 10
