@@ -1,203 +1,35 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+# yamllint disable rule:line-length
+# Using a stripped down version of both `sshd_config` and `ssh_config` here
+# The values introduced by the initial commit are taken from the Travis
+# instances themselves
+# Care must be taken when modifying this, not to lock out Travis before the
+# `kitchen verify` stage takes place, resulting in:
+# ```
+# $$$$$$ [SSH] connection failed, terminating (#<Net::SSH::AuthenticationFailed: Authentication failed for user kitchen@localhost>)
+# >>>>>> ------Exception-------
+# >>>>>> Class: Kitchen::ActionFailed
+# >>>>>> Message: 1 actions failed.
+# >>>>>>     Failed to complete #verify action: [Transport error, can't connect to 'ssh' backend: SSH session could not be established] on ...
+# ```
+# yamllint enable rule:line-length
+
 sshd_config:
-  # This keyword is totally optional
-  ConfigBanner: |
-    # Alternative banner for the config file
-    # (Indented) hash signs lose their special meaning here
-    # and the lines will be written as-is.
-  Port: 22
-  Protocol: 2
-  HostKey:
-    - /etc/ssh/ssh_host_rsa_key
-    - /etc/ssh/ssh_host_dsa_key
-    - /etc/ssh/ssh_host_ecdsa_key
-    - /etc/ssh/ssh_host_ed25519_key
-  UsePrivilegeSeparation: 'sandbox'
-  SyslogFacility: AUTH
-  LogLevel: INFO
-  ClientAliveInterval: 0
-  ClientAliveCountMax: 3
-  LoginGraceTime: 120
-  PermitRootLogin: 'yes'
-  PasswordAuthentication: 'no'
-  StrictModes: 'yes'
-  MaxAuthTries: 6
-  MaxSessions: 10
-  PubkeyAuthentication: 'yes'
-  AuthorizedKeysCommand: '/usr/bin/sss_ssh_authorizedkeys'
-  AuthorizedKeysCommandUser: 'nobody'
-  IgnoreRhosts: 'yes'
-  HostbasedAuthentication: 'no'
-  PermitEmptyPasswords: 'no'
   ChallengeResponseAuthentication: 'no'
-  AuthenticationMethods: 'publickey,keyboard-interactive'
-  AuthorizedKeysFile: '%h/.ssh/authorized_keys'
-  X11Forwarding: 'no'
-  X11DisplayOffset: 10
-  PrintMotd: 'yes'
-  PrintLastLog: 'yes'
-  TCPKeepAlive: 'yes'
+  X11Forwarding: 'yes'
+  PrintMotd: 'no'
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
   UsePAM: 'yes'
-  UseDNS: 'yes'
-  # set as string
-  AllowUsers: 'vader@10.0.0.1 maul@evil.com sidious luke'
-  # # or set as list
-  # AllowUsers:
-  #   - vader@10.0.0.1
-  #   - maul@evil.com
-  #   - sidious
-  #   - luke
-  # # set as string
-  # DenyUsers: 'yoda chewbaca@112.10.21.1'
-  # or set as list
-  DenyUsers:
-    - yoda
-    - chewbaca@112.10.21.1
-  # # set as string
-  # AllowGroups: 'wheel staff imperial'
-  # or set as list
-  AllowGroups:
-    - wheel
-    - staff
-    - imperial
-  # set as string
-  DenyGroups: 'rebel'
-  # # or set as list
-  # DenyGroups:
-  #   - rebel
-  #   - badcompany
-  matches:
-    sftp_chroot:
-      type:
-        Group: sftpusers
-      options:
-        ChrootDirectory: /sftp-chroot/%u
-        X11Forwarding: 'no'
-        AllowTcpForwarding: 'no'
-        ForceCommand: internal-sftp
-    # Supports complex compound matches in Match criteria. For example, be able
-    # to match against multiple Users for a given Match, or be able to match
-    # against address ranges. Or Groups. Or any combination thereof.
-    #
-    # Support for matching users can take one of several different appearances
-    # in pillar data:
-    match_1:
-      type:
-        User: one_user
-      options:
-        ChrootDirectory: /ex/%u
-    match_2:
-      type:
-        User:
-          - jim
-          - bob
-          - sally
-      options:
-        ChrootDirectory: /ex/%u
-    # Note the syntax of match_3. By using empty dicts for each user, we can
-    # leverage Salt's pillar mergine. If we use simple lists, we cannot do
-    # this; Salt can't merge simple lists, because it doesn't know what order
-    # they ought to be in.
-    match_3:
-      type:
-        User:
-          jim: ~
-          bob: ~
-          sally: ~
-      options:
-        ChrootDirectory: /ex/%u
 
-  # Check `man sshd_config` for supported KexAlgorithms, Ciphers and MACs first.
-  # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
-  # The configuration given in the example below is based on:
-  # https://stribika.github.io/2015/01/04/secure-secure-shell.html
-  # KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256'
-  # yamllint disable rule:line-length
-  # Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-  # MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
-  # yamllint enable rule:line-length
-  KexAlgorithms:
-    - 'curve25519-sha256@libssh.org'
-    - 'diffie-hellman-group-exchange-sha256'
-  Ciphers:
-    - 'chacha20-poly1305@openssh.com'
-    - 'aes256-gcm@openssh.com'
-    - 'aes128-gcm@openssh.com'
-    - 'aes256-ctr'
-    - 'aes192-ctr'
-    - 'aes128-ctr'
-  MACs:
-    - 'hmac-sha2-512-etm@openssh.com'
-    - 'hmac-sha2-256-etm@openssh.com'
-    - 'umac-128-etm@openssh.com'
-    - 'hmac-sha2-512'
-    - 'hmac-sha2-256'
-    - 'umac-128@openssh.com'
-
-# Warning! You should generally NOT NEED to set ssh_config. Setting ssh_config
-# pillar will overwrite the defaults of your distribution's SSH client. This
-# will also force the default configuration for all the SSH clients on the
-# machine. This can break SSH connections with servers using older versions of
-# openssh. Please make sure you understand the implication of different settings
 ssh_config:
   Hosts:
     '*':
-      StrictHostKeyChecking: 'no'
-      ForwardAgent: 'no'
-      ForwardX11: 'no'
-      RhostsRSAAuthentication: 'no'
-      RSAAuthentication: 'yes'
-      PasswordAuthentication: 'yes'
-      HostbasedAuthentication: 'no'
-      GSSAPIAuthentication: 'no'
-      GSSAPIDelegateCredentials: 'no'
-      BatchMode: 'yes'
-      CheckHostIP: 'yes'
-      AddressFamily: 'any'
-      ConnectTimeout: 0
-      IdentityFile: '~/.ssh/id_rsa'
-      Port: 22
-      Protocol: 2
-      Cipher: '3des'
-      Tunnel: 'no'
-      TunnelDevice: 'any:any'
-      PermitLocalCommand: 'no'
-      VisualHostKey: 'no'
-      # Check `man ssh_config` for supported KexAlgorithms, Ciphers and MACs first.
-      # WARNING! Please make sure you understand the implications of the below
-      # settings. The examples provided below might break your connection to older /
-      # legacy openssh servers.
-      # The configuration given in the example below is based on:
-      # https://stribika.github.io/2015/01/04/secure-secure-shell.html
-      # You can specify KexAlgorithms, Ciphers and MACs as both key or a list.
-      # yamllint disable rule:line-length
-      # KexAlgorithms: 'curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1'
-      # Ciphers: 'chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr'
-      # MACs: 'hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com'
-      # yamllint enable rule:line-length
-      KexAlgorithms:
-        - 'curve25519-sha256@libssh.org'
-        - 'diffie-hellman-group-exchange-sha256'
-        - 'diffie-hellman-group-exchange-sha1'
-        - 'diffie-hellman-group14-sha1'
-      Ciphers:
-        - 'chacha20-poly1305@openssh.com'
-        - 'aes256-gcm@openssh.com'
-        - 'aes128-gcm@openssh.com'
-        - 'aes256-ctr'
-        - 'aes192-ctr'
-        - 'aes128-ctr'
-      MACs:
-        - 'hmac-sha2-512-etm@openssh.com'
-        - 'hmac-sha2-256-etm@openssh.com'
-        - 'umac-128-etm@openssh.com'
-        - 'hmac-sha2-512'
-        - 'hmac-sha2-256'
-        - 'umac-128@openssh.com'
+      GSSAPIAuthentication: 'yes'
+      HashKnownHosts: 'yes'
+      SendEnv: 'LANG LC_*'
 
 
 openssh:

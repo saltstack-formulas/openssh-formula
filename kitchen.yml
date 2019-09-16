@@ -154,7 +154,7 @@ suites:
       state_top:
         base:
           '*':
-            - openssh
+            - openssh.config
       pillars:
         top.sls:
           base:
