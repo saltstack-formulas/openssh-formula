@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=jinja
 
-{## Start imports as  ##}
+{#- Start imports as #}
 {% import_yaml 'openssh/defaults.yaml' as default_settings %}
 {% import_yaml 'openssh/osfamilymap.yaml' as osfamilymap %}
 {% import_yaml 'openssh/osmap.yaml' as osmap %}
@@ -16,7 +16,7 @@
     )
 ) %}
 
-{## merge the openssh pillar ##}
+{#- merge the openssh pillar #}
 {% set openssh = salt['pillar.get']('openssh', default=defaults['openssh'], merge=True) %}
 {% set ssh_config = salt['pillar.get']('ssh_config', default=defaults['ssh_config'], merge=True) %}
 {% set sshd_config = salt['pillar.get']('sshd_config', default=defaults['sshd_config'], merge=True) %}
