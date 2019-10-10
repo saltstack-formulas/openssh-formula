@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.42.2](https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.1...v0.42.2) (2019-10-09)
+
+
+### Bug Fixes
+
+* **config.sls:** fix `salt-lint` errors ([](https://github.com/saltstack-formulas/openssh-formula/commit/7e35335))
+* **map.jinja:** fix `salt-lint` errors ([](https://github.com/saltstack-formulas/openssh-formula/commit/55560a6))
+
+
+### Continuous Integration
+
+* **kitchen:** change `log_level` to `debug` instead of `info` ([](https://github.com/saltstack-formulas/openssh-formula/commit/4ca3ca1))
+* **kitchen:** install required packages to bootstrapped `opensuse` [skip ci] ([](https://github.com/saltstack-formulas/openssh-formula/commit/1b236db))
+* **kitchen:** use bootstrapped `opensuse` images until `2019.2.2` [skip ci] ([](https://github.com/saltstack-formulas/openssh-formula/commit/32dd705))
+* **platform:** add `arch-base-latest` (commented out for now) [skip ci] ([](https://github.com/saltstack-formulas/openssh-formula/commit/4644018))
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([](https://github.com/saltstack-formulas/openssh-formula/commit/72ade05))
+
 ## [0.42.1](https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.0...v0.42.1) (2019-09-16)
 
 

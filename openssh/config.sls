@@ -100,7 +100,7 @@ ssh_host_{{ keyType }}_key:  # set permissions
   file.managed:
     - name: {{ keyFile }}
     - replace: false
-    - mode: 0600
+    - mode: '0600'
     - require:
       - cmd: ssh_generate_host_{{ keyType }}_key
     {%- if sshd_config %}
