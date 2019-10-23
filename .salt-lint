@@ -4,8 +4,10 @@
 exclude_paths:
   # This is actually a Python file
   - _pillar/known_hosts_salt_ssh.sls
-  # Violation: [204] Lines should be no longer that 160 chars
-  - test/salt/pillar/default.sls
+rules:
+  204:  # Lines should be no longer that 160 chars
+    ignore: |
+      test/salt/pillar/default.sls
 skip_list:
   # Using `salt-lint` for linting other files as well, such as Jinja macros/templates
   - 205  # Use ".sls" as a Salt State file extension
