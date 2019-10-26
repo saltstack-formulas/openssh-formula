@@ -1,8 +1,11 @@
 # Overide by Platform
-root_group = 'root'
-if platform[:family] == 'freebsd'
-  root_group = 'wheel'
-end
+root_group =
+  case platform[:family]
+  when 'bsd'
+    'wheel'
+  else
+    'root'
+  end
 
 control 'openssh configuration' do
   title 'should match desired lines'
