@@ -2,6 +2,30 @@
 Changelog
 =========
 
+`0.42.3 <https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.2...v0.42.3>`_ (2019-10-27)
+------------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen:** use ``debian-10-master-py3`` instead of ``develop`` [skip ci] (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/5d3f92c>`_\ )
+* **travis:** update ``salt-lint`` config for ``v0.0.10`` [skip ci] (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/88fed56>`_\ )
+* merge travis matrix, add ``salt-lint`` & ``rubocop`` to ``lint`` job (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/41d712f>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **contributing:** remove to use org-level file instead [skip ci] (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/b564d8d>`_\ )
+* **readme:** update link to ``CONTRIBUTING`` [skip ci] (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/8eaf5e4>`_\ )
+
+Tests
+^^^^^
+
+
+* **inspec:** fix ``config_spec`` tests on *BSD (\ ``wheel`` not ``root``\ ) (\ ` <https://github.com/saltstack-formulas/openssh-formula/commit/047b753>`_\ )
+
 `0.42.2 <https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.1...v0.42.2>`_ (2019-10-09)
 ------------------------------------------------------------------------------------------------------------
 
