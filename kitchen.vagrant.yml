@@ -5,42 +5,13 @@ driver:
   name: vagrant
 
 platforms:
-  - name: centos-6.8
-  - name: centos-7.2
-  - name: ubuntu-14.04
-  - name: ubuntu-16.04
-  - name: debian-8.5
-  - name: freebsd-10.3
+  - name: freebsd-120-2019-2-py3
     driver:
+      box_url: https://freebsd.z.vstack.com/FreeBSD-12.0.box
       cache_directory: false
-  - name: freebsd-11.0
-    driver:
-      cache_directory: false
-
-provisioner:
-  name: salt_solo
-  salt_install: bootstrap
-  salt_bootstrap_url: https://bootstrap.saltstack.com
-  salt_version: latest
-  formula: openssh
-  pillars:
-    top.sls:
-      base:
-        '*':
-          - openssh
-    openssh.sls:
-      sshd_config:
-        Port: 22
-      ssh_config:
-        Port: 22
-      openssh:
-        sshd_config_mode: '600'
-
-suites:
-  - name: default
-    provisioner:
-      salt_bootstrap_options: -X -d
-      state_top:
-        base:
-          '*':
-            - openssh.config
+      customize:
+        usbxhci: 'off'
+      gui: false
+      linked_clone: true
+      ssh:
+        shell: '/bin/sh'
