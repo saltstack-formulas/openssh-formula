@@ -117,7 +117,7 @@ setup those functions through pillar::
       public_ssh_host_keys:
         mine_function: cmd.run
         cmd: cat /etc/ssh/ssh_host_*_key.pub
-        python_shell: True
+        python_shell: true
       public_ssh_hostname:
         mine_function: grains.get
         key: id
@@ -210,7 +210,7 @@ To **include localhost** and local IP addresses (``127.0.0.1`` and ``::1``) use 
 
     openssh:
       known_hosts:
-        include_localhost: True
+        include_localhost: true
 
 To prevent ever-changing IP addresses from being added to a host, use this::
 
@@ -223,7 +223,7 @@ To completely disable adding IP addresses::
 
     openssh:
       known_hosts:
-        omit_ip_address: True
+        omit_ip_address: true
 
 ``openssh.moduli``
 ^^^^^^^^^^^^^^^^^^
