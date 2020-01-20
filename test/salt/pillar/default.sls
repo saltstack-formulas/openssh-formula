@@ -168,6 +168,8 @@ openssh:
     static:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
       gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
+    omit_ip_address:
+      - github.com
 
   # specify DH parameters (see /etc/ssh/moduli)
   # yamllint disable rule:line-length

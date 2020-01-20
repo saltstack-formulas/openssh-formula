@@ -335,6 +335,13 @@ openssh:
     static:
       github.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]'
       gitlab.com: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]'
+    # Prevent an ever-changing ssh_known_hosts file caused by a domain which
+    # is served from multiple IP addresses.
+    # To disable completely:
+    # omit_ip_address: true
+    # Or to disable by specific hosts:
+    omit_ip_address:
+      - github.com
 
   # yamllint disable rule:line-length
   # specify DH parameters (see /etc/ssh/moduli)

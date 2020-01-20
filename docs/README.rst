@@ -212,6 +212,19 @@ To **include localhost** and local IP addresses (``127.0.0.1`` and ``::1``) use 
       known_hosts:
         include_localhost: True
 
+To prevent ever-changing IP addresses from being added to a host, use this::
+
+    openssh:
+      known_hosts:
+        omit_ip_address:
+          - my.host.tld
+
+To completely disable adding IP addresses::
+
+    openssh:
+      known_hosts:
+        omit_ip_address: True
+
 ``openssh.moduli``
 ^^^^^^^^^^^^^^^^^^
 
