@@ -1,5 +1,36 @@
 # Changelog
 
+# [0.43.0](https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.3...v0.43.0) (2020-01-20)
+
+
+### Bug Fixes
+
+* **release.config.js:** use full commit hash in commit link [skip ci] ([0f68f19](https://github.com/saltstack-formulas/openssh-formula/commit/0f68f1957e6a49b5b06d85672dc2f57f33660416))
+
+
+### Continuous Integration
+
+* **gemfile:** restrict `train` gem version until upstream fix [skip ci] ([14787d1](https://github.com/saltstack-formulas/openssh-formula/commit/14787d1d3ed6ddc1c62f615688aa838a02336d96))
+* **kitchen:** add pre-salted `FreeBSD-12.0` box for local testing ([ec81c32](https://github.com/saltstack-formulas/openssh-formula/commit/ec81c32210c40d5c53f54b5b657b9be5aa0fb2d9))
+* **kitchen:** use `develop` image until `master` is ready (`amazonlinux`) [skip ci] ([d22ac05](https://github.com/saltstack-formulas/openssh-formula/commit/d22ac056e5b557cb77644fc3fd1dcd405f16949a))
+* **kitchen+travis:** upgrade matrix after `2019.2.2` release [skip ci] ([3aa890e](https://github.com/saltstack-formulas/openssh-formula/commit/3aa890eff78fc0fecea4d9bc0be89aff22f6b7f3))
+* **travis:** apply changes from build config validation [skip ci] ([8bdd13f](https://github.com/saltstack-formulas/openssh-formula/commit/8bdd13fd0f2fe137d09611bd310574ab8bc0c4e1))
+* **travis:** opt-in to `dpl v2` to complete build config validation [skip ci] ([2802793](https://github.com/saltstack-formulas/openssh-formula/commit/28027937f8699273fec849eab5b8c74ce7778ea1))
+* **travis:** quote pathspecs used with `git ls-files` [skip ci] ([fa3b9a3](https://github.com/saltstack-formulas/openssh-formula/commit/fa3b9a342e3f483f62aaeb73c5fe3e589ff9878c))
+* **travis:** run `shellcheck` during lint job [skip ci] ([cd91262](https://github.com/saltstack-formulas/openssh-formula/commit/cd9126248c5c27646c8aab0eb4cb0e6ffe189535))
+* **travis:** use `major.minor` for `semantic-release` version [skip ci] ([dfaeb8f](https://github.com/saltstack-formulas/openssh-formula/commit/dfaeb8f505e814d996bc8a2432a4ccee414af4fc))
+* **travis:** use build config validation (beta) [skip ci] ([840ab6a](https://github.com/saltstack-formulas/openssh-formula/commit/840ab6a2fc0a6569baf91a4af589e4a43d639d48))
+
+
+### Features
+
+* **ssh_known_hosts:** allow to omit IP addresses ([ea221ab](https://github.com/saltstack-formulas/openssh-formula/commit/ea221ab52b0bd77173e83f5eb8b116324ad7c280))
+
+
+### Performance Improvements
+
+* **travis:** improve `salt-lint` invocation [skip ci] ([875148b](https://github.com/saltstack-formulas/openssh-formula/commit/875148b387f37533e5d43b72142f4078b7dd432a))
+
 ## [0.42.3](https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.2...v0.42.3) (2019-10-27)
 
 
