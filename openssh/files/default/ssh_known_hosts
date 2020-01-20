@@ -3,11 +3,16 @@
 #}
 
 {#- Generates one known_hosts entry per given key #}
-{%- macro known_host_entry(host, host_names, keys, include_localhost) %}
+{%- macro known_host_entry(host, host_names, keys, include_localhost, omit_ip_address) %}
 
 {#-   Get IPv4 and IPv6 addresses from the DNS #}
-{%-   set ip4 = salt['dig.A'](host) -%}
-{%-   set ip6 = salt['dig.AAAA'](host) -%}
+{%-   if not (omit_ip_address is sameas true or host in omit_ip_address) %}
+{%-     set ip4 = salt['dig.A'](host) -%}
+{%-     set ip6 = salt['dig.AAAA'](host) -%}
+{%-   else %}
+{%-     set ip4 = [] -%}
+{%-     set ip6 = [] -%}
+{%-   endif %}
 
 {#-   The host names to use are to be found within the dict 'host_names'. #}
 {#-   If there are none, the host is used directly. #}
@@ -59,6 +64,7 @@
 {%- set hostnames_target = salt['pillar.get']('openssh:known_hosts:hostnames:target', hostnames_target_default) -%}
 {%- set hostnames_tgt_type = salt['pillar.get']('openssh:known_hosts:hostnames:tgt_type', 'glob') -%}
 {%- set include_localhost = salt['pillar.get']('openssh:known_hosts:include_localhost', False) -%}
+{%- set omit_ip_address = salt['pillar.get']('openssh:known_hosts:omit_ip_address', []) -%}
 
 {#- Lookup IP of all aliases so that when we have a matching IP, we inject the alias name
     in the SSH known_hosts entry -#}
@@ -98,5 +104,5 @@
 
 {#- Loop over targetted minions -#}
 {%- for host, keys in host_keys| dictsort -%}
-{{ known_host_entry(host, host_names, keys, include_localhost) }}
+{{ known_host_entry(host, host_names, keys, include_localhost, omit_ip_address) }}
 {%- endfor -%}
