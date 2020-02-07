@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`0.43.1 <https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.0...v0.43.1>`_ (2020-02-07)
+------------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile:** update for Vagrant testing [skip ci] (\ `7257ade <https://github.com/saltstack-formulas/openssh-formula/commit/7257adefee8c19a477b315a15ab93679baf877bb>`_\ )
+* **kitchen:** avoid using bootstrap for ``master`` instances [skip ci] (\ `ddbc3b2 <https://github.com/saltstack-formulas/openssh-formula/commit/ddbc3b228b09301c6a1d9030d8341f2638de077c>`_\ )
+
+Tests
+^^^^^
+
+
+* **packages_spec:** prevent control for ``bsd`` family (\ `fe1af09 <https://github.com/saltstack-formulas/openssh-formula/commit/fe1af098b3a84f2695a67fbc2ac416b6ab5f1dc6>`_\ )
+
 `0.43.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v0.42.3...v0.43.0>`_ (2020-01-20)
 ------------------------------------------------------------------------------------------------------------
 
