@@ -4,7 +4,7 @@ This list is sorted by the number of commits per contributor in _descending_ ord
 
 Avatar|Contributor|Contributions
 :-:|---|:-:
-<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|54
+<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|55
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1920805?v=4' width='36' height='36' alt='@alxwr'>|[@alxwr](https://github.com/alxwr)|38
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/1396878?v=4' width='36' height='36' alt='@gravyboat'>|[@gravyboat](https://github.com/gravyboat)|28
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1800660?v=4' width='36' height='36' alt='@aboe76'>|[@aboe76](https://github.com/aboe76)|25
@@ -34,6 +34,7 @@ Avatar|Contributor|Contributions
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/776662?v=4' width='36' height='36' alt='@carlosperello'>|[@carlosperello](https://github.com/carlosperello)|2
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/114159?v=4' width='36' height='36' alt='@fpletz'>|[@fpletz](https://github.com/fpletz)|2
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/5255388?v=4' width='36' height='36' alt='@ingben'>|[@ingben](https://github.com/ingben)|2
+<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/675056?v=4' width='36' height='36' alt='@OrangeDog'>|[@OrangeDog](https://github.com/OrangeDog)|2
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/2285387?v=4' width='36' height='36' alt='@kyrias'>|[@kyrias](https://github.com/kyrias)|2
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/924183?v=4' width='36' height='36' alt='@mschiff'>|[@mschiff](https://github.com/mschiff)|2
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/3768412?v=4' width='36' height='36' alt='@stp-ip'>|[@stp-ip](https://github.com/stp-ip)|2
@@ -52,7 +53,6 @@ Avatar|Contributor|Contributions
 <img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/13131979?v=4' width='36' height='36' alt='@BT-dschleich'>|[@BT-dschleich](https://github.com/BT-dschleich)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/3012076?v=4' width='36' height='36' alt='@fzipi'>|[@fzipi](https://github.com/fzipi)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/94157?v=4' width='36' height='36' alt='@imran1008'>|[@imran1008](https://github.com/imran1008)|1
-<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/675056?v=4' width='36' height='36' alt='@OrangeDog'>|[@OrangeDog](https://github.com/OrangeDog)|1
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/637504?v=4' width='36' height='36' alt='@jasperla'>|[@jasperla](https://github.com/jasperla)|1
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/350294?v=4' width='36' height='36' alt='@anderbubble'>|[@anderbubble](https://github.com/anderbubble)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/7613500?v=4' width='36' height='36' alt='@levlozhkin'>|[@levlozhkin](https://github.com/levlozhkin)|1

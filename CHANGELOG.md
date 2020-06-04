@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.43.3](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.2...v0.43.3) (2020-06-04)
+
+
+### Bug Fixes
+
+* **config_ini:** stop failing after the first application ([c7777c7](https://github.com/saltstack-formulas/openssh-formula/commit/c7777c74b27192d8d04a038e56db312d176ef08a))
+
 ## [0.43.2](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.1...v0.43.2) (2020-06-04)
 
 

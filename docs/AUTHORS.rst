@@ -15,7 +15,7 @@ This list is sorted by the number of commits per contributor in *descending* ord
      - Contributions
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>`
      - `@myii <https://github.com/myii>`_
-     - 54
+     - 55
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1920805?v=4' width='36' height='36' alt='@alxwr'>`
      - `@alxwr <https://github.com/alxwr>`_
      - 38
@@ -103,6 +103,9 @@ This list is sorted by the number of commits per contributor in *descending* ord
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/5255388?v=4' width='36' height='36' alt='@ingben'>`
      - `@ingben <https://github.com/ingben>`_
      - 2
+   * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/675056?v=4' width='36' height='36' alt='@OrangeDog'>`
+     - `@OrangeDog <https://github.com/OrangeDog>`_
+     - 2
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/2285387?v=4' width='36' height='36' alt='@kyrias'>`
      - `@kyrias <https://github.com/kyrias>`_
      - 2
@@ -156,9 +159,6 @@ This list is sorted by the number of commits per contributor in *descending* ord
      - 1
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/94157?v=4' width='36' height='36' alt='@imran1008'>`
      - `@imran1008 <https://github.com/imran1008>`_
-     - 1
-   * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/675056?v=4' width='36' height='36' alt='@OrangeDog'>`
-     - `@OrangeDog <https://github.com/OrangeDog>`_
      - 1
    * - :raw-html-m2r:`<img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/637504?v=4' width='36' height='36' alt='@jasperla'>`
      - `@jasperla <https://github.com/jasperla>`_
