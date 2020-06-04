@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.43.2](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.1...v0.43.2) (2020-06-04)
+
+
+### Bug Fixes
+
+* **config_ini:** ensure the tab replacement happens before the edit ([b26b99d](https://github.com/saltstack-formulas/openssh-formula/commit/b26b99d3d0a48dfe1142b0a35a151b558b4d4b73)), closes [#162](https://github.com/saltstack-formulas/openssh-formula/issues/162)
+* **libtofs:** “files_switch” mess up the variable exported by “map.jinja” [skip ci] ([053b787](https://github.com/saltstack-formulas/openssh-formula/commit/053b7879fdfbf78e81b3d11100bc14e601fabc23))
+
+
+### Continuous Integration
+
+* **gemfile:** remove unused `rspec-retry` gem [skip ci] ([5be1c1f](https://github.com/saltstack-formulas/openssh-formula/commit/5be1c1f47cf07a308485153cf7f4b41af3d60221))
+* **gemfile.lock:** add to repo with updated `Gemfile` [skip ci] ([e53bcc1](https://github.com/saltstack-formulas/openssh-formula/commit/e53bcc14dc28191d0294ff2947df97829e93f2d1))
+* **kitchen+travis:** remove `master-py2-arch-base-latest` [skip ci] ([0977485](https://github.com/saltstack-formulas/openssh-formula/commit/0977485b6b615fb3eb86f4265413f04f8048329b))
+* **travis:** add notifications => zulip [skip ci] ([597aeb5](https://github.com/saltstack-formulas/openssh-formula/commit/597aeb586191effc16269c9cb28ef6d723b68781))
+* **workflows/commitlint:** add to repo [skip ci] ([fa6c65b](https://github.com/saltstack-formulas/openssh-formula/commit/fa6c65b852ef77431eaf90a73db987dc641382c3))
+
 ## [0.43.1](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.0...v0.43.1) (2020-02-07)
 
 
