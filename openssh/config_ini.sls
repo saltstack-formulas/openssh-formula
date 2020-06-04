@@ -27,4 +27,6 @@ sshd_config-with-ini:
         {%- for k,v in sshd_config.items() %}
         {{ k }}: '{{ v }}'
         {%- endfor %}
+    - require:
+      - file: sshd_config-with-ini
 {%- endif %}
