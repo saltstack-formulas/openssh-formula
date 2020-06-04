@@ -15,7 +15,7 @@ sshd_config-with-ini:
     - repl: '\1 \2'
     - show_changes: True
     - require_in:
-      - ini_manage: sshd_config-with-ini
+      - ini: sshd_config-with-ini
   {%- endif %}
 
   ini.options_present:
@@ -27,6 +27,4 @@ sshd_config-with-ini:
         {%- for k,v in sshd_config.items() %}
         {{ k }}: '{{ v }}'
         {%- endfor %}
-    - require:
-      - file: sshd_config-with-ini
 {%- endif %}
