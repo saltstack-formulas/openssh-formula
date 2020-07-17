@@ -4,7 +4,7 @@ This list is sorted by the number of commits per contributor in _descending_ ord
 
 Avatar|Contributor|Contributions
 :-:|---|:-:
-<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|62
+<img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/10231489?v=4' width='36' height='36' alt='@myii'>|[@myii](https://github.com/myii)|63
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1920805?v=4' width='36' height='36' alt='@alxwr'>|[@alxwr](https://github.com/alxwr)|38
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/1396878?v=4' width='36' height='36' alt='@gravyboat'>|[@gravyboat](https://github.com/gravyboat)|28
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1800660?v=4' width='36' height='36' alt='@aboe76'>|[@aboe76](https://github.com/aboe76)|25
@@ -23,6 +23,7 @@ Avatar|Contributor|Contributions
 <img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/3375654?v=4' width='36' height='36' alt='@nterupt'>|[@nterupt](https://github.com/nterupt)|4
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/10141454?v=4' width='36' height='36' alt='@mathieupotier'>|[@mathieupotier](https://github.com/mathieupotier)|4
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/1079875?v=4' width='36' height='36' alt='@bogdanr'>|[@bogdanr](https://github.com/bogdanr)|3
+<img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1233212?v=4' width='36' height='36' alt='@baby-gnu'>|[@baby-gnu](https://github.com/baby-gnu)|3
 <img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/287147?v=4' width='36' height='36' alt='@techhat'>|[@techhat](https://github.com/techhat)|3
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/13550?v=4' width='36' height='36' alt='@mikemol'>|[@mikemol](https://github.com/mikemol)|3
 <img class='float-left rounded-1' src='https://avatars2.githubusercontent.com/u/358074?v=4' width='36' height='36' alt='@pcdummy'>|[@pcdummy](https://github.com/pcdummy)|3
@@ -50,7 +51,6 @@ Avatar|Contributor|Contributions
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/1566437?v=4' width='36' height='36' alt='@bkmit'>|[@bkmit](https://github.com/bkmit)|1
 <img class='float-left rounded-1' src='https://avatars3.githubusercontent.com/u/20098965?v=4' width='36' height='36' alt='@brianholland99'>|[@brianholland99](https://github.com/brianholland99)|1
 <img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/20441?v=4' width='36' height='36' alt='@iggy'>|[@iggy](https://github.com/iggy)|1
-<img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/1233212?v=4' width='36' height='36' alt='@baby-gnu'>|[@baby-gnu](https://github.com/baby-gnu)|1
 <img class='float-left rounded-1' src='https://avatars1.githubusercontent.com/u/13131979?v=4' width='36' height='36' alt='@BT-dschleich'>|[@BT-dschleich](https://github.com/BT-dschleich)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/3012076?v=4' width='36' height='36' alt='@fzipi'>|[@fzipi](https://github.com/fzipi)|1
 <img class='float-left rounded-1' src='https://avatars0.githubusercontent.com/u/94157?v=4' width='36' height='36' alt='@imran1008'>|[@imran1008](https://github.com/imran1008)|1

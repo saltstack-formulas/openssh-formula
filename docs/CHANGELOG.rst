@@ -2,6 +2,21 @@
 Changelog
 =========
 
+`1.1.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.0.0...v1.1.0>`_ (2020-07-17)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **inspec:** make rubocop happy (\ `2cfb5a7 <https://github.com/saltstack-formulas/openssh-formula/commit/2cfb5a74f32fa0f429b62a0c2053278859463418>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **test:** remove serverspec files (\ `049db2b <https://github.com/saltstack-formulas/openssh-formula/commit/049db2bc8edbe224a6f47c623d7afe939e5b7992>`_\ )
+
 `1.0.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.3...v1.0.0>`_ (2020-07-17)
 ----------------------------------------------------------------------------------------------------------
 
