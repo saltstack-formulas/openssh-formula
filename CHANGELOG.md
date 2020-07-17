@@ -1,5 +1,23 @@
 # Changelog
 
+# [1.0.0](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.3...v1.0.0) (2020-07-17)
+
+
+### Continuous Integration
+
+* **kitchen:** use `saltimages` Docker Hub where available [skip ci] ([bb1ac71](https://github.com/saltstack-formulas/openssh-formula/commit/bb1ac717862a2c659800c4163a0d56f035c08ed7))
+
+
+### Features
+
+* **templates:** don't get openssh pillars in templates ([cb6e48f](https://github.com/saltstack-formulas/openssh-formula/commit/cb6e48feaad2649fd008bf71071e5b803b59628e))
+
+
+### BREAKING CHANGES
+
+* **templates:** Minimum Salt version support is now `2019.2` in line
+with official upstream support; also use of the `traverse` Jinja filter.
+
 ## [0.43.3](https://github.com/saltstack-formulas/openssh-formula/compare/v0.43.2...v0.43.3) (2020-06-04)
 
 
