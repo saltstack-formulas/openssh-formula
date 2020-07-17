@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Overide by Platform
 root_group =
   case platform[:family]

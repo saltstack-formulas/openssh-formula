@@ -1,8 +1,8 @@
+# frozen_string_literal: true
+
 # Overide by Platform
 service_name = 'sshd'
-if platform[:family] == 'debian'
-  service_name = 'ssh'
-end
+service_name = 'ssh' if platform[:family] == 'debian'
 
 control 'openssh service' do
   impact 0.5
