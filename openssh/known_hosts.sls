@@ -14,6 +14,8 @@ manage ssh_known_hosts file:
                                'manage ssh_known_hosts file'
               ) }}
     - template: jinja
+    - context:
+        known_hosts: {{ openssh | traverse("known_hosts", {}) }}
     - user: root
     - group: {{ openssh.ssh_config_group }}
     - mode: 644

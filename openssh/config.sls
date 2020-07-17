@@ -16,6 +16,8 @@ sshd_config:
                                     'sshd_config'
               ) }}
     - template: jinja
+    - context:
+        sshd_config: {{ sshd_config }}
     - user: {{ openssh.sshd_config_user }}
     - group: {{ openssh.sshd_config_group }}
     - mode: {{ openssh.sshd_config_mode }}
@@ -37,6 +39,8 @@ ssh_config:
                                     'ssh_config'
               ) }}
     - template: jinja
+    - context:
+        ssh_config: {{ ssh_config }}
     - user: {{ openssh.ssh_config_user }}
     - group: {{ openssh.ssh_config_group }}
     - mode: {{ openssh.ssh_config_mode }}
