@@ -1,5 +1,3 @@
-{% from "openssh/map.jinja" import ssh_config with context %}
-
 {#- present in ssh_config and known in actual file options -#}
 {%- set processed_options = [] -%}
 {%- set string_or_list_options = ['KexAlgorithms', 'Ciphers', 'MACs'] -%}
