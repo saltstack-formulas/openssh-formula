@@ -25,17 +25,14 @@ stages:
   - name: 'release'
     if: 'branch = master AND type != pull_request'
 jobs:
-  allow_failures:
-    - env: Lint_rubocop
-  fast_finish: true
   include:
     ## Define the test stage that runs the linters (and testing matrix, if applicable)
 
-    # Run all of the linters in a single job (except `rubocop`)
+    # Run all of the linters in a single job
     - language: 'node_js'
       node_js: 'lts/*'
       env: 'Lint'
-      name: 'Lint: salt-lint, yamllint, shellcheck & commitlint'
+      name: 'Lint: salt-lint, yamllint, rubocop, shellcheck & commitlint'
       before_install: 'skip'
       script:
         # Install and run `salt-lint`
@@ -46,6 +43,9 @@ jobs:
         # Need at least `v1.17.0` for the `yaml-files` setting
         - pip install --user yamllint>=1.17.0
         - yamllint -s .
+        # Install and run `rubocop`
+        - gem install rubocop
+        - rubocop -d
         # Run `shellcheck` (already pre-installed in Travis)
         - shellcheck --version
         - git ls-files -- '*.sh' '*.bash' '*.ksh'
@@ -54,50 +54,41 @@ jobs:
         - npm i -D @commitlint/config-conventional
                    @commitlint/travis-cli
         - commitlint-travis
-    # Run the `rubocop` linter in a separate job that is allowed to fail
-    # Once these lint errors are fixed, this can be merged into a single job
-    - language: node_js
-      node_js: lts/*
-      env: Lint_rubocop
-      name: 'Lint: rubocop'
-      before_install: skip
-      script:
-        # Install and run `rubocop`
-        - gem install rubocop
-        - rubocop -d
 
     ## Define the rest of the matrix based on Kitchen testing
     # Make sure the instances listed below match up with
     # the `platforms` defined in `kitchen.yml`
     - env: INSTANCE=default-debian-10-master-py3
+    - env: INSTANCE=default-ubuntu-2004-master-py3
     # - env: INSTANCE=default-ubuntu-1804-master-py3
-    # - env: INSTANCE=default-centos-8-master-py3
+    - env: INSTANCE=default-centos-8-master-py3
+    - env: INSTANCE=default-fedora-32-master-py3
     # - env: INSTANCE=default-fedora-31-master-py3
-    # - env: INSTANCE=default-opensuse-leap-151-master-py3
-    # - env: INSTANCE=default-amazonlinux-2-master-py3
+    - env: INSTANCE=default-opensuse-leap-152-master-py3
+    - env: INSTANCE=default-amazonlinux-2-master-py3
+    # - env: INSTANCE=default-debian-10-3000-3-py3
+    # - env: INSTANCE=default-debian-9-3000-3-py3
+    # - env: INSTANCE=default-ubuntu-1804-3000-3-py3
+    # - env: INSTANCE=default-centos-8-3000-3-py3
+    # - env: INSTANCE=default-centos-7-3000-3-py3
+    # - env: INSTANCE=default-fedora-31-3000-3-py3
+    # - env: INSTANCE=default-opensuse-leap-152-3000-3-py3
+    # - env: INSTANCE=default-amazonlinux-2-3000-3-py3
+    # - env: INSTANCE=default-ubuntu-1804-3000-3-py2
+    # - env: INSTANCE=default-ubuntu-1604-3000-3-py2
+    # - env: INSTANCE=default-arch-base-latest-3000-3-py2
     # - env: INSTANCE=default-debian-10-2019-2-py3
     # - env: INSTANCE=default-debian-9-2019-2-py3
-    - env: INSTANCE=default-ubuntu-1804-2019-2-py3
+    # - env: INSTANCE=default-ubuntu-1804-2019-2-py3
+    # - env: INSTANCE=default-ubuntu-1604-2019-2-py3
     # - env: INSTANCE=default-centos-8-2019-2-py3
+    # - env: INSTANCE=default-centos-7-2019-2-py3
     # - env: INSTANCE=default-fedora-31-2019-2-py3
-    - env: INSTANCE=default-opensuse-leap-151-2019-2-py3
-    # - env: INSTANCE=default-centos-7-2019-2-py2
-    - env: INSTANCE=default-amazonlinux-2-2019-2-py3
-    # - env: INSTANCE=default-arch-base-latest-2019-2-py2
-    - env: INSTANCE=default-fedora-30-2018-3-py3
-    # - env: INSTANCE=default-debian-9-2018-3-py2
-    # - env: INSTANCE=default-ubuntu-1604-2018-3-py2
-    # - env: INSTANCE=default-centos-7-2018-3-py2
-    # - env: INSTANCE=default-opensuse-leap-151-2018-3-py2
-    # - env: INSTANCE=default-amazonlinux-1-2018-3-py2
-    # - env: INSTANCE=default-arch-base-latest-2018-3-py2
-    # - env: INSTANCE=default-debian-8-2017-7-py2
-    # - env: INSTANCE=default-ubuntu-1604-2017-7-py2
-    - env: INSTANCE=default-centos-6-2017-7-py2
-    # - env: INSTANCE=default-fedora-30-2017-7-py2
-    # - env: INSTANCE=default-opensuse-leap-151-2017-7-py2
-    # - env: INSTANCE=default-amazonlinux-1-2017-7-py2
-    # - env: INSTANCE=default-arch-base-latest-2017-7-py2
+    # - env: INSTANCE=default-opensuse-leap-152-2019-2-py3
+    # - env: INSTANCE=default-amazonlinux-2-2019-2-py3
+    # - env: INSTANCE=default-centos-6-2019-2-py2
+    # - env: INSTANCE=default-amazonlinux-1-2019-2-py2
+    - env: INSTANCE=default-arch-base-latest-2019-2-py2
 
     ## Define the release stage that runs `semantic-release`
     - stage: 'release'
