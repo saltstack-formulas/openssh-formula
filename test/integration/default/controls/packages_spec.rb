@@ -3,7 +3,8 @@
 # Overide by Platform
 package_name =
   case platform[:family]
-  when 'suse'
+  # `linux` here is sufficient for `arch`
+  when 'suse', 'linux'
     'openssh'
   else
     'openssh-server'
