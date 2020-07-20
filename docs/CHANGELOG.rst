@@ -2,6 +2,28 @@
 Changelog
 =========
 
+`1.2.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.1.0...v1.2.0>`_ (2020-07-20)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **inspec:** the package name for Arch is openssh (\ `6b7d8df <https://github.com/saltstack-formulas/openssh-formula/commit/6b7d8df1560091f615e2138a56d4cb8e50b7ab5c>`_\ )
+* **jinja:** encode context as json (\ `7a1f619 <https://github.com/saltstack-formulas/openssh-formula/commit/7a1f6199d0ed32d6df6249ec9ec3710614642e62>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **ci:** update travis and kitchen to latest formula standards (\ `7752132 <https://github.com/saltstack-formulas/openssh-formula/commit/7752132275db8fa1e3faa0f58974dbb5d44fb0f8>`_\ )
+
+Styles
+^^^^^^
+
+
+* **libtofs.jinja:** use Black-inspired Jinja formatting [skip ci] (\ `9d8228d <https://github.com/saltstack-formulas/openssh-formula/commit/9d8228d9dbd4d6affaf5084db26ba3f852724740>`_\ )
+
 `1.1.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.0.0...v1.1.0>`_ (2020-07-17)
 ---------------------------------------------------------------------------------------------------------
 
