@@ -16,7 +16,7 @@ Debian:
     client: openssh-client
     service: ssh
   sshd_config:
-    Subsystem: sftp /usr/lib/openssh/sftp-server
+    Subsystem: "sftp /usr/lib/openssh/sftp-server"
 
 FreeBSD:
   openssh:
