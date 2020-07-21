@@ -6,7 +6,7 @@ Arch:
     server: openssh
     client: openssh
     service: sshd
-    dig_pkg: bind-tools
+    dig_pkg: bind
   sshd_config:
     Subsystem: sftp /usr/lib/ssh/sftp-server
 
