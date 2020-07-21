@@ -154,6 +154,7 @@ suites:
         base:
           '*':
             - openssh.config
+            - openssh.known_hosts
       pillars:
         top.sls:
           base:

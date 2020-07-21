@@ -5,7 +5,6 @@
 ensure dig is available:
   pkg.installed:
     - name: {{ openssh.dig_pkg }}
-    - unless: which dig
 
 manage ssh_known_hosts file:
   file.managed:
