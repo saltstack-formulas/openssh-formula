@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.1](https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.0...v1.2.1) (2020-07-21)
+
+
+### Bug Fixes
+
+* **known_hosts:** dig package does not install on Arch ([0b667cb](https://github.com/saltstack-formulas/openssh-formula/commit/0b667cbcf5e6560d3e92dc5d36b6649c629bfcd7))
+
+
+### Continuous Integration
+
+* **kitchen:** execute `openssh.known_hosts` state ([644e616](https://github.com/saltstack-formulas/openssh-formula/commit/644e61651d1cee2bc6ea9f7fdc5a7a51ffe342ff))
+
+
+### Tests
+
+* **config_spec:** verify /etc/ssh/ssh_known_hosts ([06ef24b](https://github.com/saltstack-formulas/openssh-formula/commit/06ef24b8e15a8c27433c639846d88d11835209ec))
+
 # [1.2.0](https://github.com/saltstack-formulas/openssh-formula/compare/v1.1.0...v1.2.0) (2020-07-20)
 
 
