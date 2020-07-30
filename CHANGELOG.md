@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.1...v1.2.2) (2020-07-30)
+
+
+### Bug Fixes
+
+* **jinja:** omit_ip_address don't work on some platform ([b2d38ae](https://github.com/saltstack-formulas/openssh-formula/commit/b2d38aec9bd46a64965be0ecb66e7c912a1bf3c6))
+
 ## [1.2.1](https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.0...v1.2.1) (2020-07-21)
 
 
