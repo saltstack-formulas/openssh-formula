@@ -2,6 +2,28 @@
 Changelog
 =========
 
+`1.3.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.2...v1.3.0>`_ (2020-07-30)
+---------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen:** execute ``_mapdata`` state (\ `70389b5 <https://github.com/saltstack-formulas/openssh-formula/commit/70389b5964100cc964d3031dd652f547461a9ab2>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **map:** generate a YAML file to validate ``map.jinja`` (\ `e4ab335 <https://github.com/saltstack-formulas/openssh-formula/commit/e4ab3350773b79f84b6c36042d2015bd21bd9681>`_\ )
+
+Tests
+^^^^^
+
+
+* **inspec:** share library to access some minion informations (\ `a8d61f4 <https://github.com/saltstack-formulas/openssh-formula/commit/a8d61f43072485b8da289442b675fb84be93cf4d>`_\ )
+* **inspec:** verify ``map.jinja`` dump (\ `0eafbd9 <https://github.com/saltstack-formulas/openssh-formula/commit/0eafbd945c1ccaa89eee305ac2f02adf8797a733>`_\ )
+
 `1.2.2 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.1...v1.2.2>`_ (2020-07-30)
 ---------------------------------------------------------------------------------------------------------
 
