@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
-name: share
-title: Inspec shared resources
+name: shared
+title: InSpec shared resources
 maintainer: SaltStack Formulas
 license: Apache-2.0
 summary: shared resources
