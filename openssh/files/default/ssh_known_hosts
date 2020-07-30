@@ -6,7 +6,7 @@
 {%- macro known_host_entry(host, host_names, keys, include_localhost, omit_ip_address) %}
 
 {#-   Get IPv4 and IPv6 addresses from the DNS #}
-{%-   if not (omit_ip_address is sameas true or host in omit_ip_address) %}
+{%-   if not ((omit_ip_address is sameas true) or (host in omit_ip_address)) %}
 {%-     set ip4 = salt['dig.A'](host) -%}
 {%-     set ip6 = salt['dig.AAAA'](host) -%}
 {%-   else %}
