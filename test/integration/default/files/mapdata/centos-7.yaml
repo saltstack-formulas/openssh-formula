@@ -1,0 +1,161 @@
+# yamllint disable rule:indentation rule:line-length
+# CentOS Linux-7
+---
+openssh:
+  absent_dsa_keys: false
+  absent_ecdsa_keys: false
+  absent_ed25519_keys: false
+  absent_rsa_keys: false
+  auth:
+    joe-non-valid-ssh-key:
+    - comment: obsolete key - removed
+      enc: ssh-rsa
+      present: false
+      source: salt://ssh_keys/joe.no-valid.pub
+      user: joe
+    joe-valid-ssh-key-desktop:
+    - comment: main key - desktop
+      enc: ssh-rsa
+      present: true
+      source: salt://ssh_keys/joe.desktop.pub
+      user: joe
+    joe-valid-ssh-key-notebook:
+    - comment: main key - notebook
+      enc: ssh-rsa
+      present: true
+      source: salt://ssh_keys/joe.netbook.pub
+      user: joe
+  auth_map:
+    personal_keys:
+      source: salt://ssh_keys
+      users:
+        joe:
+          joe.desktop: {}
+          joe.netbook:
+            options: []
+          joe.no-valid:
+            present: false
+  banner: /etc/ssh/banner
+  banner_src: banner
+  banner_string: 'Welcome to %{hostname}!
+'
+  client: openssh-clients
+  client_version: latest
+  dig_pkg: bind-utils
+  dsa:
+    private_key: '-----BEGIN DSA PRIVATE KEY-----
+
+      NOT_DEFINED
+
+      -----END DSA PRIVATE KEY-----
+'
+    public_key: 'ssh-dss NOT_DEFINED
+'
+  ecdsa:
+    private_key: '-----BEGIN EC PRIVATE KEY-----
+
+      NOT_DEFINED
+
+      -----END EC PRIVATE KEY-----
+'
+    public_key: 'ecdsa-sha2-nistp256 NOT_DEFINED
+'
+  ed25519:
+    private_key: '-----BEGIN OPENSSH PRIVATE KEY-----
+
+      NOT_DEFINED
+
+      -----END OPENSSH PRIVATE KEY-----
+'
+    public_key: 'ssh-ed25519 NOT_DEFINED
+'
+  enforce_rsa_size: false
+  generate_dsa_keys: false
+  generate_ecdsa_keys: false
+  generate_ed25519_keys: false
+  generate_rsa_keys: false
+  generate_rsa_size: 4096
+  host_key_algos: ecdsa,ed25519,rsa
+  known_hosts:
+    aliases:
+    - cname-to-minion.example.org
+    - alias.example.org
+    hostnames: false
+    include_localhost: false
+    mine_hostname_function: public_ssh_hostname
+    mine_keys_function: public_ssh_host_keys
+    omit_ip_address:
+    - github.com
+    salt_ssh:
+      public_ssh_host_keys:
+        minion.id: 'ssh-rsa [...]
+
+          ssh-ed25519 [...]
+'
+      public_ssh_host_names:
+        minion.id:
+        - minion.id
+        - alias.of.minion.id
+      user: salt-master
+    static:
+      github.com: ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGm[...]
+      gitlab.com: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bN[...]
+    target: '*'
+    tgt_type: glob
+  moduli: '# Time Type Tests Tries Size Generator Modulus
+
+    20120821045639 2 6 100 2047 2 DD2047CBDBB6F8E919BC63DE885B34D0FD6E3DB2887D8B46FE249886ACED6B46DFCD5553168185FD376122171CD8927E60120FA8D01F01D03E58281FEA9A1ABE97631C828E41815F34FDCDF787419FE13A3137649AA93D2584230DF5F24B5C00C88B7D7DE4367693428C730376F218A53E853B0851BAB7C53C15DA7839CBE1285DB63F6FA45C1BB59FE1C5BB918F0F8459D7EF60ACFF5C0FA0F3FCAD1C5F4CE4416D4F4B36B05CDCEBE4FB879E95847EFBC6449CD190248843BC7EDB145FBFC4EDBB1A3C959298F08F3BA2CFBE231BBE204BE6F906209D28BD4820AB3E7BE96C26AE8A809ADD8D1A5A0B008E9570FA4C4697E116B8119892C604293680B09D63
+
+    20120821045830 2 6 100 2047 2 DD2047CBDBB6F8E919BC63DE885B34D0FD6E3DB2887D8B46FE249886ACED6B46DFCD5553168185FD376122171CD8927E60120FA8D01F01D03E58281FEA9A1ABE97631C828E41815F34FDCDF787419FE13A3137649AA93D2584230DF5F24B5C00C88B7D7DE4367693428C730376F218A53E853B0851BAB7C53C15DA7839CBE1285DB63F6FA45C1BB59FE1C5BB918F0F8459D7EF60ACFF5C0FA0F3FCAD1C5F4CE4416D4F4B36B05CDCEBE4FB879E95847EFBC6449CD190248843BC7EDB145FBFC4EDBB1A3C959298F08F3BA2CFBE231BBE204BE6F906209D28BD4820AB3E7BE96C26AE8A809ADD8D1A5A0B008E9570FA4C4697E116B8119892C6042936814C2FFB
+
+    20120821050046 2 6 100 2047 2 DD2047CBDBB6F8E919BC63DE885B34D0FD6E3DB2887D8B46FE249886ACED6B46DFCD5553168185FD376122171CD8927E60120FA8D01F01D03E58281FEA9A1ABE97631C828E41815F34FDCDF787419FE13A3137649AA93D2584230DF5F24B5C00C88B7D7DE4367693428C730376F218A53E853B0851BAB7C53C15DA7839CBE1285DB63F6FA45C1BB59FE1C5BB918F0F8459D7EF60ACFF5C0FA0F3FCAD1C5F4CE4416D4F4B36B05CDCEBE4FB879E95847EFBC6449CD190248843BC7EDB145FBFC4EDBB1A3C959298F08F3BA2CFBE231BBE204BE6F906209D28BD4820AB3E7BE96C26AE8A809ADD8D1A5A0B008E9570FA4C4697E116B8119892C60429368214FC53
+
+    20120821050054 2 6 100 2047 5 DD2047CBDBB6F8E919BC63DE885B34D0FD6E3DB2887D8B46FE249886ACED6B46DFCD5553168185FD376122171CD8927E60120FA8D01F01D03E58281FEA9A1ABE97631C828E41815F34FDCDF787419FE13A3137649AA93D2584230DF5F24B5C00C88B7D7DE4367693428C730376F218A53E853B0851BAB7C53C15DA7839CBE1285DB63F6FA45C1BB59FE1C5BB918F0F8459D7EF60ACFF5C0FA0F3FCAD1C5F4CE4416D4F4B36B05CDCEBE4FB879E95847EFBC6449CD190248843BC7EDB145FBFC4EDBB1A3C959298F08F3BA2CFBE231BBE204BE6F906209D28BD4820AB3E7BE96C26AE8A809ADD8D1A5A0B008E9570FA4C4697E116B8119892C60429368218E83F
+'
+  provide_dsa_keys: false
+  provide_ecdsa_keys: false
+  provide_ed25519_keys: false
+  provide_rsa_keys: false
+  root_group: root
+  rsa:
+    private_key: '-----BEGIN RSA PRIVATE KEY-----
+
+      NOT_DEFINED
+
+      -----END RSA PRIVATE KEY-----
+'
+    public_key: 'ssh-rsa NOT_DEFINED
+'
+  server: openssh-server
+  server_version: latest
+  service: sshd
+  ssh_config: /etc/ssh/ssh_config
+  ssh_config_backup: true
+  ssh_config_group: root
+  ssh_config_mode: '644'
+  ssh_config_src: ssh_config
+  ssh_config_user: root
+  ssh_known_hosts: /etc/ssh/ssh_known_hosts
+  ssh_known_hosts_src: ssh_known_hosts
+  ssh_moduli: /etc/ssh/moduli
+  sshd_binary: /usr/sbin/sshd
+  sshd_config: /etc/ssh/sshd_config
+  sshd_config_backup: true
+  sshd_config_group: root
+  sshd_config_mode: '644'
+  sshd_config_src: sshd_config
+  sshd_config_user: root
+  sshd_enable: true
+ssh_config:
+  Hosts:
+    '*':
+      GSSAPIAuthentication: 'yes'
+      HashKnownHosts: 'yes'
+      SendEnv: LANG LC_*
+sshd_config:
+  AcceptEnv: LANG LC_*
+  ChallengeResponseAuthentication: 'no'
+  PrintMotd: 'no'
+  Subsystem: sftp /usr/lib/openssh/sftp-server
+  UsePAM: 'yes'
+  X11Forwarding: 'yes'

@@ -230,6 +230,13 @@ To completely disable adding IP addresses::
 
 Manages the system wide ``/etc/ssh/moduli`` file.
 
+``openssh._mapdata``
+^^^^^^^^^^^^^^^^^^
+
+Testing state which dumps the ``map.jinja`` values in ``/tmp/salt_mapdata_dump.yaml``.
+This state is not called by any include but is mostly used by kitchen and Inspec infrastructure to validate ``map.jinja``.
+
+
 Testing
 -------
 

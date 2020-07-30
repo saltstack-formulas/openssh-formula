@@ -153,6 +153,7 @@ suites:
       state_top:
         base:
           '*':
+            - openssh._mapdata
             - openssh.config
             - openssh.known_hosts
       pillars:
