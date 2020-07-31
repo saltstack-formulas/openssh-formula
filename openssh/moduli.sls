@@ -1,4 +1,5 @@
-{% from "openssh/map.jinja" import openssh with context %}
+{% from "openssh/map.jinja" import mapdata with context %}
+{%- set openssh = mapdata.openssh %}
 
 {% set moduli = salt['pillar.get']('openssh:moduli', False) -%}
 {% set moduli_source = salt['pillar.get']('openssh:moduli_source', False) -%}

@@ -1,7 +1,9 @@
 include:
   - openssh
 
-{%  from "openssh/map.jinja" import openssh, sshd_config with context -%}
+{%  from "openssh/map.jinja" import mapdata with context -%}
+{%- set openssh = mapdata.openssh %}
+{%- set sshd_config = mapdata.sshd_config %}
 {%- set authorized_keys_file = sshd_config.get("AuthorizedKeysFile", None) %}
 
 {%- for store, config in openssh.get("auth_map", {}).items() %}

@@ -1,4 +1,6 @@
-{%- from "openssh/map.jinja" import openssh, sshd_config with context %}
+{%- from "openssh/map.jinja" import mapdata with context %}
+{%- set openssh = mapdata.openssh %}
+{%- set sshd_config = mapdata.sshd_config %}
 
 include:
   - openssh

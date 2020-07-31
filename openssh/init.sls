@@ -1,4 +1,5 @@
-{% from "openssh/map.jinja" import openssh with context %}
+{% from "openssh/map.jinja" import mapdata with context %}
+{%- set openssh = mapdata.openssh %}
 
 openssh:
   {% if openssh.server is defined %}

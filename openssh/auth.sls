@@ -29,7 +29,10 @@
 
 include:
   - openssh
-{%- from "openssh/map.jinja" import openssh, sshd_config with context -%}
+{%- from "openssh/map.jinja" import mapdata with context -%}
+{%- set openssh = mapdata.openssh %}
+{%- set sshd_config = mapdata.sshd_config %}
+
 {%- set auth = openssh.get('auth', {}) -%}
 {%- for identifier,keys in auth.items() -%}
   {%- for key in keys -%}
