@@ -47,6 +47,31 @@
       ~ map_sources
     ) %}
 
+{#- Lookup with `config.get` from configurable roots #}
+{%- do salt["log.debug"](
+      "map.jinja: initialise 'config.get' roots with 'tplroot' "
+      ~ tplroot
+    ) %}
+{%- set config_get_roots = [tplroot] %}
+{#- Configure `config.get` from defaults.yaml #}
+{%- set config_get_roots = default_settings | traverse(
+      "values:map_jinja:config_get_roots",
+      config_get_roots
+    ) %}
+{#- Lookup global `config.get` roots #}
+{%- set config_get_roots = salt["config.get"](
+      "map_jinja:config_get_roots",
+      config_get_roots
+    ) %}
+{#- Lookup per formula `config.get` roots #}
+{%- set config_get_roots = salt["config.get"](
+      tplroot ~ ":map_jinja:config_get_roots",
+      config_get_roots,
+    ) %}
+{%- do salt["log.debug"](
+      "map.jinja: load parameters with 'config.get' from roots "
+      ~ config_get_roots
+    ) %}
 
 {#- Work around assignment inside for loop #}
 {#- load configuration values used in `config.get` merging strategies #}
@@ -85,47 +110,50 @@
 {#- process each `map.jinja` source #}
 {%- for map_source in map_sources %}
 {%-   if map_source  in ["config_get", "config_get_lookup"] %}
-{%-     set _config_key = {
-          "config_get": tplroot,
-          "config_get_lookup": tplroot ~ ":lookup",
-        }.get(map_source) %}
-{%-     set _config_type = {
-          "config_get": "configuration",
-          "config_get_lookup": "lookup",
-        }.get(map_source) %}
+{%-     for _config_root in config_get_roots %}
+{%-       set _config_key = {
+            "config_get": _config_root,
+            "config_get_lookup": _config_root ~ ":lookup",
+          }.get(map_source) %}
 
-{%-     do salt["log.debug"](
-          "map.jinja: retrieve formula "
-          ~ _config_type
-          ~ " with 'config.get'"
-          ~ _config["merge_msg"]
-        ) %}
-{%-     set _config_get = salt["config.get"](
-          _config_key, default={}, **_config["merge_opt"]
-        ) %}
+{%-       do salt["log.debug"](
+            "map.jinja: retrieve '"
+            ~ _config_key
+            ~ "' with 'config.get'"
+            ~ _config["merge_msg"]
+          ) %}
+{%-       set _config_get = salt["config.get"](
+            _config_key, default={}, **_config["merge_opt"]
+          ) %}
 
-{#-     `slsutil.merge` defaults to `smart` instead of `None` for `config.get` #}
-{%-     set _strategy = _config["merge_strategy"] | default("smart", boolean=True) %}
-{%-     do salt["log.debug"](
-          "map.jinja: merge formula "
-          ~ _config_type
-          ~ " retrieved with 'config.get'"
-          ~ ", merge: strategy='"
-          ~ _strategy
-          ~ "', lists='"
-          ~ _config["merge_lists"]
-          ~ "'"
-        ) %}
-{%-     do _config.update(
-          {
-            "stack": salt["slsutil.merge"](
-              _config["stack"],
-              _config_get,
-              strategy=_strategy,
-              merge_lists=_config["merge_lists"],
-            )
-          }
-        ) %}
+{#-       `slsutil.merge` defaults to `smart` instead of `None` for `config.get` #}
+{%-       set _strategy = _config["merge_strategy"] | default("smart", boolean=True) %}
+{%-       do salt["log.debug"](
+            "map.jinja: merge '"
+            ~ _config_key
+            ~ "' retrieved with 'config.get'"
+            ~ ", merge: strategy='"
+            ~ _strategy
+            ~ "', lists='"
+            ~ _config["merge_lists"]
+            ~ "'"
+          ) %}
+
+{#-       Keep values under each root key when there are more than one #}
+{%-       if config_get_roots|length > 1 %}
+{%-         set _config_get = { _config_root: _config_get } %}
+{%-       endif %}
+{%-       do _config.update(
+            {
+              "stack": salt["slsutil.merge"](
+                _config["stack"],
+                _config_get,
+                strategy=_strategy,
+                merge_lists=_config["merge_lists"],
+              )
+            }
+          ) %}
+{%-     endfor %}
 {%-   else %}
 {#-     Lookup the grain/pillar/... #}
 {#-     Fallback to use the source name as a direct filename #}

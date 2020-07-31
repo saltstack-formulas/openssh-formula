@@ -1,6 +1,11 @@
 # yamllint disable rule:indentation rule:line-length
 # Debian-9
 ---
+map_jinja:
+  config_get_roots:
+  - openssh
+  - sshd_config
+  - ssh_config
 openssh:
   absent_dsa_keys: false
   absent_ecdsa_keys: false
