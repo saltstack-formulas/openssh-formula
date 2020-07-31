@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`1.3.1 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.3.0...v1.3.1>`_ (2020-07-31)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **inspec:** use the name ``_mapdata`` everywhere for coherency (\ `14e843e <https://github.com/saltstack-formulas/openssh-formula/commit/14e843ec2b756923e13daf21a0dabe480e289339>`_\ )
+
 `1.3.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.2.2...v1.3.0>`_ (2020-07-30)
 ---------------------------------------------------------------------------------------------------------
 
