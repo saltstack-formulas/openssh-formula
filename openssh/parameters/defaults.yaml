@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
-default:
+values:
+  map_jinja:
+    config_get_roots:
+      - openssh
+      - sshd_config
+      - ssh_config
+
   openssh:
     sshd_enable: true
     sshd_binary: /usr/sbin/sshd
@@ -31,3 +37,4 @@ default:
 
   sshd_config: {}
   ssh_config: {}
+...

@@ -1,6 +1,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import openssh with context %}
+{%- from tplroot ~ "/map.jinja" import mapdata with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch %}
+{%- set openssh = mapdata.openssh %}
 
 include:
   - openssh
