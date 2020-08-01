@@ -1,5 +1,13 @@
 # Changelog
 
+# [2.0.0](https://github.com/saltstack-formulas/openssh-formula/compare/v1.3.1...v2.0.0) (2020-08-01)
+
+
+### Features
+
+* **map:** `config.get` lookups from configurable roots ([ad4385b](https://github.com/saltstack-formulas/openssh-formula/commit/ad4385b077b1fe2b22ab5888ab6b598cb8478658))
+* **map:** update to v4 “map.jinja” ([df477b2](https://github.com/saltstack-formulas/openssh-formula/commit/df477b25c27c521610a8809528ebcba038db673e))
+
 ## [1.3.1](https://github.com/saltstack-formulas/openssh-formula/compare/v1.3.0...v1.3.1) (2020-07-31)
 
 
