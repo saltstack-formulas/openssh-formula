@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`2.0.1 <https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.0...v2.0.1>`_ (2020-08-21)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **map:** ``path_join`` can be used only for local file access (\ `3845d5f <https://github.com/saltstack-formulas/openssh-formula/commit/3845d5ff618f936700d5180ce9ff11ba1b037bcc>`_\ )
+
 `2.0.0 <https://github.com/saltstack-formulas/openssh-formula/compare/v1.3.1...v2.0.0>`_ (2020-08-01)
 ---------------------------------------------------------------------------------------------------------
 
