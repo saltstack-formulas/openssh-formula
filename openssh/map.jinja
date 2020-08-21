@@ -6,10 +6,10 @@
 {%- from tplroot ~ "/libsaltcli.jinja" import cli with context %}
 
 {#- Where to lookup parameters source files #}
-{%- set map_sources_dir = tplroot | path_join("parameters") %}
+{%- set map_sources_dir = tplroot ~ "/parameters" %}
 
 {#- Load defaults first to allow per formula default map.jinja configuration #}
-{%- set _defaults_filename = map_sources_dir | path_join("defaults.yaml") %}
+{%- set _defaults_filename = map_sources_dir ~ "/defaults.yaml" %}
 {%- do salt["log.debug"](
       "map.jinja: initialise parameters from "
       ~ _defaults_filename
@@ -172,10 +172,13 @@
 {%-     endif %}
 
 {%-     for map_value in map_values %}
-{%-       set yamlfile = map_sources_dir | path_join(
+{%-       set yamlfile = [
+            map_sources_dir,
             map_source,
             map_value ~ ".yaml",
-          ) %}
+          ]
+          | join("/")
+          %}
 {%-       do salt["log.debug"]("map.jinja: load parameters from file " ~ yamlfile) %}
 {%-       load_yaml as loaded_values %}
 {%-         include yamlfile ignore missing %}
