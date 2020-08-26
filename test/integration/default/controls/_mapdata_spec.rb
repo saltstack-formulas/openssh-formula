@@ -13,6 +13,6 @@ control '`map.jinja` YAML dump' do
 
   describe file('/tmp/salt_mapdata_dump.yaml') do
     it { should exist }
-    its('content') { should include mapdata_dump }
+    its('content') { should eq mapdata_dump }
   end
 end
