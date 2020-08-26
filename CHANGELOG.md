@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.1...v2.0.2) (2020-08-26)
+
+
+### Tests
+
+* **inspec:** display proper diff when `_mapdata` mismatch ([1c99556](https://github.com/saltstack-formulas/openssh-formula/commit/1c99556695a633c706d852dd20cfcc25397eba35))
+
 ## [2.0.1](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.0...v2.0.1) (2020-08-21)
 
 
