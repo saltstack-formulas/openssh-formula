@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-# Replace per minion strings
-replacement = {
-  hostname: system.hostname
-}
-
 mapdata_file = "_mapdata/#{system.platform[:finger].split('.').first}.yaml"
-mapdata_dump = inspec.profile.file(mapdata_file) % replacement
+mapdata_dump = inspec.profile.file(mapdata_file)
 
 control '`map.jinja` YAML dump' do
   title 'should contain the lines'

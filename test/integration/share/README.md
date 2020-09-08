@@ -10,7 +10,6 @@ It's goal is to share the libraries between all profiles.
 
 The `system` library provides easy access to system dependents informations:
 
-- `system.hostname`: return the result of `hostname -s` or `hostnamectl --static` based on the availability of each commans
 - `system.platform`: take `inspec.platform` and mangle things a bit to be useful
   - `system.platform[:family]` provides a family name for Arch
   - `system.platform[:name]` modify `amazon` to `amazonlinux`

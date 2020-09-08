@@ -42,7 +42,7 @@ openssh:
             present: false
   banner: /etc/ssh/banner
   banner_src: banner
-  banner_string: 'Welcome to %{hostname}!
+  banner_string: 'Welcome to example.net!
 '
   client: openssh-client
   client_version: latest
