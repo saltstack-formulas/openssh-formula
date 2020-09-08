@@ -149,6 +149,8 @@ verifier:
 
 suites:
   - name: default
+    driver:
+      hostname: example.net
     provisioner:
       state_top:
         base:
