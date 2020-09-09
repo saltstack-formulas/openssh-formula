@@ -8,13 +8,12 @@ It's goal is to share the libraries between all profiles.
 
 ### `system`
 
-The `system` library provides easy access to system dependents informations:
+The `system` library provides easy access to system dependent information:
 
-- `system.hostname`: return the result of `hostname -s` or `hostnamectl --static` based on the availability of each commans
-- `system.platform`: take `inspec.platform` and mangle things a bit to be useful
-  - `system.platform[:family]` provides a family name for Arch
+- `system.platform`: based on `inspec.platform`, modify to values that are more consistent from a SaltStack perspective
+  - `system.platform[:family]` provide a family name for Arch
   - `system.platform[:name]` modify `amazon` to `amazonlinux`
-  - `system.platform[:release]` tweak for Arch and Amazon Linux:
-    - `Arch` is always `base-later`
-    - `Amazon Linux` release `2018` became `1`
-  - `system.platform[:finger]` is just the concatenation of the name and the first release number (except for Ubuntu which gives `20.04` for example)
+  - `system.platform[:release]` tweak Arch and Amazon Linux:
+    - `Arch` is always `base-latest`
+    - `Amazon Linux` release `2018` is resolved as `1`
+  - `system.platform[:finger]` is the concatenation of the name and the major release number (except for Ubuntu, which gives `ubuntu-20.04` for example)
