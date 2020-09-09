@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.3](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.2...v2.0.3) (2020-09-09)
+
+
+### Continuous Integration
+
+* **kitchen:** force the hostname of the containers ([208f873](https://github.com/saltstack-formulas/openssh-formula/commit/208f87380ce23995ca62c882401c48ec91de6c86))
+
+
+### Tests
+
+* **inspec:** no more need to mangle mapdata for hostname ([8cb31c6](https://github.com/saltstack-formulas/openssh-formula/commit/8cb31c6967f736f2068ec55911bd177f5ad6ee87))
+* **share:** standardise structure ([15241d3](https://github.com/saltstack-formulas/openssh-formula/commit/15241d39c55441c31ae19863cb383a0ccccaa07e))
+
 ## [2.0.2](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.1...v2.0.2) (2020-08-26)
 
 
