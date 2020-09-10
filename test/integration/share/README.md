@@ -2,7 +2,7 @@
 
 This shows the implementation of the `share` InSpec [profile](https://github.com/inspec/inspec/blob/master/docs/profiles.md).
 
-It's goal is to share the libraries between all profiles.
+Its goal is to share the libraries between all profiles.
 
 ## Libraries
 
