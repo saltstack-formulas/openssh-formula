@@ -183,13 +183,13 @@
 {#- needs to to a DNS lookup -#}
 
 {# DenyUsers -#}
-{{- option_string_or_list('DenyUsers', sep=' ') }}
+{{- option_string_or_list('DenyUsers', sep=' ') -}}
 {# AllowUsers -#}
-{{- option_string_or_list('AllowUsers', sep=' ') }}
+{{- option_string_or_list('AllowUsers', sep=' ') -}}
 {# DenyGroups -#}
-{{- option_string_or_list('DenyGroups', sep=' ') }}
+{{- option_string_or_list('DenyGroups', sep=' ') -}}
 {# AllowGroups -#}
-{{- option_string_or_list('AllowGroups', sep=' ') }}{{ "\n" -}}
+{{- option_string_or_list('AllowGroups', sep=' ') -}}
 
 
 {#- Specifies the available KEX (Key Exchange) algorithms. -#}
