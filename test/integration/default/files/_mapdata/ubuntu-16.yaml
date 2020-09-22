@@ -2,10 +2,18 @@
 # Ubuntu-16.04
 ---
 map_jinja:
-  config_get_roots:
-  - openssh
-  - sshd_config
-  - ssh_config
+  sources:
+  - Y:G@osarch
+  - Y:G@os_family
+  - Y:G@os
+  - Y:G@osfinger
+  - C:SUB@openssh:lookup
+  - C:SUB@openssh
+  - C:SUB@sshd_config:lookup
+  - C:SUB@sshd_config
+  - C:SUB@ssh_config:lookup
+  - C:SUB@ssh_config
+  - Y:G@id
 openssh:
   absent_dsa_keys: false
   absent_ecdsa_keys: false
