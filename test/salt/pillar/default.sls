@@ -189,16 +189,6 @@ openssh:
   #     salt://files/ssh/moduli.hash
   # These will be automatically referenced to by the ssh_moduli state.
 
-# Required for openssh.known_hosts
-mine_functions:
-  public_ssh_host_keys:
-    mine_function: cmd.run
-    cmd: cat /etc/ssh/ssh_host_*_key.pub
-    python_shell: true
-  public_ssh_hostname:
-    mine_function: grains.get
-    key: id
-
   tofs:
     # The files_switch key serves as a selector for alternative
     # directories under the formula files directory. See TOFS pattern
@@ -227,3 +217,13 @@ mine_functions:
         - alt_ssh_config
       sshd_banner:
         - fire_banner
+
+# Required for openssh.known_hosts
+mine_functions:
+  public_ssh_host_keys:
+    mine_function: cmd.run
+    cmd: cat /etc/ssh/ssh_host_*_key.pub
+    python_shell: true
+  public_ssh_hostname:
+    mine_function: grains.get
+    key: id
