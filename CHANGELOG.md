@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.4](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.3...v2.0.4) (2020-09-27)
+
+
+### Bug Fixes
+
+* **pillar:** `tofs` must not be under `mine_functions` ([c0d5052](https://github.com/saltstack-formulas/openssh-formula/commit/c0d5052f6a4f86ed78df5f79f4848f24113dbe1a))
+
+
+### Tests
+
+* **inspec:** `_mapdata` files should have `tofs` configuration ([5e9033f](https://github.com/saltstack-formulas/openssh-formula/commit/5e9033f500cfa0cc5c06867ebdccd9e6b3298498))
+
 ## [2.0.3](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.2...v2.0.3) (2020-09-09)
 
 
