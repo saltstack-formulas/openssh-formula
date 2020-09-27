@@ -151,6 +151,16 @@ openssh:
   sshd_config_src: sshd_config
   sshd_config_user: root
   sshd_enable: true
+  tofs:
+    source_files:
+      manage ssh_known_hosts file:
+      - alt_ssh_known_hosts
+      ssh_config:
+      - alt_ssh_config
+      sshd_banner:
+      - fire_banner
+      sshd_config:
+      - alt_sshd_config
 ssh_config:
   Hosts:
     '*':
