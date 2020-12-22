@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.5](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.4...v2.0.5) (2020-12-22)
+
+
+### Continuous Integration
+
+* **commitlint:** ensure `upstream/master` uses main repo URL [skip ci] ([7af3bf2](https://github.com/saltstack-formulas/openssh-formula/commit/7af3bf255df5d636750edb8b3a95c63b032712b4))
+* **gitlab-ci:** add `rubocop` linter (with `allow_failure`) [skip ci] ([37b9f3a](https://github.com/saltstack-formulas/openssh-formula/commit/37b9f3ac09a895b6aad5e796f062c6f3871e697c))
+* **gitlab-ci:** use GitLab CI as Travis CI replacement ([bccd5fd](https://github.com/saltstack-formulas/openssh-formula/commit/bccd5fd3d88ba22d1b9b91018e7eb2a24620138f))
+* **pre-commit:** add to formula [skip ci] ([4e13609](https://github.com/saltstack-formulas/openssh-formula/commit/4e13609b992d5d2e3e2a540e736016fe1f22c7e2))
+* **pre-commit:** enable/disable `rstcheck` as relevant [skip ci] ([094bef5](https://github.com/saltstack-formulas/openssh-formula/commit/094bef540614043947434a00b0a0e8bfe4665f93))
+* **pre-commit:** finalise `rstcheck` configuration [skip ci] ([75e843a](https://github.com/saltstack-formulas/openssh-formula/commit/75e843a7bdabcc64f29bcea7e7ae6ce204bd5397))
+
+
+### Tests
+
+* **map:** standardise `map.jinja` verification ([2bab68f](https://github.com/saltstack-formulas/openssh-formula/commit/2bab68f5ff5485c9b43712bd2dd17f447ed787f4))
+
 ## [2.0.4](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.3...v2.0.4) (2020-09-27)
 
 
