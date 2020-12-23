@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`2.0.6 <https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.5...v2.0.6>`_ (2020-12-23)
+---------------------------------------------------------------------------------------------------------
+
+Code Refactoring
+^^^^^^^^^^^^^^^^
+
+
+* **map:** use top-level ``values:`` key in ``map.jinja`` dumps (\ `37597e5 <https://github.com/saltstack-formulas/openssh-formula/commit/37597e5b12c769be5add3608152215d7d21e8412>`_\ )
+
 `2.0.5 <https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.4...v2.0.5>`_ (2020-12-22)
 ---------------------------------------------------------------------------------------------------------
 
