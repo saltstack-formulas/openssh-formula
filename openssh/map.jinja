@@ -44,18 +44,12 @@
 
 {#- Load formula defaults values #}
 {%- set _defaults_filename = map_sources_dir ~ "/defaults.yaml" %}
-{%- do salt["log.debug"](
-      "map.jinja: load per formula default values from "
-      ~ _defaults_filename
-    ) %}
-{%- load_yaml as default_settings %}
-{%-   include _defaults_filename ignore missing %}
-{%- endload %}
-
-{%- if not default_settings %}
-{%-   set default_settings = {'values': {} } %}
-{%- endif %}
-
+{%- set default_settings = mapstack(
+      files=[_defaults_filename],
+      defaults={"values": {} },
+      log_prefix="map.jinja defaults: ",
+    )
+    | load_yaml %}
 {#- Make sure to track `map.jinja` configuration with `_mapdata` #}
 {%- do default_settings["values"].update(
       {
