@@ -1,0 +1,127 @@
+{#- -*- coding: utf-8 -*- #}
+{#- vim: ft=jinja #}
+
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split("/")[0] %}
+
+{%- macro mapstack(
+      files,
+      defaults=None,
+      log_prefix="libmapstack: "
+    ) %}
+{#-
+    Load YAML files in the order of `files` and merge successively the
+    values with `defaults` if the file exists.
+
+    Parameters:
+      - `files`: list of files to load
+
+      - `defaults`: default values to start the merging, they are
+        considered built-ins
+
+      - `log_prefix`: prefix used in the log outputs, by default it is
+        `libmapstack: `
+
+    Each YAML file must conform to the following layout:
+      - a mandatory `values` key to store the configuration values
+
+      - two optional keys to configure the use of `salt.slsutil.merge`
+
+        - an optional `strategy` key to configure the merging strategy,
+          for example `strategy: 'recurse'`, the default is `smart`
+
+        - an optional `merge_lists` key to configure if lists should be
+          merged or overridden for the `recurse` and `overwrite`
+          strategies, for example `merge_lists: 'true'`
+#}
+{%-   set stack = defaults | default({"values": {} }, boolean=True) %}
+
+{%-   do salt["log.debug"](
+        log_prefix
+        ~ "built-in configuration:\n"
+        ~ {"values": defaults | traverse("values")}
+        | yaml(False)
+      ) %}
+
+{%-   for yaml_filename in files %}
+{%-     do salt["log.debug"](
+          log_prefix
+          ~ "load configuration values from "
+          ~ yaml_filename
+        ) %}
+
+{%-     load_yaml as yaml_values %}
+{%-       include yaml_filename ignore missing %}
+{%-     endload %}
+
+{%-     do salt["log.debug"](
+          log_prefix
+          ~ "loaded configuration values from "
+          ~ yaml_filename
+          ~ ":\n"
+          ~ yaml_values
+          | yaml(False)
+        ) %}
+
+{%-     if yaml_values %}
+{#-       Per YAML file `salt["slsutil.merge"]` options or use defaults #}
+{%-       set _strategy = yaml_values
+            | traverse(
+              "strategy",
+              defaults
+              | traverse(
+                "strategy",
+                "smart"
+              )
+            ) %}
+{%-       set _merge_lists = yaml_values
+            | traverse(
+              "merge_lists",
+              defaults
+              | traverse(
+                "merge_lists",
+                False
+              )
+            )
+            | to_bool %}
+
+{#-       Update only the `values`, the `salt["slsutil.merge"]` options are never updated #}
+{%-       do stack.update(
+            {
+              "values": salt["slsutil.merge"](
+                stack["values"],
+                yaml_values
+                | traverse("values", {}),
+                strategy=_strategy,
+                merge_lists=_merge_lists,
+              )
+            }
+          ) %}
+{%-       do salt["log.debug"](
+            log_prefix
+            ~ "merged configuration values from "
+            ~ yaml_filename
+            ~ ", merge: strategy='"
+            ~ _strategy
+            ~ "', merge_lists='"
+            ~ _merge_lists
+            ~ "':\n"
+            ~ {"values": stack["values"]}
+            | yaml(False)
+          ) %}
+{%-     endif %}
+
+{%-   endfor %}
+
+{%-   do salt["log.debug"](
+        log_prefix
+        ~ "final configuration values:\n"
+        ~ {"values": stack["values"]}
+        | yaml(False)
+      ) %}
+
+{#- Output stack as YAML, caller should use with something like #}
+{#- `{%- set config = flexible_config(prefix="foo") | load_yaml %}` #}
+{{ stack | yaml }}
+
+{%- endmacro %}

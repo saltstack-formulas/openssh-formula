@@ -4,6 +4,7 @@
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split("/")[0] %}
 {%- from tplroot ~ "/libmatchers.jinja" import parse_matchers, query_map %}
+{%- from tplroot ~ "/libmapstack.jinja" import mapstack %}
 
 {#- Where to lookup parameters source files #}
 {%- set map_sources_dir = tplroot ~ "/parameters" %}
@@ -19,65 +20,22 @@
       "C@" ~ tplroot,
       "Y:G@id",
     ] %}
-{%- do salt["log.debug"](
-      "map.jinja: built-in configuration sources:\n"
-      ~ {"values": {
-          "map_jinja": {"sources": map_sources}
-          }
-        }
-      | yaml(False)
-    ) %}
 
 {#- Allow centralised map.jinja configuration #}
-{%- set _global_map_filename = "parameters/map_jinja.yaml" %}
-{%- do salt["log.debug"](
-      "map.jinja: load global map.jinja values from "
-      ~ _global_map_filename
-    ) %}
-{%- load_yaml as global_map_settings %}
-{%-   include _global_map_filename ignore missing %}
-{%- endload %}
-
-{%- if global_map_settings %}
-{%-   do salt["log.debug"](
-        "map.jinja: configure sources from global map.jinja configuration "
-        ~ _global_map_filename
-        ~ ":\n"
-        ~ {"map_jinja": global_map_settings}
-        | yaml(False)
-      ) %}
-{%-   set map_sources = global_map_settings
-        | traverse(
-          "values:sources",
-          map_sources,
-      ) %}
-{%- endif %}
-
+{%- set _global_param_filename = "parameters/map_jinja.yaml" %}
 {#- Allow per formula map.jinja configuration #}
-{%- set _map_filename = map_sources_dir ~ "/map_jinja.yaml" %}
-{%- do salt["log.debug"](
-      "map.jinja: load per formula map.jinja values from "
-      ~ _map_filename
-    ) %}
-{%- load_yaml as map_settings %}
-{%-   include _map_filename ignore missing %}
-{%- endload %}
+{%- set _formula_param_filename = map_sources_dir ~ "/map_jinja.yaml" %}
 
-{%- if map_settings %}
-{%-   do salt["log.debug"](
-        "map.jinja: configure sources from formula map.jinja configuration "
-        ~ _map_filename
-        ~ ":\n"
-        ~ {"map_jinja": map_settings}
-        | yaml(False)
-      ) %}
-{%-   set map_sources = map_settings
-      | traverse(
-        "values:sources",
-        map_sources,
-      ) %}
-{%- endif %}
+{%- set _map_settings = mapstack(
+      files=[_global_param_filename, _formula_param_filename],
+      defaults={
+        "values": {"sources": map_sources}
+      },
+      log_prefix="map.jinja configuration: ",
+    )
+    | load_yaml %}
 
+{%- set map_sources = _map_settings | traverse("values:sources") %}
 {%- do salt["log.debug"](
       "map.jinja: load parameters from sources:\n"
       ~ map_sources
@@ -101,8 +59,7 @@
 {#- Make sure to track `map.jinja` configuration with `_mapdata` #}
 {%- do default_settings["values"].update(
       {
-        "map_jinja": map_settings
-        | traverse("values", {})
+        "map_jinja": _map_settings["values"]
       }
     ) %}
 
