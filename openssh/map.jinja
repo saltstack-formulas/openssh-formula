@@ -118,6 +118,7 @@
 {#-  - type: `F` to load file, `C`, `G`, `I` for lookup #}
 {#-  - option: specific to the type #}
 {#-  - query: which key is requested #}
+{#-  - query_delimiter: the separator between query component #}
 {#-  - query_method: the salt method doing the query `config.get`, `pillar.get` and `grains.get` #}
 {#-  - value: the result of the `salt[<query_method>](<query>)` #}
 {%- set map_matchers = parse_matchers(

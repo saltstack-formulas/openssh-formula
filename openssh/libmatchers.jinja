@@ -14,9 +14,11 @@
 {#- When no part before `@` is provided: #}
 {#-   - define a filename path, noted `F` #}
 {#-   - use `salt["config.get"]`, noted `C` #}
+{#-   - use colon `:` delimiter for querying #}
 {%- set _defaults = {
       "type": "F",
       "query_type": "C",
+      "query_delimiter": ":"
     } %}
 
 {%- macro parse_matchers(
@@ -24,7 +26,7 @@
       config_get_strategy=None,
       log_prefix="libmatchers: "
     ) %}
-{#-   matcher format is `[<TYPE>[:<OPTION>]@]<KEY>` #}
+{#-   matcher format is `[<TYPE>[:<OPTION>[:DELIMITER]]@]<KEY>` #}
 {#-   each matcher has a type: #}
 {#-   - `F` to build a file name (the default when no type is set) #}
 {#-   - `C` to lookup values with `config.get` #}
@@ -34,6 +36,7 @@
 {#-   - `C` for query with `config.get` (the default when to query type is set) #}
 {#-   - `G` for query with `grains.get` #}
 {#-   - `I` for query with `pillar.get` #}
+{#-   With `DELIMITER`, you can choose a different delimiter when doing queries #}
 {%-   set parsed_matchers = [] %}
 {%-   for matcher in matchers %}
 {%-     do salt["log.debug"](
@@ -52,6 +55,7 @@
               "type": _defaults["type"],
               "option": None,
               "query_method": query_map[_defaults["query_type"]],
+              "query_delimiter": _defaults["query_delimiter"],
               "query": matcher
             }
           ) %}
@@ -80,6 +84,7 @@
               {
                 "type": metadatas[0],
                 "option": "C",
+                "query_delimiter": ":"
               }
             ) %}
 {%-         do salt["log.debug"](
@@ -94,6 +99,7 @@
               {
                 "type": metadatas[0],
                 "option": metadatas[1],
+                "query_delimiter": ":"
               }
             ) %}
 {%-         do salt["log.debug"](
@@ -108,6 +114,7 @@
               {
                 "type": metadatas[0],
                 "option": metadatas[1],
+                "query_delimiter": metadatas[2] | default(":", boolean=True)
               }
             ) %}
 {%-         do salt["log.debug"](
@@ -118,10 +125,12 @@
               | indent(4, True)
             ) %}
 {%-       elif metadatas | length == 4 %}
+{#-         The delimiter is `:` #}
 {%-         do parsed.update(
               {
                 "type": metadatas[0],
                 "option": metadatas[1],
+                "query_delimiter": ":"
               }
             ) %}
 {%-         do salt["log.debug"](
@@ -154,9 +163,14 @@
 
 {#-     Add `merge:` option to `salt["config.get"]` if configured #}
 {%-     if cli in ["minion", "local"] and parsed.query_method == "config.get" and config_get_strategy %}
-{%-       set merge_opt = {"merge": config_get_strategy} %}
-{%-       set merge_msg = (
-            ", merge: strategy='"
+{%-       set query_opts = {
+            "merge": config_get_strategy,
+            "delimiter": parsed.query_delimiter,
+          } %}
+{%-       set query_opts_msg = (
+            ", delimiter='"
+            ~ parsed.query_delimiter
+            ~ "', merge: strategy='"
             ~ config_get_strategy
             ~ "'"
           ) %}
@@ -164,13 +178,13 @@
 {%-       if cli not in ["minion", "local"] %}
 {%-         do salt["log.error"](
               log_prefix
-              ~ "the 'merge' option of 'config.get' is skipped when the salt command type is '"
+              ~ "the 'delimiter' and 'merge' options of 'config.get' are skipped when the salt command type is '"
               ~ cli
               ~ "'"
             ) %}
 {%-       endif %}
-{%-       set merge_opt = {} %}
-{%-       set merge_msg = "" %}
+{%-       set query_opts = {} %}
+{%-       set query_opts_msg = "" %}
 {%-     endif %}
 
 {%-     do salt["log.debug"](
@@ -180,12 +194,12 @@
           ~ "' with '"
           ~ parsed.query_method
           ~ "'"
-          ~ merge_msg
+          ~ query_opts_msg
         ) %}
 {%-     set values = salt[parsed.query_method](
           parsed.query,
           default=[],
-          **merge_opt
+          **query_opts
         ) %}
 {%-     do parsed.update(
           {

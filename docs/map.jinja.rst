@@ -197,6 +197,47 @@ For the clients:
 
     Since we used ``Y:C@roles``, ``map.jinja`` will do a ``salt['config.get']('roles')`` to retrieve the roles so you could use any other method to bind roles to minions (`pillars`_ or `SDB`_) but `grains`_ seems to be the prefered method.
 
+Note for Microsoft Windows systems
+``````````````````````````````````
+
+If you have a minion running under windows, you can't use colon ``:`` as a delimiter for grain path query (see `bug 58726`_) in which case you should use an alternate delimiter:
+
+Modify ``/srv/salt/parameters/map_jinja.yaml`` to change the query for ``dns:domain`` to define the `alternate delimiter`_:
+
+.. code-block:: yaml
+
+    ---
+    values:
+      sources:
+        # default values
+        - "Y:G@osarch"
+        - "Y:G@os_family"
+        - "Y:G@os"
+        - "Y:G@osfinger"
+        - "C@{{ tplroot ~ ':lookup' }}"
+        - "C@{{ tplroot }}"
+
+        # Roles activate/deactivate things
+        # then thing are configured depending on environment
+        # So roles comes before `dns:domain`, `domain` and `id`
+        - "Y:C@roles"
+
+        # DNS domain configured (DHCP or resolv.conf)
+        - "Y:G:!@dns!domain"
+
+        # Based on minion ID
+        - "Y:G@domain"
+
+        # default values
+        - "Y:G@id"
+    ...
+
+And then, rename the directory:
+
+.. code-block:: console
+
+    mv /srv/salt/TEMPLATE/parameters/dns:domain/  '/srv/salt/TEMPLATE/parameters/dns!domain/'
+
 
 Format of configuration YAML files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -246,7 +287,7 @@ The ``map.jinja`` file uses several sources where to lookup parameter values. Th
 1. a global ``salt://parameters/map_jinja.yaml``
 2. a per formula ``salt://{{ tplroot }}/parameters/map_jinja.yaml``, it overrides the global configuration
 
-Each source definition has the form ``<TYPE>:<OPTION>@<KEY>`` where ``<TYPE>`` can be one of:
+Each source definition has the form ``[<TYPE>[:<OPTION>[:<DELIMITER>]]@]<KEY>`` where ``<TYPE>`` can be one of:
 
 - ``Y`` to load values from YAML files from the `fileserver`_, this is the default when no type is defined
 - ``C`` to lookup values with `salt['config.get']`_
@@ -260,6 +301,8 @@ The YAML type option can define the query method to lookup the key value to buil
 - ``I`` to query with `salt['pillar.get']`_
 
 The ``C``, ``G`` or ``I`` types can define the ``SUB`` option to store values in the sub key ``mapdata.<KEY>`` instead of directly in ``mapdata``.
+
+All types can define the ``<DELIMITER>`` option to use an `alternate delimiter`_ of the ``<KEY>``, for example: on windows system you can't use colon ``:`` for YAML file path name and you should use something else like exclamation mark ``!``.
 
 Finally, the ``<KEY>`` describes what to lookup to either build the YAML filename or gather values using one of the query methods.
 
@@ -432,6 +475,7 @@ This ``sls`` file expose a ``TEMPLATE`` context variable to the jinja template w
 .. _salt['config.get']: https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.config.html#salt.modules.config.get
 .. _salt['grains.get']: https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.grains.html#salt.modules.grains.get
 .. _salt['pillar.get']: https://docs.saltstack.com/en/latest/ref/modules/all/salt.modules.pillar.html#salt.modules.pillar.get
+.. _alternate delimiter: https://docs.saltstack.com/en/latest/topics/targeting/compound.html#alternate-delimiters
 .. _pillar.vault: https://docs.saltstack.com/en/latest/ref/pillar/all/salt.pillar.vault.html
 .. _pillars: https://docs.saltstack.com/en/latest/topics/pillar/
 .. _grains: https://docs.saltstack.com/en/latest/topics/grains/
@@ -445,3 +489,4 @@ This ``sls`` file expose a ``TEMPLATE`` context variable to the jinja template w
 .. _traverse: https://docs.saltstack.com/en/latest/topics/jinja/index.html#traverse
 .. _salt-ssh: https://docs.saltstack.com/en/latest/topics/ssh/
 .. _template-formula/TEMPLATE/config/file.sls: https://github.com/saltstack-formulas/template-formula/blob/master/TEMPLATE/config/file.sls
+.. _bug 58726: https://github.com/saltstack/salt/issues/58726
