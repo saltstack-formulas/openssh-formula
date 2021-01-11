@@ -3,11 +3,10 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split("/")[0] %}
-{%- from tplroot ~ "/libmatchers.jinja" import parse_matchers, query_map %}
 {%- from tplroot ~ "/libmapstack.jinja" import mapstack %}
 
 {#- Where to lookup parameters source files #}
-{%- set map_sources_dir = tplroot ~ "/parameters" %}
+{%- set formula_param_dir = tplroot ~ "/parameters" %}
 
 {#- List of sources to lookup for parameters #}
 {#- Fallback to previously used grains plus minion `id` #}
@@ -21,13 +20,8 @@
       "Y:G@id",
     ] %}
 
-{#- Allow centralised map.jinja configuration #}
-{%- set _global_param_filename = "parameters/map_jinja.yaml" %}
-{#- Allow per formula map.jinja configuration #}
-{%- set _formula_param_filename = map_sources_dir ~ "/map_jinja.yaml" %}
-
 {%- set _map_settings = mapstack(
-      files=[_global_param_filename, _formula_param_filename],
+      matchers=["map_jinja.yaml"],
       defaults={
         "values": {"sources": map_sources}
       },
@@ -42,136 +36,26 @@
       | yaml(False)
     ) %}
 
-{#- Load formula defaults values #}
-{%- set _defaults_filename = map_sources_dir ~ "/defaults.yaml" %}
-{%- set default_settings = mapstack(
-      files=[_defaults_filename],
-      defaults={"values": {} },
-      log_prefix="map.jinja defaults: ",
+{#- Load formula parameters values #}
+{%- set _formula_matchers = ["defaults.yaml"] + map_sources %}
+{%- set _formula_settings = mapstack(
+      matchers=_formula_matchers,
+      dirs=[formula_param_dir],
+      defaults={
+        "values": {},
+        "merge_strategy": salt["config.get"](tplroot ~ ":strategy", None),
+        "merge_lists": salt["config.get"](tplroot ~ ":merge_lists", False),
+      },
+      log_prefix="map.jinja: ",
     )
     | load_yaml %}
+
 {#- Make sure to track `map.jinja` configuration with `_mapdata` #}
-{%- do default_settings["values"].update(
+{%- do _formula_settings["values"].update(
       {
         "map_jinja": _map_settings["values"]
       }
     ) %}
 
-{#- Work around assignment inside for loop #}
-{#- load configuration values used in `config.get` merging strategies #}
-{%- set _config = {
-      "stack": default_settings.get("values", {}),
-      "merge_strategy": salt["config.get"](tplroot ~ ":strategy", None),
-      "merge_lists": salt["config.get"](tplroot ~ ":merge_lists", False),
-    } %}
-
-{#- `parse_matchers` returns a `list` of `dict` with #}
-{#-  - type: `F` to load file, `C`, `G`, `I` for lookup #}
-{#-  - option: specific to the type #}
-{#-  - query: which key is requested #}
-{#-  - query_delimiter: the separator between query component #}
-{#-  - query_method: the salt method doing the query `config.get`, `pillar.get` and `grains.get` #}
-{#-  - value: the result of the `salt[<query_method>](<query>)` #}
-{%- set map_matchers = parse_matchers(
-      matchers=map_sources,
-      config_get_strategy=_config["merge_strategy"],
-      log_prefix="map.jinja: "
-    )
-    | load_yaml %}
-
-{%- for matcher in map_matchers %}
-
-{%-   if matcher.type in query_map.keys() %}
-{#-     Merge in `mapdata.<query>` instead of directcly in `mapdata` #}
-{%-     set is_sub_key = matcher.option | default(False) == "SUB" %}
-
-{#-     `slsutil.merge` defaults to `smart` instead of `None` for `config.get` #}
-{%-     set _strategy = _config["merge_strategy"] | default("smart", boolean=True) %}
-{%-     do salt["log.debug"](
-          "map.jinja: merge "
-          ~ "sub key " * is_sub_key
-          ~ "'"
-          ~ matcher.query
-          ~ "' retrieved with '"
-          ~ matcher.query_method
-          ~ "', merge: strategy='"
-          ~ _strategy
-          ~ "', lists='"
-          ~ _config["merge_lists"]
-          ~ "'"
-        ) %}
-
-{#-     empty value is an empty list, it must be an empty dict for `.update` #}
-{%-     set value = matcher.value | default({}, boolean=True) %}
-{%-     if is_sub_key %}
-{#-       Merge values with `mapdata.<key>`, `<key>` and `<key>:lookup` are merged together #}
-{%-       set value = { matcher.query | regex_replace("(:lookup)?$", ""): value } %}
-{%-     endif %}
-{%-     do _config.update(
-          {
-            "stack": salt["slsutil.merge"](
-              _config["stack"],
-              value,
-              strategy=_strategy,
-              merge_lists=_config["merge_lists"],
-            )
-          }
-        ) %}
-{%-   else %}
-{#-     Load YAML file matching the grain/pillar/... #}
-{#-     Fallback to use the source name as a direct filename #}
-{#-     Mangle `source_key` to use it as literal path #}
-{%-     if matcher.value | length == 0 %}
-{%-       set query_parts = matcher.query.split("/") %}
-{%-       set map_dirname = query_parts[0:-1] | join("/") %}
-{%-       set map_values = query_parts[-1] | regex_replace("(\.yaml)?$", ".yaml") %}
-{%-     else %}
-{%-       set map_dirname = matcher.query %}
-{%-       set map_values = matcher.value %}
-{%-     endif %}
-
-{#-     Some configuration return list #}
-{%-     if map_values is string %}
-{%-       set map_values = [map_values] %}
-{%-     endif %}
-
-{#-     `map_dirname` can be an empty string with literal path like `myconf.yaml` #}
-{%-     set yaml_dir = [
-          map_sources_dir,
-          map_dirname
-        ]
-        | select
-        | join("/") %}
-
-{%-     for map_value in map_values %}
-{%-       set yamlfile = [
-            yaml_dir,
-            map_value ~ ".yaml"
-          ]
-          | join("/") %}
-{%-       do salt["log.debug"]("map.jinja: load parameters from file " ~ yamlfile) %}
-{%-       load_yaml as loaded_values %}
-{%-         include yamlfile ignore missing %}
-{%-       endload %}
-
-{%-       if loaded_values %}
-{#-         Merge loaded values on the stack #}
-{%-         do salt["log.debug"]("map.jinja: merge parameters from " ~ yamlfile) %}
-{%-         do _config.update(
-              {
-                "stack": salt["slsutil.merge"](
-                  _config["stack"],
-                  loaded_values.get("values", {}),
-                  strategy=loaded_values.get("strategy", "smart"),
-                  merge_lists=loaded_values.get("merge_lists", False)
-                  | to_bool,
-                )
-              }
-            ) %}
-{%-       endif %}
-{%-     endfor %}
-{%-   endif %}
-{%- endfor %}
-
 {%- do salt["log.debug"]("map.jinja: save parameters in variable 'mapdata'") %}
-{%- set mapdata = _config["stack"] %}
+{%- set mapdata = _formula_settings["values"] %}
