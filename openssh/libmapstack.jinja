@@ -114,7 +114,7 @@
 {#-       1. the `value` #}
 {#-       2. the `defaults` #}
 {#-       3. the built-in #}
-{%-       set _strategy = matcher.value
+{%-       set strategy = matcher.value
           | traverse(
             "strategy",
             defaults
@@ -123,7 +123,7 @@
               "smart"
             )
           ) %}
-{%-       set _merge_lists = matcher.value
+{%-       set merge_lists = matcher.value
           | traverse(
             "merge_lists",
             defaults
@@ -156,9 +156,9 @@
               ~ "' retrieved with '"
               ~ matcher.query_method
               ~ "', merge: strategy='"
-              ~ _strategy
+              ~ strategy
               ~ "', lists='"
-              ~ _merge_lists
+              ~ merge_lists
               ~ "':\n"
               ~ value
               | yaml(False)
@@ -169,8 +169,8 @@
                 "values": salt["slsutil.merge"](
                   stack["values"],
                   value,
-                  strategy=_strategy,
-                  merge_lists=_merge_lists,
+                  strategy=strategy,
+                  merge_lists=merge_lists,
                 )
               }
             ) %}
@@ -238,7 +238,7 @@
 {#-             1. the `value` #}
 {#-             2. the `defaults` #}
 {#-             3. the built-in #}
-{%-             set _strategy = yaml_values
+{%-             set strategy = yaml_values
                   | traverse(
                     "strategy",
                     defaults
@@ -247,7 +247,7 @@
                       "smart"
                     )
                   ) %}
-{%-             set _merge_lists = yaml_values
+{%-             set merge_lists = yaml_values
                   | traverse(
                     "merge_lists",
                     defaults
@@ -263,8 +263,8 @@
                       stack["values"],
                       yaml_values
                       | traverse("values", {}),
-                      strategy=_strategy,
-                      merge_lists=_merge_lists,
+                      strategy=strategy,
+                      merge_lists=merge_lists,
                     )
                   }
                 ) %}
@@ -273,9 +273,9 @@
                   ~ "merged configuration values from "
                   ~ yaml_name
                   ~ ", merge: strategy='"
-                  ~ _strategy
+                  ~ strategy
                   ~ "', merge_lists='"
-                  ~ _merge_lists
+                  ~ merge_lists
                   ~ "':\n"
                   ~ {"values": stack["values"]}
                   | yaml(False)
