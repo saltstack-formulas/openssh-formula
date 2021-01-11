@@ -3,7 +3,7 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split("/")[0] %}
-{%- from tplroot ~ "/libsaltcli.jinja" import cli with context %}
+{%- from tplroot ~ "/libmatchers.jinja" import parse_matchers, query_map %}
 
 {#- Where to lookup parameters source files #}
 {%- set map_sources_dir = tplroot ~ "/parameters" %}
@@ -114,93 +114,24 @@
       "merge_lists": salt["config.get"](tplroot ~ ":merge_lists", False),
     } %}
 
-{#- the `config.get` merge option only works for `minion` or `local` salt command types #}
-{%- if cli in ["minion", "local"] %}
-{%-   do _config.update(
-        {
-          "merge_opt": {"merge": _config["merge_strategy"]},
-          "merge_msg": ", merge: strategy='" ~ _config["merge_strategy"] ~ "'",
-        }
-      ) %}
-{#- the `config.get` merge option is not available for `ssh` or `unknown` salt command types #}
-{%- else %}
-{%-   if _config["merge_strategy"] %}
-{%-     do salt["log.error"](
-          "map.jinja: the 'merge' option of 'config.get' is skipped when the salt command type is '"
-          ~ cli
-          ~ "'"
-        ) %}
-{%-   endif %}
-{%-   do _config.update(
-        {
-          "merge_opt": {},
-          "merge_msg": "",
-        }
-      ) %}
-{%- endif %}
+{#- `parse_matchers` returns a `list` of `dict` with #}
+{#-  - type: `F` to load file, `C`, `G`, `I` for lookup #}
+{#-  - option: specific to the type #}
+{#-  - query: which key is requested #}
+{#-  - query_method: the salt method doing the query `config.get`, `pillar.get` and `grains.get` #}
+{#-  - value: the result of the `salt[<query_method>](<query>)` #}
+{%- set map_matchers = parse_matchers(
+      matchers=map_sources,
+      config_get_strategy=_config["merge_strategy"],
+      log_prefix="map.jinja: "
+    )
+    | load_yaml %}
 
-{%- set query_map = {
-      "C": "config.get",
-      "G": "grains.get",
-      "I": "pillar.get",
-    } %}
+{%- for matcher in map_matchers %}
 
-{#- Process each `map.jinja` source #}
-{#- each source has a type: #}
-{#- - `Y` to load values from YAML files (the default when no type is set) #}
-{#- - `C` to lookup values with `config.get` #}
-{#- - `G` to lookup values with `grains.get` #}
-{#- - `I` to lookup values with `pillar.get` #}
-{#- The YAML type option can define query type to build the file name: #}
-{#- - `C` for query with `config.get` (the default when to query type is set) #}
-{#- - `G` for query with `grains.get` #}
-{#- - `I` for query with `pillar.get` #}
-{#- The `C`, `G` or `I` types can define the `SUB` option #}
-{#- to merge values in the sub key `mapdata.<key>` instead of directly in `mapdata` #}
-{%- for map_source in map_sources %}
-{%-   set source_parts = map_source.split('@') %}
-{%-   if source_parts|length == 1 %}
-{#-     By default we load YAML files for config looked up by `config.get` #}
-{%-     set source_type = "Y" %}
-{%-     set query_type = "C" %}
-{%-     set source_key = map_source %}
-{%-   elif source_parts[0][0] == "Y" %}
-{%-     set source_type = "Y" %}
-{%-     set query_type = source_parts[0].split(':')[1] | default("C") %}
-{%-     set source_key = source_parts[1] %}
-{%-   elif source_parts[0][0] in query_map.keys() %}
-{%-     set source_type = source_parts[0].split(':') | first %}
-{%-     set query_type = source_type %}
-{%-     set is_sub_key = source_parts[0].split(':')[1] | default(False) == "SUB" %}
-{%-     set source_key = source_parts[1] %}
-{%-   endif %}
-
-{%-   set query_method = query_map[query_type] %}
-
-{%-   if source_type in query_map.keys() %}
-{#-     Lookup source `<QUERY_METHOD>@key:to:query` #}
-{%-     if source_type == "C" %}
-{%-       set merge_opts = _config["merge_opt"] %}
-{%-       set merge_msg = _config["merge_msg"] %}
-{%-     else %}
-{#-       No merging strategy supported for `grains.get` and `pillar.get` #}
-{%-       set merge_opts = {} %}
-{%-       set merge_msg = "" %}
-{%-     endif %}
-
-{%-     do salt["log.debug"](
-          "map.jinja: retrieve '"
-          ~ source_key
-          ~ "' with '"
-          ~ query_method
-          ~ "'"
-          ~ merge_msg
-        ) %}
-{%-     set _config_get = salt[query_method](
-          source_key,
-          default={},
-          **merge_opts
-        ) %}
+{%-   if matcher.type in query_map.keys() %}
+{#-     Merge in `mapdata.<query>` instead of directcly in `mapdata` #}
+{%-     set is_sub_key = matcher.option | default(False) == "SUB" %}
 
 {#-     `slsutil.merge` defaults to `smart` instead of `None` for `config.get` #}
 {%-     set _strategy = _config["merge_strategy"] | default("smart", boolean=True) %}
@@ -208,9 +139,9 @@
           "map.jinja: merge "
           ~ "sub key " * is_sub_key
           ~ "'"
-          ~ source_key
+          ~ matcher.query
           ~ "' retrieved with '"
-          ~ query_method
+          ~ matcher.query_method
           ~ "', merge: strategy='"
           ~ _strategy
           ~ "', lists='"
@@ -218,15 +149,17 @@
           ~ "'"
         ) %}
 
+{#-     empty value is an empty list, it must be an empty dict for `.update` #}
+{%-     set value = matcher.value | default({}, boolean=True) %}
 {%-     if is_sub_key %}
 {#-       Merge values with `mapdata.<key>`, `<key>` and `<key>:lookup` are merged together #}
-{%-       set _config_get = { source_key.rstrip(':lookup'): _config_get } %}
+{%-       set value = { matcher.query | regex_replace("(:lookup)?$", ""): value } %}
 {%-     endif %}
 {%-     do _config.update(
           {
             "stack": salt["slsutil.merge"](
               _config["stack"],
-              _config_get,
+              value,
               strategy=_strategy,
               merge_lists=_config["merge_lists"],
             )
@@ -235,20 +168,14 @@
 {%-   else %}
 {#-     Load YAML file matching the grain/pillar/... #}
 {#-     Fallback to use the source name as a direct filename #}
-{%-     do salt["log.debug"](
-          "map.jinja: lookup '"
-          ~ source_key
-          ~ "' with '"
-          ~ query_method
-          ~ "'"
-        ) %}
-{%-     set map_values = salt[query_method](source_key, []) %}
-
 {#-     Mangle `source_key` to use it as literal path #}
-{%-     if map_values | length == 0 %}
-{%-       set map_source_parts = source_key.split("/") %}
-{%-       set source_key = map_source_parts[0:-1] | join("/") %}
-{%-       set map_values = map_source_parts[-1].rstrip(".yaml") %}
+{%-     if matcher.value | length == 0 %}
+{%-       set query_parts = matcher.query.split("/") %}
+{%-       set map_dirname = query_parts[0:-1] | join("/") %}
+{%-       set map_values = query_parts[-1] | regex_replace("(\.yaml)?$", ".yaml") %}
+{%-     else %}
+{%-       set map_dirname = matcher.query %}
+{%-       set map_values = matcher.value %}
 {%-     endif %}
 
 {#-     Some configuration return list #}
@@ -256,10 +183,10 @@
 {%-       set map_values = [map_values] %}
 {%-     endif %}
 
-{#-     `source_key` can be an empty string with literal path like `myconf.yaml` #}
+{#-     `map_dirname` can be an empty string with literal path like `myconf.yaml` #}
 {%-     set yaml_dir = [
           map_sources_dir,
-          source_key
+          map_dirname
         ]
         | select
         | join("/") %}
