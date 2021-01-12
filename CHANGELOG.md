@@ -1,5 +1,43 @@
 # Changelog
 
+# [3.0.0](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.6...v3.0.0) (2021-01-12)
+
+
+### Code Refactoring
+
+* **map:** compound matchers like parsing with `libmatchers` ([925c86e](https://github.com/saltstack-formulas/openssh-formula/commit/925c86ea698c68f684ba1645a58c88d688e6acc5))
+* **map:** load `defaults.jinja` configuration with `libmapstack` ([174bb68](https://github.com/saltstack-formulas/openssh-formula/commit/174bb68432366a449a8327a9dbb648271f123224))
+* **map:** load `map.jinja` configuration with `libmapstack` ([568bb7c](https://github.com/saltstack-formulas/openssh-formula/commit/568bb7ce4075ee376e8c49a45a1470d252f82ab9))
+* **map:** load formula configuration with `libmatchers` ([ff6b56c](https://github.com/saltstack-formulas/openssh-formula/commit/ff6b56c4a4e282f41ddfc8f379f95096fea0553f))
+
+
+### Documentation
+
+* **map:** document the new `map.jinja` with targeting like syntax ([7ecb24b](https://github.com/saltstack-formulas/openssh-formula/commit/7ecb24bdc1ff84ddac4c7c3e5d8d70c7512f4fb5))
+
+
+### Features
+
+* **map:** use targeting like syntax for configuration ([1be0d87](https://github.com/saltstack-formulas/openssh-formula/commit/1be0d8725ad933034f4e87cc9636bcc5100bd55c))
+* **matchers:** add delimiter option for source definitions ([d69556d](https://github.com/saltstack-formulas/openssh-formula/commit/d69556d5ae79a907d79351d4b9775e0ce2970b39))
+
+
+### Styles
+
+* **mapstack:** variables in macro can't be exported ([7de2d6f](https://github.com/saltstack-formulas/openssh-formula/commit/7de2d6fd756b3e4b7154e660b639d7ce6edb8cfe))
+
+
+### BREAKING CHANGES
+
+* **map:** the configuration `map_jinja:sources` is only
+                 configurable with `salt://parameters/map_jinja.yaml`
+		 and `salt://{{ tplroot }}/parameters/map_jinja.yaml`
+* **map:** the `map_jinja:config_get_roots` is replaced by
+                 compound like `map_jinja:sources`
+* **map:** the two `config_get_lookup` and `config_get` are
+                 replaced by `C@<tplroot>:lookup` and `C@<tplroot>`
+		 sources
+
 ## [2.0.6](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.5...v2.0.6) (2020-12-23)
 
 
