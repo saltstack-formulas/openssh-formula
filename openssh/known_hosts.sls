@@ -3,9 +3,13 @@
 {%- from tplroot ~ "/libtofs.jinja" import files_switch %}
 {%- set openssh = mapdata.openssh %}
 
+{%- if openssh.dig_pkg %}
 ensure dig is available:
   pkg.installed:
     - name: {{ openssh.dig_pkg }}
+    - require_in:
+      - file: manage ssh_known_hosts file
+{%- endif %}
 
 manage ssh_known_hosts file:
   file.managed:
@@ -19,5 +23,3 @@ manage ssh_known_hosts file:
     - user: root
     - group: {{ openssh.ssh_config_group }}
     - mode: 644
-    - require:
-      - pkg: ensure dig is available

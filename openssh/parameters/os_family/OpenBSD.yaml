@@ -12,6 +12,8 @@
 values:
   openssh:
     service: sshd
+    # Already installed: `base68:/usr/bin/dig`
+    dig_pkg: ~
     sshd_config_group: wheel
     ssh_config_group: wheel
   sshd_config:

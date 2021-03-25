@@ -27,7 +27,9 @@ control 'openssh configuration' do
     its('content') { should include 'PrintMotd no' }
     its('content') { should include 'AcceptEnv LANG LC_*' }
     its('content') { should include 'Subsystem sftp /usr/lib/openssh/sftp-server' }
-    its('content') { should include 'UsePAM yes' }
+    unless %w[openbsd].include?(platform[:name])
+      its('content') { should include 'UsePAM yes' }
+    end
   end
 
   describe file('/etc/ssh/ssh_config') do
@@ -45,7 +47,7 @@ control 'openssh configuration' do
     it { should be_file }
     its('mode') { should cmp '0644' }
     it { should be_owned_by 'root' }
-    it { should be_grouped_into 'root' }
+    it { should be_grouped_into root_group }
     its('content') { should include github_known_host }
     its('content') { should match(gitlab_known_host_re) }
     its('content') { should include minion_rsa_known_host }
