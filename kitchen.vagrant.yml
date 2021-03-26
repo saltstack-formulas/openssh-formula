@@ -3,15 +3,26 @@
 ---
 driver:
   name: vagrant
+  cache_directory: false
+  customize:
+    usbxhci: 'off'
+  gui: false
+  linked_clone: true
+  ssh:
+    shell: /bin/sh
 
 platforms:
-  - name: freebsd-120-2019-2-py3
+  - name: freebsd-122-latest-py3
     driver:
-      box_url: https://freebsd.z.vstack.com/FreeBSD-12.0.box
-      cache_directory: false
-      customize:
-        usbxhci: 'off'
-      gui: false
-      linked_clone: true
+      box: bento/freebsd-12.2
+  - name: freebsd-114-latest-py3
+    driver:
+      box: bento/freebsd-11.4
+  - name: openbsd-68-latest-py3
+    driver:
+      box: generic/openbsd6
       ssh:
-        shell: '/bin/sh'
+        shell: /bin/ksh
+
+provisioner:
+  salt_install: bootstrap
