@@ -22,7 +22,9 @@ sshd_config:
   PrintMotd: 'no'
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
+  {%- if grains.os != "OpenBSD" %}
   UsePAM: 'yes'
+  {%- endif %}
 
 ssh_config:
   Hosts:

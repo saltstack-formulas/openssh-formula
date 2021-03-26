@@ -310,6 +310,7 @@ suites:
   - name: default
     driver:
       hostname: example.net
+      vm_hostname: example.net
     provisioner:
       state_top:
         base:
