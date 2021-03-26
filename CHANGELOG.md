@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.0.1](https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.0...v3.0.1) (2021-03-26)
+
+
+### Bug Fixes
+
+* **openbsd:** fix `dig_pkg`, avoid `UsePAM` & add verification file ([2868560](https://github.com/saltstack-formulas/openssh-formula/commit/286856058ac1b7231cbd3455826a751963c3ca45))
+
+
+### Continuous Integration
+
+* enable Vagrant-based testing using GitHub Actions ([f1af455](https://github.com/saltstack-formulas/openssh-formula/commit/f1af45593d967c9ac734702fa31b922d28053d32))
+* **gemfile+lock:** use `ssf` customised `kitchen-docker` repo [skip ci] ([01512a0](https://github.com/saltstack-formulas/openssh-formula/commit/01512a0ec47b42ea41fcc949f59372b7e95e817c))
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] ([79321be](https://github.com/saltstack-formulas/openssh-formula/commit/79321be76fa91234414dd53ea81ee0327276bafe))
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] ([c2a366f](https://github.com/saltstack-formulas/openssh-formula/commit/c2a366f9c721fc0956cd08c5e3f239a751be7a10))
+* **pre-commit:** update hook for `rubocop` [skip ci] ([ccb6a44](https://github.com/saltstack-formulas/openssh-formula/commit/ccb6a4487580eb75b3d735e7cfb398f2b8ebb316))
+
+
+### Documentation
+
+* **readme:** add `Testing with Vagrant` section ([2f8c31c](https://github.com/saltstack-formulas/openssh-formula/commit/2f8c31c66c56d7c7626c5193d7386cc280e16322))
+
+
+### Tests
+
+* **freebsd:** add `map.jinja` verification files (for 11.4 & 12.2) ([4c857fe](https://github.com/saltstack-formulas/openssh-formula/commit/4c857fe07156260a206c9d33c7a87ce60a324803))
+* standardise use of `share` suite & `_mapdata` state [skip ci] ([35a2124](https://github.com/saltstack-formulas/openssh-formula/commit/35a2124a43da14c8cb64040b0b5f2d1b4b7545fe))
+* **_mapdata:** add verification files for new platforms ([748eded](https://github.com/saltstack-formulas/openssh-formula/commit/748ededc7af79b792cac8fa01abcd20c8c27d8ed))
+* **share:** standardise with latest changes [skip ci] ([de969f1](https://github.com/saltstack-formulas/openssh-formula/commit/de969f10f1b22a86491f1b33d1d06eb7d721a980))
+
 # [3.0.0](https://github.com/saltstack-formulas/openssh-formula/compare/v2.0.6...v3.0.0) (2021-01-12)
 
 
