@@ -1,7 +1,6 @@
-.. _readme:
+openssh-formula
+===============
 
-openssh
-=======
 |img_travis| |img_sr|
 
 .. |img_travis| image:: https://travis-ci.com/saltstack-formulas/openssh-formula.svg?branch=master
@@ -91,11 +90,11 @@ so root login will be disabled.
 ``openssh.config_ini``
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Version of managing ``sshd_config`` that uses the 
+Version of managing ``sshd_config`` that uses the
 `ini_managed.option_present <https://docs.saltstack.com/en/latest/ref/states/all/salt.states.ini_manage.html>`_
-state module, so it enables to override only one or 
-multiple values and keeping the defaults shipped by your 
-distribution. 
+state module, so it enables to override only one or
+multiple values and keeping the defaults shipped by your
+distribution.
 
 
 ``openssh.known_hosts``
@@ -237,7 +236,7 @@ To completely disable adding IP addresses::
 Manages the system wide ``/etc/ssh/moduli`` file.
 
 ``openssh._mapdata``
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 Testing state which dumps the ``map.jinja`` values in ``/tmp/salt_mapdata_dump.yaml``.
 This state is not called by any include but is mostly used by kitchen and Inspec infrastructure to validate ``map.jinja``.
