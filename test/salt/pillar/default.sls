@@ -25,6 +25,11 @@ sshd_config:
   {%- if grains.os != "OpenBSD" %}
   UsePAM: 'yes'
   {%- endif %}
+  {#- Need this on Arch Linux to avoid the `kitchen verify` failure as mentioned above; see: #}
+  {#- * https://gitlab.com/saltstack-formulas/infrastructure/salt-image-builder/-/commit/cb6781a2bba9 #}
+  {%- if grains.os == "Arch" %}
+  PubkeyAcceptedAlgorithms: "+ssh-rsa"
+  {%- endif %}
 
 ssh_config:
   Hosts:
