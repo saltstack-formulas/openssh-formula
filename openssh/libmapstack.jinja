@@ -3,7 +3,7 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split("/")[0] %}
-{%- from tplroot ~ "/libmatchers.jinja" import parse_matchers, query_map %}
+{%- from tplroot ~ "/libmatchers.jinja" import parse_matchers, query_map with context %}
 
 {%- set _default_config_dirs = [
       "parameters/",
@@ -95,8 +95,10 @@
 {%-   set stack = defaults | default({"values": {} }, boolean=True) %}
 
 {#-   Build configuration file names based on matchers #}
+{%-   set config_get_strategy = salt["config.get"](tplroot ~ ":strategy", None) %}
 {%-   set matchers = parse_matchers(
         matchers,
+        config_get_strategy=config_get_strategy,
         log_prefix=log_prefix
       )
       | load_yaml %}
@@ -194,6 +196,19 @@
 {%-           set yaml_names = [yaml_names] %}
 {%-         endif %}
 
+{#-         Try to load a `.yaml.jinja` file for each `.yaml` file #}
+{%-         set all_yaml_names = [] %}
+{%-         for name in yaml_names %}
+{%-           set extension = name.rpartition(".")[2] %}
+{%-           if extension not in ["yaml", "jinja"] %}
+{%-             do all_yaml_names.extend([name ~ ".yaml", name ~ ".yaml.jinja"]) %}
+{%-           elif extension == "yaml" %}
+{%-             do all_yaml_names.extend([name, name ~ ".jinja"]) %}
+{%-           else %}
+{%-             do all_yaml_names.append(name) %}
+{%-           endif %}
+{%-         endfor %}
+
 {#-         `yaml_dirname` can be an empty string with literal path like `myconf.yaml` #}
 {%-         set yaml_dir = [
               param_dir,
@@ -202,15 +217,10 @@
             | select
             | join("/") %}
 
-{%-         for yaml_name in yaml_names %}
-{#-           Make sure to have a `.yaml` extension #}
-{#-           Use `.rpartition` to strip last `.yaml` in `dir.yaml/file.yaml` #}
+{%-         for yaml_name in all_yaml_names %}
 {%-           set yaml_filename = [
                 yaml_dir.rstrip("/"),
-                yaml_name.rpartition(".yaml")
-                | reject("equalto", ".yaml")
-                | join
-                ~ ".yaml"
+                yaml_name
               ]
               | select
               | join("/") %}
@@ -228,7 +238,7 @@
 {%-             do salt["log.debug"](
                   log_prefix
                   ~ "loaded configuration values from "
-                  ~ yaml_name
+                  ~ yaml_filename
                   ~ ":\n"
                   ~ yaml_values
                   | yaml(False)
@@ -271,7 +281,7 @@
 {%-             do salt["log.debug"](
                   log_prefix
                   ~ "merged configuration values from "
-                  ~ yaml_name
+                  ~ yaml_filename
                   ~ ", merge: strategy='"
                   ~ strategy
                   ~ "', merge_lists='"

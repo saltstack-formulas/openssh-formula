@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-# vim: ft=jinja
+{#- -*- coding: utf-8 -*- #}
+{#- vim: ft=jinja #}
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split("/")[0] %}
-{%- from tplroot ~ "/libmapstack.jinja" import mapstack %}
+{%- from tplroot ~ "/libmapstack.jinja" import mapstack with context %}
 
 {#- Where to lookup parameters source files #}
 {%- set formula_param_dir = tplroot ~ "/parameters" %}
@@ -38,6 +38,7 @@
 
 {#- Load formula parameters values #}
 {%- set _formula_matchers = ["defaults.yaml"] + map_sources %}
+
 {%- set _formula_settings = mapstack(
       matchers=_formula_matchers,
       dirs=[formula_param_dir],
@@ -59,3 +60,7 @@
 
 {%- do salt["log.debug"]("map.jinja: save parameters in variable 'mapdata'") %}
 {%- set mapdata = _formula_settings["values"] %}
+
+{#- Per formula post-processing of `mapdata` if it exists #}
+{%- do salt["log.debug"]("map.jinja: post-processing of 'mapdata'") %}
+{%- include tplroot ~ "/post-map.jinja" ignore missing %}
