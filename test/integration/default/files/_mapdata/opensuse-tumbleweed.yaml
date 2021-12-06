@@ -180,6 +180,7 @@ values:
     AcceptEnv: LANG LC_*
     ChallengeResponseAuthentication: 'no'
     PrintMotd: 'no'
+    PubkeyAcceptedAlgorithms: "+ssh-rsa"
     Subsystem: sftp /usr/lib/openssh/sftp-server
     UsePAM: 'yes'
     X11Forwarding: 'yes'

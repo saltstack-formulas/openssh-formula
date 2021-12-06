@@ -1,5 +1,5 @@
 # yamllint disable rule:indentation rule:line-length
-# OpenBSD-6
+# OpenBSD-7
 ---
 values:
   map_jinja:
