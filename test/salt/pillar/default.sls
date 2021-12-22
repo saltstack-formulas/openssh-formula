@@ -27,7 +27,7 @@ sshd_config:
   {%- endif %}
   {#- Need this on various platforms to avoid the `kitchen verify` failure as mentioned above; see: #}
   {#- * https://gitlab.com/saltstack-formulas/infrastructure/salt-image-builder/-/commit/cb6781a2bba9 #}
-  {%- if grains.os in ["Arch", "OpenBSD"] or grains.oscodename in ["openSUSE Tumbleweed"] %}
+  {%- if grains.os in ["Arch", "OpenBSD"] or grains.get("oscodename", "") in ["openSUSE Tumbleweed"] %}
   PubkeyAcceptedAlgorithms: "+ssh-rsa"
   {%- endif %}
 
