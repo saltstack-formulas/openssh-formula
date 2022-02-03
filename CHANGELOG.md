@@ -1,5 +1,55 @@
 # Changelog
 
+## [3.0.2](https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.1...v3.0.2) (2022-02-03)
+
+
+### Bug Fixes
+
+* **libmatchers:** python client API can use `config.get` options ([560a5cc](https://github.com/saltstack-formulas/openssh-formula/commit/560a5ccbbc1c657fce621da945981cd0bd701879))
+
+
+### Code Refactoring
+
+* **map.jinja:** standardise v5 structure [skip ci] ([3162842](https://github.com/saltstack-formulas/openssh-formula/commit/3162842ec5531b72a28fff592e1b63d33aa2cd59))
+
+
+### Continuous Integration
+
+* **3003.1:** update inc. AlmaLinux, Rocky & `rst-lint` [skip ci] ([7190129](https://github.com/saltstack-formulas/openssh-formula/commit/719012908469f50e510779e1b82fb5605f54053a))
+* **freebsd:** update with latest pre-salted Vagrant boxes [skip ci] ([943cf17](https://github.com/saltstack-formulas/openssh-formula/commit/943cf1790370fa32d19f6e367510d513fc9cbbb6))
+* **gemfile:** allow rubygems proxy to be provided as an env var [skip ci] ([8b2cd1b](https://github.com/saltstack-formulas/openssh-formula/commit/8b2cd1b0e6a872928d2095170e9524274c9de3e2))
+* **gemfile+lock:** use `ssf` customised `inspec` repo [skip ci] ([e5d83f3](https://github.com/saltstack-formulas/openssh-formula/commit/e5d83f3f36152c57c6701fdb5d28b624830dc8e0))
+* **kitchen:** move `provisioner` block & update `run_command` [skip ci] ([1685782](https://github.com/saltstack-formulas/openssh-formula/commit/168578285aa3291c4cca775daae299aa0889f1d5))
+* **kitchen+ci:** update with `3004` pre-salted images/boxes [skip ci] ([e59160f](https://github.com/saltstack-formulas/openssh-formula/commit/e59160f8461386c148b8e61f43e4c3a0d0b89587))
+* **kitchen+ci:** update with latest `3003.2` pre-salted images [skip ci] ([d48bdde](https://github.com/saltstack-formulas/openssh-formula/commit/d48bdde2c6919d73a79301f46ec058668d413aac))
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] ([5d4ed95](https://github.com/saltstack-formulas/openssh-formula/commit/5d4ed95572dbdb7b93c2ff3cafca71ed8a6a4034))
+* **kitchen+gitlab:** remove Ubuntu 16.04 & Fedora 32 (EOL) [skip ci] ([b7ddbb0](https://github.com/saltstack-formulas/openssh-formula/commit/b7ddbb0e186b74d5c9ae0abd75b187f08aab896e))
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] ([eede9fa](https://github.com/saltstack-formulas/openssh-formula/commit/eede9fa54c84b92aab2f7c036e41f53df1389e0c))
+* **vagrant:** replace FreeBSD 12.2 with 12.3 [skip ci] ([5e8a886](https://github.com/saltstack-formulas/openssh-formula/commit/5e8a88631351c1621da415bc0decae808b9bfc1b))
+* add Debian 11 Bullseye & update `yamllint` configuration [skip ci] ([efb6799](https://github.com/saltstack-formulas/openssh-formula/commit/efb679941a6940b1e94a1b0b3fdbaa25ff3f5d12))
+* **vagrant:** add OpenBSD 6.9 [skip ci] ([fb78927](https://github.com/saltstack-formulas/openssh-formula/commit/fb789274811a3acce1589280137fab8dd78cd0d2))
+* add `arch-master` to matrix and update `.travis.yml` [skip ci] ([1af42b2](https://github.com/saltstack-formulas/openssh-formula/commit/1af42b215e96715f3ddeae13aab6fcbbcfd258b4))
+* **kitchen+gitlab:** adjust matrix to add `3003` [skip ci] ([c82927f](https://github.com/saltstack-formulas/openssh-formula/commit/c82927fbc8dd40aea584c6fbee2a5d08eac7c31e))
+* **vagrant:** add FreeBSD 13.0 [skip ci] ([7c69859](https://github.com/saltstack-formulas/openssh-formula/commit/7c698591c862c412894416f5037892f13f2ed514))
+* **vagrant:** use pre-salted boxes & conditional local settings [skip ci] ([531de16](https://github.com/saltstack-formulas/openssh-formula/commit/531de164b66ef66b66fadd2369ad302916131e39))
+
+
+### Documentation
+
+* **readme:** fix headings [skip ci] ([52abade](https://github.com/saltstack-formulas/openssh-formula/commit/52abade1821ba7afa1ed313ba9a4d8250283938b))
+
+
+### Tests
+
+* **_mapdata:** add verification file for `debian-11` [skip ci] ([42e17b2](https://github.com/saltstack-formulas/openssh-formula/commit/42e17b28712b3bf369ac4629b21705a54c5763d6))
+* **_mapdata:** add verification file for `fedora-34` [skip ci] ([3f6c4a0](https://github.com/saltstack-formulas/openssh-formula/commit/3f6c4a05acbf5b41b771b4a44a897e7353190efa))
+* **alma+rocky:** add platforms (based on CentOS 8) [skip ci] ([2dc565b](https://github.com/saltstack-formulas/openssh-formula/commit/2dc565b7c7a467b55e199e47e0d5fe4486360e34))
+* **default:** use `grains.get` for `oscodename` (for FreeBSD) [skip ci] ([aa8f9db](https://github.com/saltstack-formulas/openssh-formula/commit/aa8f9dbfd6e534e53557b4ae917a90951f8714ac))
+* **freebsd:** add `map.jinja` verification file (for 13.0) ([018a47c](https://github.com/saltstack-formulas/openssh-formula/commit/018a47cdd89dac21c05265db7cb5ee8ec9bd0ada))
+* **pillar:** add `ssh-rsa` Kitchen workaround on Arch Linux [skip ci] ([ecd62e4](https://github.com/saltstack-formulas/openssh-formula/commit/ecd62e45075c19bce13d42d88c9372c1a308699f))
+* **pillar:** add `ssh-rsa` Kitchen workaround on Gentoo [skip ci] ([d65ea55](https://github.com/saltstack-formulas/openssh-formula/commit/d65ea55d94d1cd314412daa6388eda080ab70725))
+* **pillar:** add platforms to `ssh-rsa` Kitchen workaround [skip ci] ([6260e85](https://github.com/saltstack-formulas/openssh-formula/commit/6260e852800a3a5481cc0df73a5f689a48599ea2))
+
 ## [3.0.1](https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.0...v3.0.1) (2021-03-26)
 
 
