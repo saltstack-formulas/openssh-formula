@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.3](https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.2...v3.0.3) (2022-02-21)
+
+
+### Bug Fixes
+
+* **libmapstack:** allow mapping by booleans and numbers ([40ba5a7](https://github.com/saltstack-formulas/openssh-formula/commit/40ba5a72c6476fa7deb4e73a01e78530da4c45d9))
+
+
+### Continuous Integration
+
+* update linters to latest versions [skip ci] ([81f97c0](https://github.com/saltstack-formulas/openssh-formula/commit/81f97c0457b7b30a6464c066fcb83ca77def9371))
+
+
+### Styles
+
+* **libsaltcli:** fix comments to jinja comments [skip ci] ([3416d94](https://github.com/saltstack-formulas/openssh-formula/commit/3416d94a36ab0c38942dba8d660652592f74a019))
+
+
+### Tests
+
+* **system:** add `build_platform_codename` [skip ci] ([aaa1828](https://github.com/saltstack-formulas/openssh-formula/commit/aaa1828f8683cb306b4532805d8095b095649af5))
+
 ## [3.0.2](https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.1...v3.0.2) (2022-02-03)
 
 
