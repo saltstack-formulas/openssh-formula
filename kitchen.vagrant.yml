@@ -36,9 +36,3 @@ platforms:
       ssh:
         shell: /bin/ksh
       synced_folders: []
-  - name: openbsd-69-3002-6-py3
-    driver:
-      box: myii/openbsd-6.9-3002.6-py3
-      ssh:
-        shell: /bin/ksh
-      synced_folders: []
