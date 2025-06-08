@@ -22,16 +22,17 @@ sshd_config:
   PrintMotd: 'no'
   AcceptEnv: "LANG LC_*"
   Subsystem: "sftp /usr/lib/openssh/sftp-server"
-  {%- if grains.os != "OpenBSD" %}
+  # {%- if grains.os != "OpenBSD" %}
   UsePAM: 'yes'
-  {%- endif %}
-  {#- Need this on various platforms to avoid the `kitchen verify` failure as mentioned above; see: #}
-  {#- * https://gitlab.com/saltstack-formulas/infrastructure/salt-image-builder/-/commit/cb6781a2bba9 #}
-  {%- if grains.os in ["Arch", "OpenBSD", "Gentoo"]
-      or grains.get("oscodename", "") in ["openSUSE Tumbleweed"]
-      or grains.get("osfinger", "") in ["Fedora Linux-36", "Ubuntu-22.04"] %}
+  # {%- endif %}
+  # Need this on various platforms to avoid the `kitchen verify` failure as
+  # mentioned above; see:
+  # yamllint disable rule:line-length
+  # * https://gitlab.com/saltstack-formulas/infrastructure/salt-image-builder/-/commit/cb6781a2bba9 #}
+  # {%- if grains.get("oscodename", "") in ["openSUSE Tumbleweed"] or grains.get("osfinger", "") in ["Fedora Linux-36", "Ubuntu-22.04"] %}
+  # yamllint enable rule:line-length
   PubkeyAcceptedAlgorithms: "+ssh-rsa"
-  {%- endif %}
+  # {%- endif %}
 
 ssh_config:
   Hosts:
