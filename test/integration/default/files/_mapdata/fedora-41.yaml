@@ -1,5 +1,5 @@
 # yamllint disable rule:indentation rule:line-length
-# openSUSE Tumbleweed-yyyymmdd
+# Fedora-41
 ---
 values:
   map_jinja:
@@ -53,7 +53,7 @@ values:
     banner_src: banner
     banner_string: 'Welcome to example.net!
   '
-    client: openssh
+    client: openssh-clients
     client_version: latest
     dig_pkg: bind-utils
     dsa:
@@ -140,7 +140,7 @@ values:
   '
       public_key: 'ssh-rsa NOT_DEFINED
   '
-    server: openssh
+    server: openssh-server
     server_version: latest
     service: sshd
     ssh_config: /etc/ssh/ssh_config

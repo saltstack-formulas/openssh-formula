@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v1.7.0
+_src_path: https://github.com/dafyddj/copier-ssf-ci
+failure_permitted_pattern: (?x)(-master$|^fedora-41-|^amazonlinux-2-)
+formula_name: openssh
+renovate_extend_presets:
+- github>saltstack-formulas/.github
+- github>saltstack-formulas/.github:copier
+renovate_ignore_presets: []
+supported_oses:
+- AlmaLinux OS
+- Amazon Linux
+- CentOS
+- Debian
+- Fedora Linux
+- openSUSE
+- Oracle Linux
+- Rocky Linux
+- Ubuntu

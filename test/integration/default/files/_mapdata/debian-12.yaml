@@ -1,5 +1,5 @@
 # yamllint disable rule:indentation rule:line-length
-# openSUSE Tumbleweed-yyyymmdd
+# Debian-12
 ---
 values:
   map_jinja:
@@ -53,9 +53,9 @@ values:
     banner_src: banner
     banner_string: 'Welcome to example.net!
   '
-    client: openssh
+    client: openssh-client
     client_version: latest
-    dig_pkg: bind-utils
+    dig_pkg: dnsutils
     dsa:
       private_key: '-----BEGIN DSA PRIVATE KEY-----
 
@@ -140,9 +140,9 @@ values:
   '
       public_key: 'ssh-rsa NOT_DEFINED
   '
-    server: openssh
+    server: openssh-server
     server_version: latest
-    service: sshd
+    service: ssh
     ssh_config: /etc/ssh/ssh_config
     ssh_config_backup: true
     ssh_config_group: root
