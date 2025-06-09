@@ -29,7 +29,7 @@ sshd_config:
   # mentioned above; see:
   # yamllint disable rule:line-length
   # * https://gitlab.com/saltstack-formulas/infrastructure/salt-image-builder/-/commit/cb6781a2bba9 #}
-  # {%- if grains.get("oscodename", "") in ["openSUSE Tumbleweed"] or grains.get("osfinger", "") in ["Fedora Linux-36", "Ubuntu-22.04"] %}
+  # {%- if false %}
   # yamllint enable rule:line-length
   PubkeyAcceptedAlgorithms: "+ssh-rsa"
   # {%- endif %}
