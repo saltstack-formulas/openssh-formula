@@ -2,6 +2,34 @@
 Changelog
 =========
 
+`3.0.4 <https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.3...v3.0.4>`_ (2025-06-09)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **sshd_config:** remove special newline handling for auth options (\ `3d2442f <https://github.com/saltstack-formulas/openssh-formula/commit/3d2442f3c6eb4ebb46fad8f933d2b5b5b3e6d9e3>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **pre-commit.ci:** perform ``pre-commit`` autoupdate (\ `a09a0b2 <https://github.com/saltstack-formulas/openssh-formula/commit/a09a0b258dff3111839e72e6538a879db5b39783>`_\ )
+* **vagrant:** remove testing for unsupported OSes (\ `f214ad0 <https://github.com/saltstack-formulas/openssh-formula/commit/f214ad03aa0c823a1f2a8b4d46f11ee41dba4bab>`_\ )
+* update ``pre-commit`` configuration inc. for pre-commit.ci [skip ci] (\ `b29b10d <https://github.com/saltstack-formulas/openssh-formula/commit/b29b10de7dae0a4cc3e9f6ebb3e1e5d758db3997>`_\ )
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] (\ `f2c7d39 <https://github.com/saltstack-formulas/openssh-formula/commit/f2c7d392ca261542df5dd098150bd8dfa724bc6d>`_\ )
+* **vagrant:** use ``linked_clone`` at all times (inc. CI) [skip ci] (\ `917b3a1 <https://github.com/saltstack-formulas/openssh-formula/commit/917b3a17c3e688b0a3bc6443ad868a7153d91a46>`_\ )
+
+Tests
+^^^^^
+
+
+* **_mapdata:** add verification file for ``fedora-35`` [skip ci] (\ `c6b6556 <https://github.com/saltstack-formulas/openssh-formula/commit/c6b655611759e6d2ec74ab69c4348ba56af6634c>`_\ )
+* **pillar:** add ``ssh-rsa`` Kitchen workaround on Fedora 36 [skip ci] (\ `24b29cd <https://github.com/saltstack-formulas/openssh-formula/commit/24b29cd91ca6cd8020558b5d880a2104d7dabf3d>`_\ )
+* **pillar:** add ``ssh-rsa`` Kitchen workaround on Ubuntu 22.04 [skip ci] (\ `2419d26 <https://github.com/saltstack-formulas/openssh-formula/commit/2419d26e02ba6ef206e53ec99465c0e48b84a53e>`_\ )
+* **system.rb:** add support for ``mac_os_x`` [skip ci] (\ `9fb9426 <https://github.com/saltstack-formulas/openssh-formula/commit/9fb94264a5805342f2bbe7c9cad826b87f8a5e1d>`_\ )
+
 `3.0.3 <https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.2...v3.0.3>`_ (2022-02-21)
 ---------------------------------------------------------------------------------------------------------
 
