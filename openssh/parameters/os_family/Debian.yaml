@@ -14,6 +14,9 @@ values:
     server: openssh-server
     client: openssh-client
     service: ssh
+    {%- if salt['config.get']('osrelease')|int > 12 %}
+    dig_pkg: bind9-dnsutils
+    {%- endif %}
   sshd_config:
     Subsystem: sftp /usr/lib/openssh/sftp-server
 ...
