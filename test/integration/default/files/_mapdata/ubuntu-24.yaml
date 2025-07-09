@@ -55,7 +55,7 @@ values:
   '
     client: openssh-client
     client_version: latest
-    dig_pkg: dnsutils
+    dig_pkg: bind9-dnsutils
     dsa:
       private_key: '-----BEGIN DSA PRIVATE KEY-----
 
