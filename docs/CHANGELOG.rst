@@ -2,6 +2,20 @@
 Changelog
 =========
 
+`3.0.5 <https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.4...v3.0.5>`_ (2025-07-10)
+---------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **map:** add mapdata for debian 13 (\ `6ed0436 <https://github.com/saltstack-formulas/openssh-formula/commit/6ed043688a73b101dae9f471f8b1290272db755d>`_\ )
+* **map:** change reference file (\ `8e72286 <https://github.com/saltstack-formulas/openssh-formula/commit/8e72286a237fa5a0c51d6fa1e228733e8bbcbd21>`_\ )
+* **map:** change reference file for ubuntu and set to bind9-dnsutils (\ `1ca0d8e <https://github.com/saltstack-formulas/openssh-formula/commit/1ca0d8ee5bd8eb030c06e9da688969da2f3e212b>`_\ )
+* **map:** remove conditon about debian >12 (\ `072c736 <https://github.com/saltstack-formulas/openssh-formula/commit/072c7364e70065cf1e9ef722853be0e385929fc7>`_\ )
+* **map:** update debian.yaml (\ `701afb4 <https://github.com/saltstack-formulas/openssh-formula/commit/701afb45c85446114091504473305c75239a76ba>`_\ )
+* **map:** update debian.yaml in case of debian 13 (\ `bc4f8ec <https://github.com/saltstack-formulas/openssh-formula/commit/bc4f8ecaf653941b9260890c8a40f87e2e892b84>`_\ )
+
 `3.0.4 <https://github.com/saltstack-formulas/openssh-formula/compare/v3.0.3...v3.0.4>`_ (2025-06-09)
 ---------------------------------------------------------------------------------------------------------
 
