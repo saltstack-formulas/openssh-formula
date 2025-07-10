@@ -14,6 +14,7 @@ values:
     server: openssh-server
     client: openssh-client
     service: ssh
+    dig_pkg: bind9-dnsutils
   sshd_config:
     Subsystem: sftp /usr/lib/openssh/sftp-server
 ...
