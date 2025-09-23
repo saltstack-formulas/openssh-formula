@@ -86,9 +86,6 @@
 {#- HostKeys for protocol version 2 -#}
 {{- option('HostKey') -}}
 
-{#- Privilege Separation is turned on for security -#}
-{{- option('UsePrivilegeSeparation') -}}
-
 {#- Logging -#}
 {{- option('SyslogFacility') -}}
 {{- option('LogLevel') -}}
