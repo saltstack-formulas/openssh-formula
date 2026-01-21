@@ -70,9 +70,6 @@
 # {{ source }}
 #
 {%- endif %}
-# The contents of the original sshd_config are kept on the bottom for
-# quick reference.
-# See the sshd_config(5) manpage for details
 
 {#  Specifies which address family should be used by sshd(8). -#}
 {#- Valid arguments are any, inet (use IPv4 only), or inet6 (use IPv6 only) -#}
