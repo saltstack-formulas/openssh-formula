@@ -13,7 +13,7 @@ sshd_config-with-ini:
   {%- if salt['file.contains_regex'](openssh.sshd_config, regex_search_for_tabs) %}
   file.replace:
     - name: {{ openssh.sshd_config }}
-    - pattern: {{ regex_search_for_tabs }}
+    - pattern: '{{ regex_search_for_tabs }}'
     - repl: '\1 \2'
     - show_changes: True
     - require_in:
