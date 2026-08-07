@@ -129,14 +129,3 @@ ssh_host_{{ keyType }}_key.pub:
       - service: {{ openssh.service }}
 {%-   endif %}
 {%- endfor %}
-
-{%- if sshd_config.get('UsePrivilegeSeparation', '')|lower == 'yes' %}
-/var/run/sshd:
-  file.directory:
-    - user: root
-    - mode: 755
-    - require_in:
-      - file: sshd_config
-    - watch_in:
-      - service: {{ openssh.service }}
-{%- endif %}
